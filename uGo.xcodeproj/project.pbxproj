@@ -26,6 +26,7 @@
 		9475F1590E3137990053C4BE /* grad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9475F1580E3137990053C4BE /* grad.png */; };
 		948586550E3141280087D7CD /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 948586540E3141280087D7CD /* gradient.png */; };
 		94C4D4D00E2AE164007A76B5 /* goboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4D4CF0E2AE164007A76B5 /* goboard.png */; };
+		94FD82B70E31827A000611DC /* goicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 94FD82B60E31827A000611DC /* goicon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		9475F1580E3137990053C4BE /* grad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grad.png; sourceTree = "<group>"; };
 		948586540E3141280087D7CD /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradient.png; sourceTree = "<group>"; };
 		94C4D4CF0E2AE164007A76B5 /* goboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goboard.png; sourceTree = "<group>"; };
+		94FD82B60E31827A000611DC /* goicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goicon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +147,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				94FD82B60E31827A000611DC /* goicon.png */,
 				948586540E3141280087D7CD /* gradient.png */,
 				9475F1580E3137990053C4BE /* grad.png */,
 				946A4E3F0E30F17100F5659E /* board1.png */,
@@ -224,6 +227,7 @@
 				946A4E400E30F17100F5659E /* board1.png in Resources */,
 				9475F1590E3137990053C4BE /* grad.png in Resources */,
 				948586550E3141280087D7CD /* gradient.png in Resources */,
+				94FD82B70E31827A000611DC /* goicon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
