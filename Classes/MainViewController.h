@@ -7,27 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
-#import <CoreGraphics/CoreGraphics.h>
 
-#import "BoardLayer.h"
+#import "BoardView.h"
 
-@interface MainViewController : UIViewController {
+@interface MainViewController : UIViewController <UIScrollViewDelegate> {
 	IBOutlet UISegmentedControl*	_sizeSel;
 	IBOutlet UIButton*				_goButton;
+    IBOutlet UIScrollView*          _boardScrollView;
 	
-	CALayer*		_boardContainer;
-	BoardLayer*		_boardLayer;
-	BOOL			_boardIsZoomed;
+	BoardView*		_boardView;
 }
 
-@property (nonatomic) BOOL _boardIsZoomed;
-
-- (void) _zoomBoard: (CGFloat)amount;
-- (void) resetBoardZoom;
-- (void) setZoomPoint: (CGPoint)zPoint withScalingFactor: (CGFloat)scale;
-
 - (IBAction) selectorChanged;
-
 - (IBAction) goButton: (id) sender;
+
 @end

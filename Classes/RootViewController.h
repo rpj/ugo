@@ -13,7 +13,9 @@
 
 @interface RootViewController : UIViewController {
 	IBOutlet UIButton *infoButton;
+    
 	MainViewController *mainViewController;
+    
 	FlipsideViewController *flipsideViewController;
 	UINavigationBar *flipsideNavigationBar;
 }
