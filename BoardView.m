@@ -23,6 +23,7 @@
         self.frame = CGRectMake(0, 0, kBoardSize, kBoardSize);
         self._boardLayer = [BoardLayer layer];
         _boardLayer.frame = self.frame;
+        self.layer.contents = (id)[UIImage imageNamed: @"board1.png"].CGImage;
         
         [self.layer addSublayer:_boardLayer];
         [_boardLayer setNeedsDisplay];

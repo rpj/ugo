@@ -1,0 +1,3 @@
+- Figure out why edges of grid are thinner than inner lines of grid
+- Get UIScrollView to show the board all the way zoomed out at the start
+- Make sure artwork is acceptable to use

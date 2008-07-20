@@ -11,14 +11,12 @@
 #import <CoreGraphics/CoreGraphics.h>
 
 @interface BoardLayer : CALayer {
-	UIImage*	_boardImg;
 	CALayer*	_gridLayer;
 	
 	NSUInteger	_gridSize;
 	CGFloat		_gridInnerBorder;
 }
 
-@property (nonatomic, retain) UIImage* _boardImg;
 @property (nonatomic, retain) CALayer* _gridLayer;
 
 - (void) drawGridOfSize: (NSInteger)size;

@@ -14,7 +14,6 @@
 
 @implementation BoardLayer
 
-@synthesize _boardImg;
 @synthesize _gridLayer;
 
 - (void) setGridFrameAndDisplay;
@@ -26,7 +25,6 @@
 	
 	[_gridLayer setNeedsDisplay];
 }
-
 
 - (void) drawGridOfSize: (NSInteger)size;
 {
@@ -45,14 +43,7 @@
 	
 - (void)drawInContext:(CGContextRef)context
 {
-	UIGraphicsPushContext(context);
-    CGRect rect = CGContextGetClipBoundingBox(context);
-    [_boardImg drawInRect: rect blendMode: kCGBlendModeNormal alpha: 1.0];
-    
-    if (_gridLayer) {
-        [self setGridFrameAndDisplay];
-    }
-    UIGraphicsPopContext();
+    [self setGridFrameAndDisplay];
 }
 
 - (void) _drawGridInContext:(CGContextRef)context
@@ -161,7 +152,6 @@
 
 - (void) dealloc;
 {
-	[_boardImg release];
 	[_gridLayer release];
 	
 	[super dealloc];
@@ -173,7 +163,6 @@
 	BoardLayer* _new = [super layer];
 	
 	if (_new) {
-		_new._boardImg = [UIImage imageNamed: @"board1.png"];
 		_new._gridLayer = nil;
 	}
 	

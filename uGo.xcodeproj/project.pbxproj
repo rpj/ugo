@@ -19,6 +19,7 @@
 		289233AF0DB2D0DB0083E9F9 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233AB0DB2D0DB0083E9F9 /* RootViewController.m */; };
 		289233B00DB2D0DB0083E9F9 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233AD0DB2D0DB0083E9F9 /* FlipsideViewController.m */; };
 		43BFB5740E33DBE700846875 /* BoardLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BFB5730E33DBE700846875 /* BoardLayer.m */; };
+		43BFB8D40E3403F600846875 /* TODO in Resources */ = {isa = PBXBuildFile; fileRef = 43BFB8D30E3403F600846875 /* TODO */; };
 		43D312B60E33D1950076D266 /* MainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D312B50E33D1950076D266 /* MainView.m */; };
 		946A49390E30485900F5659E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946A49380E30485900F5659E /* QuartzCore.framework */; };
 		946A4A5E0E305D2A00F5659E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946A4A5D0E305D2A00F5659E /* CoreGraphics.framework */; };
@@ -50,6 +51,7 @@
 		32CA4F630368D1EE00C91783 /* uGo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uGo_Prefix.pch; sourceTree = "<group>"; };
 		43BFB5720E33DBE700846875 /* BoardLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardLayer.h; sourceTree = "<group>"; };
 		43BFB5730E33DBE700846875 /* BoardLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoardLayer.m; sourceTree = "<group>"; };
+		43BFB8D30E3403F600846875 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		43D312B40E33D1950076D266 /* MainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainView.h; path = Classes/MainView.h; sourceTree = "<group>"; };
 		43D312B50E33D1950076D266 /* MainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainView.m; path = Classes/MainView.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				43BFB8D30E3403F600846875 /* TODO */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -229,6 +232,7 @@
 				946A4E400E30F17100F5659E /* board1.png in Resources */,
 				9475F1590E3137990053C4BE /* grad.png in Resources */,
 				948586550E3141280087D7CD /* gradient.png in Resources */,
+				43BFB8D40E3403F600846875 /* TODO in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
