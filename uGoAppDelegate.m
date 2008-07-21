@@ -17,6 +17,9 @@
 
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
+    // kick the settings into action
+    [uGoSettings sharedSettings];
+    
 	[application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
 	
 	[window addSubview:[rootViewController view]];

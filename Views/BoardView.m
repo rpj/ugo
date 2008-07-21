@@ -12,7 +12,12 @@
 
 @synthesize _boardLayer;
 
-- (void) drawGridOfSize: (NSInteger)size
+- (void) boardSizeDidChange:(NSNotification *)notif
+{
+    [self drawGridOfSize:[[uGoSettings sharedSettings] boardSize]];
+}
+
+- (void) drawGridOfSize:(NSInteger)size
 {
     [_boardLayer drawGridOfSize:size];
 }
@@ -27,12 +32,17 @@
         
         [self.layer addSublayer:_boardLayer];
         [_boardLayer setNeedsDisplay];
+        
+        [self drawGridOfSize:[[uGoSettings sharedSettings] boardSize]];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(boardSizeDidChange:) name:kBoardSizeChangedNotification object:nil];
     }
     return self;
 }
 
 - (void) dealloc;
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_boardLayer release];
 	[super dealloc];
 }

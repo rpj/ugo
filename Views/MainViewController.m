@@ -10,11 +10,6 @@
 
 @implementation MainViewController
 
-- (void) selectorChanged;
-{
-	NSInteger s = [_sizeSel selectedSegmentIndex];
-	[_boardView drawGridOfSize: (s == 0 ? 9 : (s == 1 ? 13 : 19))];
-}
 - (void) viewDidLoad
 {
     // XXX (fark): I want the first view of the board to be of the entire board. I can't figure out how to do that.
@@ -25,7 +20,6 @@
     _boardScrollView.delegate = self;
     _boardView = [[BoardView alloc] init];
     [_boardScrollView addSubview:_boardView];
-	[self selectorChanged];
 }
 
 - (void)dealloc {
@@ -44,7 +38,8 @@
     // there to get a full-res board.
 }
 
-- (IBAction) goButton: (id) sender;
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    // TODO: render _boardView into an image, flip it upside down, and stick it in a layer underneath the gradient
 }
 @end

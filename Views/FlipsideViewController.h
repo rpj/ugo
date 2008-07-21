@@ -8,8 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FlipsideViewController : UIViewController {
+@class RootViewController;
 
+@interface FlipsideViewController : UIViewController {
+    RootViewController*             _rootViewController;
+    
+    IBOutlet UISegmentedControl*	_sizeSel;
 }
+
+@property (nonatomic,assign) RootViewController *rootViewController;
+
+- (IBAction) selectorChanged;
+- (IBAction) donePressed;
 
 @end

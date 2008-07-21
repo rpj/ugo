@@ -14,13 +14,12 @@
 		280E754D0DD40C5E005A515E /* FlipsideView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 280E754A0DD40C5E005A515E /* FlipsideView.xib */; };
 		280E754E0DD40C5E005A515E /* MainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 280E754B0DD40C5E005A515E /* MainView.xib */; };
 		280E754F0DD40C5E005A515E /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 280E754C0DD40C5E005A515E /* MainWindow.xib */; };
-		289233A60DB2D0840083E9F9 /* FlipsideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A30DB2D0840083E9F9 /* FlipsideView.m */; };
 		289233AE0DB2D0DB0083E9F9 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A90DB2D0DB0083E9F9 /* MainViewController.m */; };
 		289233AF0DB2D0DB0083E9F9 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233AB0DB2D0DB0083E9F9 /* RootViewController.m */; };
 		289233B00DB2D0DB0083E9F9 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233AD0DB2D0DB0083E9F9 /* FlipsideViewController.m */; };
 		43BFB5740E33DBE700846875 /* BoardLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BFB5730E33DBE700846875 /* BoardLayer.m */; };
 		43BFB8D40E3403F600846875 /* TODO in Resources */ = {isa = PBXBuildFile; fileRef = 43BFB8D30E3403F600846875 /* TODO */; };
-		43D312B60E33D1950076D266 /* MainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D312B50E33D1950076D266 /* MainView.m */; };
+		43BFB9450E340A2000846875 /* uGoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BFB9440E340A2000846875 /* uGoSettings.m */; };
 		946A49390E30485900F5659E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946A49380E30485900F5659E /* QuartzCore.framework */; };
 		946A4A5E0E305D2A00F5659E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946A4A5D0E305D2A00F5659E /* CoreGraphics.framework */; };
 		946A4A910E305EB400F5659E /* BoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 946A4A900E305EB400F5659E /* BoardView.m */; };
@@ -40,8 +39,6 @@
 		280E754A0DD40C5E005A515E /* FlipsideView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FlipsideView.xib; sourceTree = "<group>"; };
 		280E754B0DD40C5E005A515E /* MainView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainView.xib; sourceTree = "<group>"; };
 		280E754C0DD40C5E005A515E /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
-		289233A20DB2D0840083E9F9 /* FlipsideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlipsideView.h; sourceTree = "<group>"; };
-		289233A30DB2D0840083E9F9 /* FlipsideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlipsideView.m; sourceTree = "<group>"; };
 		289233A80DB2D0DB0083E9F9 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		289233A90DB2D0DB0083E9F9 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		289233AA0DB2D0DB0083E9F9 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
@@ -53,8 +50,8 @@
 		43BFB5720E33DBE700846875 /* BoardLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardLayer.h; sourceTree = "<group>"; };
 		43BFB5730E33DBE700846875 /* BoardLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoardLayer.m; sourceTree = "<group>"; };
 		43BFB8D30E3403F600846875 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
-		43D312B40E33D1950076D266 /* MainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainView.h; sourceTree = "<group>"; };
-		43D312B50E33D1950076D266 /* MainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainView.m; sourceTree = "<group>"; };
+		43BFB9430E340A2000846875 /* uGoSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uGoSettings.h; sourceTree = "<group>"; };
+		43BFB9440E340A2000846875 /* uGoSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = uGoSettings.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		946A49380E30485900F5659E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		946A4A5D0E305D2A00F5659E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -93,12 +90,10 @@
 		289233A00DB2D0730083E9F9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				289233AA0DB2D0DB0083E9F9 /* RootViewController.h */,
-				289233AB0DB2D0DB0083E9F9 /* RootViewController.m */,
 				43BFB8FF0E34075600846875 /* Settings */,
 				43BFB8FE0E34074F00846875 /* Board */,
-				43D312B40E33D1950076D266 /* MainView.h */,
-				43D312B50E33D1950076D266 /* MainView.m */,
+				289233AA0DB2D0DB0083E9F9 /* RootViewController.h */,
+				289233AB0DB2D0DB0083E9F9 /* RootViewController.m */,
 				289233A80DB2D0DB0083E9F9 /* MainViewController.h */,
 				289233A90DB2D0DB0083E9F9 /* MainViewController.m */,
 			);
@@ -111,6 +106,7 @@
 				1D3623240D0F684500981E51 /* uGoAppDelegate.h */,
 				1D3623250D0F684500981E51 /* uGoAppDelegate.m */,
 				289233A00DB2D0730083E9F9 /* Views */,
+				43BFB9310E3409C900846875 /* GameModel */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -170,12 +166,19 @@
 		43BFB8FF0E34075600846875 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				289233A20DB2D0840083E9F9 /* FlipsideView.h */,
-				289233A30DB2D0840083E9F9 /* FlipsideView.m */,
 				289233AC0DB2D0DB0083E9F9 /* FlipsideViewController.h */,
 				289233AD0DB2D0DB0083E9F9 /* FlipsideViewController.m */,
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		43BFB9310E3409C900846875 /* GameModel */ = {
+			isa = PBXGroup;
+			children = (
+				43BFB9430E340A2000846875 /* uGoSettings.h */,
+				43BFB9440E340A2000846875 /* uGoSettings.m */,
+			);
+			path = GameModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -248,13 +251,12 @@
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* uGoAppDelegate.m in Sources */,
-				289233A60DB2D0840083E9F9 /* FlipsideView.m in Sources */,
 				289233AE0DB2D0DB0083E9F9 /* MainViewController.m in Sources */,
 				289233AF0DB2D0DB0083E9F9 /* RootViewController.m in Sources */,
 				289233B00DB2D0DB0083E9F9 /* FlipsideViewController.m in Sources */,
 				946A4A910E305EB400F5659E /* BoardView.m in Sources */,
-				43D312B60E33D1950076D266 /* MainView.m in Sources */,
 				43BFB5740E33DBE700846875 /* BoardLayer.m in Sources */,
+				43BFB9450E340A2000846875 /* uGoSettings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

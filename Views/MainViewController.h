@@ -11,14 +11,9 @@
 #import "BoardView.h"
 
 @interface MainViewController : UIViewController <UIScrollViewDelegate> {
-	IBOutlet UISegmentedControl*	_sizeSel;
-	IBOutlet UIButton*				_goButton;
     IBOutlet UIScrollView*          _boardScrollView;
 	
 	BoardView*		_boardView;
 }
-
-- (IBAction) selectorChanged;
-- (IBAction) goButton: (id) sender;
 
 @end

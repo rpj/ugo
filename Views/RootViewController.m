@@ -14,7 +14,6 @@
 @implementation RootViewController
 
 @synthesize infoButton;
-@synthesize flipsideNavigationBar;
 @synthesize mainViewController;
 @synthesize flipsideViewController;
 
@@ -32,25 +31,14 @@
 - (void)loadFlipsideViewController {
 	
 	FlipsideViewController *viewController = [[FlipsideViewController alloc] initWithNibName:@"FlipsideView" bundle:nil];
+    viewController.rootViewController = self;
 	self.flipsideViewController = viewController;
 	[viewController release];
-	
-	// Set up the navigation bar
-	UINavigationBar *aNavigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 44.0)];
-	aNavigationBar.barStyle = UIBarStyleBlackOpaque;
-	self.flipsideNavigationBar = aNavigationBar;
-	[aNavigationBar release];
-	
-	UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(toggleView)];
-	UINavigationItem *navigationItem = [[UINavigationItem alloc] initWithTitle:@"uGo"];
-	navigationItem.rightBarButtonItem = buttonItem;
-	[flipsideNavigationBar pushNavigationItem:navigationItem animated:NO];
-	[navigationItem release];
-	[buttonItem release];
 }
 
 
-- (IBAction)toggleView {	
+- (IBAction)toggleView 
+{
 	/*
 	 This method is called when the info or Done button is pressed.
 	 It flips the displayed view from the main view to the flipside view and vice-versa.
@@ -72,7 +60,6 @@
 		[mainView removeFromSuperview];
         [infoButton removeFromSuperview];
 		[self.view addSubview:flipsideView];
-		[self.view insertSubview:flipsideNavigationBar aboveSubview:flipsideView];
 		[mainViewController viewDidDisappear:YES];
 		[flipsideViewController viewDidAppear:YES];
 
@@ -80,7 +67,6 @@
 		[mainViewController viewWillAppear:YES];
 		[flipsideViewController viewWillDisappear:YES];
 		[flipsideView removeFromSuperview];
-		[flipsideNavigationBar removeFromSuperview];
 		[self.view addSubview:mainView];
 		[self.view insertSubview:infoButton aboveSubview:mainViewController.view];
 		[flipsideViewController viewDidDisappear:YES];
@@ -105,7 +91,6 @@
 
 - (void)dealloc {
 	[infoButton release];
-	[flipsideNavigationBar release];
 	[mainViewController release];
 	[flipsideViewController release];
 	[super dealloc];
