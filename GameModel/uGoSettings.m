@@ -26,7 +26,7 @@ static uGoSettings *_sSettings;
 {
     if ((self = [super init])) {
         _boardSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"BoardSize"];
-        if (_boardSize == 0) _boardSize == 19;
+        if (_boardSize == 0) _boardSize = 19;
     }
     return self;
 }
