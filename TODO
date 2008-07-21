@@ -1,3 +1,4 @@
+- A real play model. I just wanted to be able to put stones on the board, so I put in a terrible hack
 - Figure out why edges of grid are thinner than inner lines of grid
 - Get UIScrollView to show the board all the way zoomed out at the start
 - Make sure artwork is acceptable to use

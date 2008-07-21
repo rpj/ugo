@@ -47,4 +47,16 @@
 	[super dealloc];
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if ([touches count] < 1) return;
+    UITouch *touch = [[touches allObjects] objectAtIndex:0];
+    if (touch.tapCount == 1) {
+        [_boardLayer placeTemporaryStone:[touch locationInView:self]];
+    }
+    else {
+        [_boardLayer placeStone:[touch locationInView:self]];
+    }
+}
+
 @end
