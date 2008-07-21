@@ -26,8 +26,11 @@
 @property (nonatomic, retain) CALayer* gridLayer;
 @property (nonatomic, retain) CALayer* stoneLayer;
 
-- (void) placeTemporaryStone:(CGPoint)location;
-- (void) placeStone:(CGPoint)location;
+// returns a point in Go board coordinates (1,1) to (boardSize,boardSize) for a given UIView coordinate
+- (CGPoint) boardPointForUIPoint:(CGPoint)point;
+
+- (void) placeTemporaryStone:(CGPoint)boardLocation;
+- (void) placeStone:(CGPoint)boardLocation;
 
 - (void) drawGridOfSize: (NSInteger)size;
 

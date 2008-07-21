@@ -51,11 +51,13 @@
 {
     if ([touches count] < 1) return;
     UITouch *touch = [[touches allObjects] objectAtIndex:0];
+    
+    CGPoint boardLocation = [_boardLayer boardPointForUIPoint:[touch locationInView:self]];
     if (touch.tapCount == 1) {
-        [_boardLayer placeTemporaryStone:[touch locationInView:self]];
+        [_boardLayer placeTemporaryStone:boardLocation];
     }
     else {
-        [_boardLayer placeStone:[touch locationInView:self]];
+        [_boardLayer placeStone:boardLocation];
     }
 }
 

@@ -27,22 +27,32 @@
 	[_gridLayer setNeedsDisplay];
 }
 
-- (CGPoint) _snapToGrid:(CGPoint)point
+- (CGPoint) boardPointForUIPoint:(CGPoint)point
 {
+    NSUInteger boardSize = [[uGoSettings sharedSettings] boardSize];
     CGPoint gpoint;
-    gpoint.x = (int)(((point.x - (_gridInnerBorder/2) - (_lineSep/2)) / _lineSep) + 1) * _lineSep + (_gridInnerBorder/2);
-    gpoint.y = (int)(((point.y - (_gridInnerBorder/2) - (_lineSep/2)) / _lineSep) + 1) * _lineSep + (_gridInnerBorder/2);
+    gpoint.x = (int)((point.x - (_gridLayer.frame.origin.x - self.frame.origin.x) + (_lineSep/2)) / _lineSep) + 1;
+    gpoint.y = (int)((point.y - (_gridLayer.frame.origin.y - self.frame.origin.y) + (_lineSep/2)) / _lineSep) + 1;
+    
+    if (gpoint.x < 1) gpoint.x = 1;
+    else if (gpoint.x > boardSize) gpoint.x = boardSize;
+
+    if (gpoint.y < 1) gpoint.y = 1;
+    else if (gpoint.y > boardSize) gpoint.y = boardSize;
+    
     return gpoint;
 }
 
-- (void) _placeLayer:(CALayer *)layer asStoneNearLocation:(CGPoint)location
+- (void) _placeLayer:(CALayer *)layer asStoneAtLocation:(CGPoint)location
 {
     CGFloat stoneSize = _lineSep * .95;
-    CGPoint gpoint = [self _snapToGrid:location];
     
     [layer setValue:(_whiteTurn ? @"WhiteStone" : @"BlackStone") forKey:@"StoneType"]; //egregious hack for testing
     
-    layer.frame = CGRectMake(gpoint.x - stoneSize/2.0, gpoint.y - stoneSize/2.0, stoneSize, stoneSize);
+    CGPoint vpoint;
+    vpoint.x = (location.x - 1) * _lineSep + (_gridLayer.frame.origin.x - self.frame.origin.x);
+    vpoint.y = (location.y - 1) * _lineSep + (_gridLayer.frame.origin.y - self.frame.origin.y);
+    layer.frame = CGRectMake(vpoint.x - stoneSize/2.0, vpoint.y - stoneSize/2.0, stoneSize, stoneSize);
     layer.delegate = self;
     [_stoneLayer addSublayer:layer];
     [layer setNeedsDisplay];
@@ -50,19 +60,19 @@
     [_allStones addObject:layer];
 }
 
-- (void) placeTemporaryStone:(CGPoint)location
+- (void) placeTemporaryStone:(CGPoint)boardLocation
 {
     [_tempStoneLayer removeFromSuperlayer];
     _tempStoneLayer = [CALayer layer];
     _tempStoneLayer.opacity = 0.5;
-    [self _placeLayer:_tempStoneLayer asStoneNearLocation:location];
+    [self _placeLayer:_tempStoneLayer asStoneAtLocation:boardLocation];
 }
 
-- (void) placeStone:(CGPoint)location
+- (void) placeStone:(CGPoint)boardLocation
 {
     [_tempStoneLayer removeFromSuperlayer];
     _tempStoneLayer = nil;
-    [self _placeLayer:[CALayer layer] asStoneNearLocation:location];
+    [self _placeLayer:[CALayer layer] asStoneAtLocation:boardLocation];
     _whiteTurn = !_whiteTurn;
 }
 
