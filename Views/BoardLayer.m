@@ -119,6 +119,12 @@
     for (NSUInteger count = 0; count <= _gridSize; count++)
     {
         CGFloat add = _lineSep * count;
+		
+		// account for the fact that grid borders were getting drawn with half of their line width outside the frame
+		// probably not the best fix, but it does work and fixes things "correctly"
+		// that is, if you ignore the issue that frame-to-board coordinate mapping will be off by kGridLineWidth/2 at the edges...
+		float frameadd = (kGridLineWidth / 2);
+		add += (count == 0 ? frameadd : (count == _gridSize ? -frameadd : 0));
         
         // draw with paths...
         // vertical
