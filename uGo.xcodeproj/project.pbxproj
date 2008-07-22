@@ -19,6 +19,7 @@
 		289233B00DB2D0DB0083E9F9 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233AD0DB2D0DB0083E9F9 /* FlipsideViewController.m */; };
 		43B3F2700E3592A500D4B02B /* MarkerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B3F26F0E3592A500D4B02B /* MarkerLayer.m */; };
 		43BC12B70E35B9E300431B28 /* GridLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC12B60E35B9E300431B28 /* GridLayer.m */; };
+		43BC14BA0E36594500431B28 /* MarkerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC14B90E36594500431B28 /* MarkerController.m */; };
 		43BFB9450E340A2000846875 /* uGoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BFB9440E340A2000846875 /* uGoSettings.m */; };
 		946A49390E30485900F5659E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946A49380E30485900F5659E /* QuartzCore.framework */; };
 		946A4A5E0E305D2A00F5659E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946A4A5D0E305D2A00F5659E /* CoreGraphics.framework */; };
@@ -66,6 +67,9 @@
 		43BC14580E35D34200431B28 /* gameinfo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gameinfo.c; sourceTree = "<group>"; };
 		43BC145A0E35D34200431B28 /* execute.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = execute.c; sourceTree = "<group>"; };
 		43BC145B0E35D34200431B28 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		43BC14B80E36594500431B28 /* MarkerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkerController.h; sourceTree = "<group>"; };
+		43BC14B90E36594500431B28 /* MarkerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkerController.m; sourceTree = "<group>"; };
+		43BC14BC0E3659BD00431B28 /* GoMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoMarker.h; sourceTree = "<group>"; };
 		43BFB8D30E3403F600846875 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		43BFB9430E340A2000846875 /* uGoSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uGoSettings.h; sourceTree = "<group>"; };
 		43BFB9440E340A2000846875 /* uGoSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = uGoSettings.m; sourceTree = "<group>"; };
@@ -201,6 +205,7 @@
 				43B3F26F0E3592A500D4B02B /* MarkerLayer.m */,
 				43BC12B50E35B9E300431B28 /* GridLayer.h */,
 				43BC12B60E35B9E300431B28 /* GridLayer.m */,
+				43BC14BC0E3659BD00431B28 /* GoMarker.h */,
 			);
 			name = Board;
 			sourceTree = "<group>";
@@ -219,6 +224,8 @@
 			children = (
 				43BFB9430E340A2000846875 /* uGoSettings.h */,
 				43BFB9440E340A2000846875 /* uGoSettings.m */,
+				43BC14B80E36594500431B28 /* MarkerController.h */,
+				43BC14B90E36594500431B28 /* MarkerController.m */,
 			);
 			path = GameModel;
 			sourceTree = "<group>";
@@ -299,6 +306,7 @@
 				43BFB9450E340A2000846875 /* uGoSettings.m in Sources */,
 				43B3F2700E3592A500D4B02B /* MarkerLayer.m in Sources */,
 				43BC12B70E35B9E300431B28 /* GridLayer.m in Sources */,
+				43BC14BA0E36594500431B28 /* MarkerController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

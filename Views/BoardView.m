@@ -16,10 +16,17 @@ NSString * const kGoMarkerOptionTemporaryMarker = @"MarkerIsTemporary";
 NSString * const kGoMarkerOptionColor = @"MarkerColor";
 NSString * const kGoMarkerOptionLabel = @"MarkerLabel";
 
+@interface MarkerLayer (KnownPrivate)
+- (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options;
+- (void) removeMarkerAtLocation:(CGPoint)boardLocation;
+- (void) removeAllMarkers;
+@end
+
 @implementation BoardView
 
 @synthesize gridLayer = _gridLayer;
 @synthesize markerLayer = _markerLayer;
+@synthesize delegate = _delegate;
 
 - (void) boardSizeDidChange:(NSNotification *)notif
 {
@@ -28,10 +35,7 @@ NSString * const kGoMarkerOptionLabel = @"MarkerLabel";
 
 - (id) init
 {
-    if ((self = [super init])) {
-        _curStone = kGoMarkerBlackStone;
-        _tempStoneLocation = CGPointMake(-1, -1);
-        
+    if ((self = [super init])) {        
         self.frame = CGRectMake(0, 0, kBoardSize, kBoardSize);
         self.layer.contents = (id)[UIImage imageNamed: @"board1.png"].CGImage;
         
@@ -90,26 +94,12 @@ NSString * const kGoMarkerOptionLabel = @"MarkerLabel";
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSMutableDictionary *options = [NSMutableDictionary dictionary];
-    if ([touches count] < 1) return;
-    UITouch *touch = [[touches allObjects] objectAtIndex:0];
-    
-    CGPoint boardLocation = [self _boardPointForUIPoint:[touch locationInView:self]];
-    
-    if (_tempStoneLocation.x > 0) {
-        [_markerLayer removeMarkerAtLocation:_tempStoneLocation];
-        _tempStoneLocation = CGPointMake(-1, -1);
-    }
-    
-    if (touch.tapCount == 1) {
-        [options setValue:[NSNumber numberWithBool:YES] forKey:kGoMarkerOptionTemporaryMarker];
-        _tempStoneLocation = boardLocation;
-    }
-    
-    [_markerLayer placeMarker:_curStone atLocation:boardLocation options:options];
-
-    if (touch.tapCount == 2) {
-        _curStone = (_curStone == kGoMarkerBlackStone) ? kGoMarkerWhiteStone : kGoMarkerBlackStone;
+    if (_delegate) {
+        if ([touches count] < 1) return;
+        UITouch *touch = [[touches allObjects] objectAtIndex:0];
+        
+        CGPoint boardLocation = [self _boardPointForUIPoint:[touch locationInView:self]];
+        [_delegate locationWasTouched:boardLocation tapCount:touch.tapCount];
     }
 }
 

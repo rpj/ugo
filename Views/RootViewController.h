@@ -12,10 +12,10 @@
 @class FlipsideViewController;
 
 @interface RootViewController : UIViewController {
-	IBOutlet UIButton *infoButton;
+	IBOutlet UIButton *_infoButton;
     
-	MainViewController *mainViewController;
-	FlipsideViewController *flipsideViewController;
+	MainViewController *_mainViewController;
+	FlipsideViewController *_flipsideViewController;
 }
 
 @property (nonatomic, retain) UIButton *infoButton;

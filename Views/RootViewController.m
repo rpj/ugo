@@ -10,13 +10,11 @@
 #import "MainViewController.h"
 #import "FlipsideViewController.h"
 
-
 @implementation RootViewController
 
-@synthesize infoButton;
-@synthesize mainViewController;
-@synthesize flipsideViewController;
-
+@synthesize infoButton = _infoButton;
+@synthesize mainViewController = _mainViewController;
+@synthesize flipsideViewController = _flipsideViewController;
 
 - (void)viewDidLoad {
 	
@@ -24,7 +22,7 @@
 	self.mainViewController = viewController;
 	[viewController release];
 	
-	[self.view insertSubview:mainViewController.view belowSubview:infoButton];
+	[self.view insertSubview:_mainViewController.view belowSubview:_infoButton];
 }
 
 
@@ -43,38 +41,37 @@
 	 This method is called when the info or Done button is pressed.
 	 It flips the displayed view from the main view to the flipside view and vice-versa.
 	 */
-	if (flipsideViewController == nil) {
+	if (_flipsideViewController == nil) {
 		[self loadFlipsideViewController];
 	}
 	
-	UIView *mainView = mainViewController.view;
-	UIView *flipsideView = flipsideViewController.view;
+	UIView *mainView = _mainViewController.view;
+	UIView *flipsideView = _flipsideViewController.view;
 	
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:1];
 	[UIView setAnimationTransition:([mainView superview] ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) forView:self.view cache:YES];
 	
 	if ([mainView superview] != nil) {
-		[flipsideViewController viewWillAppear:YES];
-		[mainViewController viewWillDisappear:YES];
+		[_flipsideViewController viewWillAppear:YES];
+		[_mainViewController viewWillDisappear:YES];
 		[mainView removeFromSuperview];
-        [infoButton removeFromSuperview];
+        [_infoButton removeFromSuperview];
 		[self.view addSubview:flipsideView];
-		[mainViewController viewDidDisappear:YES];
-		[flipsideViewController viewDidAppear:YES];
+		[_mainViewController viewDidDisappear:YES];
+		[_flipsideViewController viewDidAppear:YES];
 
 	} else {
-		[mainViewController viewWillAppear:YES];
-		[flipsideViewController viewWillDisappear:YES];
+		[_mainViewController viewWillAppear:YES];
+		[_flipsideViewController viewWillDisappear:YES];
 		[flipsideView removeFromSuperview];
 		[self.view addSubview:mainView];
-		[self.view insertSubview:infoButton aboveSubview:mainViewController.view];
-		[flipsideViewController viewDidDisappear:YES];
-		[mainViewController viewDidAppear:YES];
+		[self.view insertSubview:_infoButton aboveSubview:_mainViewController.view];
+		[_flipsideViewController viewDidDisappear:YES];
+		[_mainViewController viewDidAppear:YES];
 	}
 	[UIView commitAnimations];
 }
-
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -88,11 +85,10 @@
 	// Release anything that's not essential, such as cached data
 }
 
-
 - (void)dealloc {
-	[infoButton release];
-	[mainViewController release];
-	[flipsideViewController release];
+	[_infoButton release];
+	[_mainViewController release];
+	[_flipsideViewController release];
 	[super dealloc];
 }
 

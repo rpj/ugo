@@ -8,6 +8,9 @@
 
 #import "uGoAppDelegate.h"
 #import "RootViewController.h"
+#import "MainViewController.h"
+#import "MarkerController.h"
+#import "BoardView.h"
 
 @implementation uGoAppDelegate
 
@@ -20,14 +23,16 @@
     // kick the settings into action
     [uGoSettings sharedSettings];
     
-	[application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
-	
 	[window addSubview:[rootViewController view]];
 	[window makeKeyAndVisible];
+    
+    _markerController = [[MarkerController alloc] init];
+    _markerController.boardView = rootViewController.mainViewController.boardView;
 }
 
 
 - (void)dealloc {
+    [_markerController release];
 	[rootViewController release];
 	[window release];
 	[super dealloc];

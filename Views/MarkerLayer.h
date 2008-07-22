@@ -10,14 +10,10 @@
 #import <QuartzCore/QuartzCore.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-#import "BoardView.h"
+#import "GoMarker.h"
 
 @interface MarkerLayer : CALayer {
     NSMutableArray*     _allMarkers;
 }
-
-- (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options;
-- (void) removeMarkerAtLocation:(CGPoint)boardLocation;
-- (void) removeAllMarkers;
 
 @end

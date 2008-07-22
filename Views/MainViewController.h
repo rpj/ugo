@@ -8,12 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-#import "BoardView.h"
+@class BoardView;
 
 @interface MainViewController : UIViewController <UIScrollViewDelegate> {
     IBOutlet UIScrollView*          _boardScrollView;
 	
 	BoardView*		_boardView;
 }
+
+@property(readonly) BoardView *boardView;
 
 @end

@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class RootViewController;
+@class RootViewController, MarkerController;
 
 @interface uGoAppDelegate : NSObject <UIApplicationDelegate> {
 	IBOutlet UIWindow *window;
 	IBOutlet RootViewController *rootViewController;
+    
+    MarkerController *_markerController;
 }
 
 @property (nonatomic, retain) UIWindow *window;

@@ -6,9 +6,12 @@
 //  Copyright __MyCompanyName__ 2008. All rights reserved.
 //
 
-#import "MainViewController.h"
+#import "MainViewController.h"s
+#import "BoardView.h"
 
 @implementation MainViewController
+
+@synthesize boardView = _boardView;
 
 - (void) viewDidLoad
 {

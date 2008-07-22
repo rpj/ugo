@@ -7,39 +7,30 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GoMarker.h"
 
 #define kBoardSize 1280
 
-typedef enum {
-    kGoMarkerWhiteStone,
-    kGoMarkerBlackStone,
-    kGoMarkerShape,
-    kGoMarkerLabel
-} GoMarkerType;
-
-// NSNumber (BOOL) for whether to display the marker as temporary 
-extern NSString * const kGoMarkerOptionTemporaryMarker;
-// UIColor of the marker
-extern NSString * const kGoMarkerOptionColor;
-// NSString to use as the label for the marker 
-extern NSString * const kGoMarkerOptionLabel;
-
 @class GridLayer, MarkerLayer;
+@protocol BoardViewDelegate;
 
 @interface BoardView : UIView {
 	GridLayer*          _gridLayer;
     MarkerLayer*        _markerLayer;
     
-    // hacks so we can pretend to play go. these should not be allowed to live long
-    GoMarkerType    _curStone;
-    CGPoint         _tempStoneLocation;
+    id                  _delegate;
 }
 
 @property (nonatomic, retain) GridLayer* gridLayer;
 @property (nonatomic, retain) MarkerLayer* markerLayer;
+@property (nonatomic, assign) id<BoardViewDelegate> delegate;
 
 - (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options;
 - (void) removeMarkerAtLocation:(CGPoint)boardLocation;
 - (void) removeAllMarkers;
 
+@end
+
+@protocol BoardViewDelegate
+- (void) locationWasTouched:(CGPoint)boardLocation tapCount:(NSUInteger)tapCount;
 @end
