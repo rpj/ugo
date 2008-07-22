@@ -19,7 +19,6 @@
 		289233B00DB2D0DB0083E9F9 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233AD0DB2D0DB0083E9F9 /* FlipsideViewController.m */; };
 		43B3F2700E3592A500D4B02B /* MarkerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B3F26F0E3592A500D4B02B /* MarkerLayer.m */; };
 		43BC12B70E35B9E300431B28 /* GridLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC12B60E35B9E300431B28 /* GridLayer.m */; };
-		43BFB8D40E3403F600846875 /* TODO in Resources */ = {isa = PBXBuildFile; fileRef = 43BFB8D30E3403F600846875 /* TODO */; };
 		43BFB9450E340A2000846875 /* uGoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BFB9440E340A2000846875 /* uGoSettings.m */; };
 		946A49390E30485900F5659E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946A49380E30485900F5659E /* QuartzCore.framework */; };
 		946A4A5E0E305D2A00F5659E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946A4A5D0E305D2A00F5659E /* CoreGraphics.framework */; };
@@ -52,6 +51,21 @@
 		43B3F26F0E3592A500D4B02B /* MarkerLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkerLayer.m; sourceTree = "<group>"; };
 		43BC12B50E35B9E300431B28 /* GridLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridLayer.h; sourceTree = "<group>"; };
 		43BC12B60E35B9E300431B28 /* GridLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridLayer.m; sourceTree = "<group>"; };
+		43BC144C0E35D34200431B28 /* all.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = all.h; sourceTree = "<group>"; };
+		43BC144D0E35D34200431B28 /* load.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = load.c; sourceTree = "<group>"; };
+		43BC144E0E35D34200431B28 /* util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = util.c; sourceTree = "<group>"; };
+		43BC144F0E35D34200431B28 /* properties.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = properties.c; sourceTree = "<group>"; };
+		43BC14500E35D34200431B28 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
+		43BC14510E35D34200431B28 /* parse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = parse.c; sourceTree = "<group>"; };
+		43BC14520E35D34200431B28 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		43BC14530E35D34200431B28 /* save.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = save.c; sourceTree = "<group>"; };
+		43BC14540E35D34200431B28 /* parse2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = parse2.c; sourceTree = "<group>"; };
+		43BC14550E35D34200431B28 /* protos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = protos.h; sourceTree = "<group>"; };
+		43BC14560E35D34200431B28 /* strict.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = strict.c; sourceTree = "<group>"; };
+		43BC14570E35D34200431B28 /* test.sgf */ = {isa = PBXFileReference; lastKnownFileType = file; path = test.sgf; sourceTree = "<group>"; };
+		43BC14580E35D34200431B28 /* gameinfo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gameinfo.c; sourceTree = "<group>"; };
+		43BC145A0E35D34200431B28 /* execute.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = execute.c; sourceTree = "<group>"; };
+		43BC145B0E35D34200431B28 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		43BFB8D30E3403F600846875 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		43BFB9430E340A2000846875 /* uGoSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uGoSettings.h; sourceTree = "<group>"; };
 		43BFB9440E340A2000846875 /* uGoSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = uGoSettings.m; sourceTree = "<group>"; };
@@ -110,6 +124,7 @@
 				1D3623250D0F684500981E51 /* uGoAppDelegate.m */,
 				289233A00DB2D0730083E9F9 /* Views */,
 				43BFB9310E3409C900846875 /* GameModel */,
+				43BC144B0E35CFC700431B28 /* Parser */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -153,6 +168,28 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		43BC144B0E35CFC700431B28 /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				43BC144C0E35D34200431B28 /* all.h */,
+				43BC144D0E35D34200431B28 /* load.c */,
+				43BC144E0E35D34200431B28 /* util.c */,
+				43BC144F0E35D34200431B28 /* properties.c */,
+				43BC14500E35D34200431B28 /* COPYING */,
+				43BC14510E35D34200431B28 /* parse.c */,
+				43BC14520E35D34200431B28 /* README */,
+				43BC14530E35D34200431B28 /* save.c */,
+				43BC14540E35D34200431B28 /* parse2.c */,
+				43BC14550E35D34200431B28 /* protos.h */,
+				43BC14560E35D34200431B28 /* strict.c */,
+				43BC14570E35D34200431B28 /* test.sgf */,
+				43BC14580E35D34200431B28 /* gameinfo.c */,
+				43BC145A0E35D34200431B28 /* execute.c */,
+				43BC145B0E35D34200431B28 /* main.c */,
+			);
+			path = Parser;
 			sourceTree = "<group>";
 		};
 		43BFB8FE0E34074F00846875 /* Board */ = {
@@ -242,7 +279,6 @@
 				946A4E400E30F17100F5659E /* board1.png in Resources */,
 				9475F1590E3137990053C4BE /* grad.png in Resources */,
 				948586550E3141280087D7CD /* gradient.png in Resources */,
-				43BFB8D40E3403F600846875 /* TODO in Resources */,
 				94FD82B70E31827A000611DC /* goicon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
