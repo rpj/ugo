@@ -17,6 +17,7 @@
 		289233AE0DB2D0DB0083E9F9 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A90DB2D0DB0083E9F9 /* MainViewController.m */; };
 		289233AF0DB2D0DB0083E9F9 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233AB0DB2D0DB0083E9F9 /* RootViewController.m */; };
 		289233B00DB2D0DB0083E9F9 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233AD0DB2D0DB0083E9F9 /* FlipsideViewController.m */; };
+		43B3F2700E3592A500D4B02B /* MarkerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B3F26F0E3592A500D4B02B /* MarkerLayer.m */; };
 		43BFB5740E33DBE700846875 /* BoardLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BFB5730E33DBE700846875 /* BoardLayer.m */; };
 		43BFB8D40E3403F600846875 /* TODO in Resources */ = {isa = PBXBuildFile; fileRef = 43BFB8D30E3403F600846875 /* TODO */; };
 		43BFB9450E340A2000846875 /* uGoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BFB9440E340A2000846875 /* uGoSettings.m */; };
@@ -47,6 +48,8 @@
 		289233AD0DB2D0DB0083E9F9 /* FlipsideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlipsideViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* uGo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uGo_Prefix.pch; sourceTree = "<group>"; };
+		43B3F26E0E3592A500D4B02B /* MarkerLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkerLayer.h; sourceTree = "<group>"; };
+		43B3F26F0E3592A500D4B02B /* MarkerLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkerLayer.m; sourceTree = "<group>"; };
 		43BFB5720E33DBE700846875 /* BoardLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardLayer.h; sourceTree = "<group>"; };
 		43BFB5730E33DBE700846875 /* BoardLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoardLayer.m; sourceTree = "<group>"; };
 		43BFB8D30E3403F600846875 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
@@ -159,6 +162,8 @@
 				946A4A900E305EB400F5659E /* BoardView.m */,
 				43BFB5720E33DBE700846875 /* BoardLayer.h */,
 				43BFB5730E33DBE700846875 /* BoardLayer.m */,
+				43B3F26E0E3592A500D4B02B /* MarkerLayer.h */,
+				43B3F26F0E3592A500D4B02B /* MarkerLayer.m */,
 			);
 			name = Board;
 			sourceTree = "<group>";
@@ -257,6 +262,7 @@
 				946A4A910E305EB400F5659E /* BoardView.m in Sources */,
 				43BFB5740E33DBE700846875 /* BoardLayer.m in Sources */,
 				43BFB9450E340A2000846875 /* uGoSettings.m in Sources */,
+				43B3F2700E3592A500D4B02B /* MarkerLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

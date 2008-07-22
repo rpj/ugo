@@ -7,6 +7,7 @@
 //
 
 #import "BoardLayer.h"
+#import "MarkerLayer.h"
 
 #define kGridBorderMultiplier			(0.20)
 #define kGridLineWidth					(4.0)
@@ -15,7 +16,30 @@
 @implementation BoardLayer
 
 @synthesize gridLayer = _gridLayer;
-@synthesize stoneLayer = _stoneLayer;
+@synthesize markerLayer = _markerLayer;
+
+- (void) dealloc;
+{
+	[_gridLayer release];
+    [_markerLayer release];
+    
+	[super dealloc];
+}
+
++ (BoardLayer*) layer;
+{
+	BoardLayer* _new = [super layer];
+    
+    if (_new) {
+        _new.markerLayer = [[MarkerLayer alloc] init];
+        [_new addSublayer:_new.markerLayer];
+    }
+    
+    return _new;
+}
+
+#pragma mark -
+#pragma mark Board Functions
 
 - (void) setGridFrameAndDisplay;
 {
@@ -23,7 +47,10 @@
 	_gridLayer.frame = CGRectMake((_gridInnerBorder/2), (_gridInnerBorder/2), 
 								  self.frame.size.width-_gridInnerBorder, 
 								  self.frame.size.height-_gridInnerBorder);
-	
+    
+	_markerLayer.frame = _gridLayer.frame;
+    [_markerLayer gridSizeChanged];
+    
 	[_gridLayer setNeedsDisplay];
 }
 
@@ -39,41 +66,8 @@
 
     if (gpoint.y < 1) gpoint.y = 1;
     else if (gpoint.y > boardSize) gpoint.y = boardSize;
-    
+        
     return gpoint;
-}
-
-- (void) _placeLayer:(CALayer *)layer asStoneAtLocation:(CGPoint)location
-{
-    CGFloat stoneSize = _lineSep * .95;
-    
-    [layer setValue:(_whiteTurn ? @"WhiteStone" : @"BlackStone") forKey:@"StoneType"]; //egregious hack for testing
-    
-    CGPoint vpoint;
-    vpoint.x = (location.x - 1) * _lineSep + (_gridLayer.frame.origin.x - self.frame.origin.x);
-    vpoint.y = (location.y - 1) * _lineSep + (_gridLayer.frame.origin.y - self.frame.origin.y);
-    layer.frame = CGRectMake(vpoint.x - stoneSize/2.0, vpoint.y - stoneSize/2.0, stoneSize, stoneSize);
-    layer.delegate = self;
-    [_stoneLayer addSublayer:layer];
-    [layer setNeedsDisplay];
-    
-    [_allStones addObject:layer];
-}
-
-- (void) placeTemporaryStone:(CGPoint)boardLocation
-{
-    [_tempStoneLayer removeFromSuperlayer];
-    _tempStoneLayer = [CALayer layer];
-    _tempStoneLayer.opacity = 0.5;
-    [self _placeLayer:_tempStoneLayer asStoneAtLocation:boardLocation];
-}
-
-- (void) placeStone:(CGPoint)boardLocation
-{
-    [_tempStoneLayer removeFromSuperlayer];
-    _tempStoneLayer = nil;
-    [self _placeLayer:[CALayer layer] asStoneAtLocation:boardLocation];
-    _whiteTurn = !_whiteTurn;
 }
 
 - (void) drawGridOfSize: (NSInteger)size;
@@ -83,20 +77,32 @@
 	if (_gridLayer) {
 		[_gridLayer removeFromSuperlayer];
 	}
-    
-    for (CALayer *stone in _allStones) {
-        [stone removeFromSuperlayer];
-    }
-    [_allStones removeAllObjects];
-    _tempStoneLayer = nil;
 	
 	self.gridLayer = [CALayer layer];
 	_gridLayer.delegate = self;
 	
 	[self setGridFrameAndDisplay];
-	[self insertSublayer:_gridLayer below:_stoneLayer];
+	[self insertSublayer:_gridLayer below:_markerLayer];
 }
-	
+
+- (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options
+{
+    [_markerLayer placeMarker:type atLocation:boardLocation options:options];
+}
+
+- (void) removeMarkerAtLocation:(CGPoint)boardLocation
+{
+    [_markerLayer removeMarkerAtLocation:boardLocation];
+}
+
+- (void) removeAllMarkers
+{
+    [_markerLayer removeAllMarkers];
+}
+
+#pragma mark -
+#pragma mark CALayer Handling
+
 - (void)drawInContext:(CGContextRef)context
 {
     [self setGridFrameAndDisplay];
@@ -204,69 +210,10 @@
 	UIGraphicsPopContext();    
 }
 
-#define kStoneLineWidth 8
-- (void) _drawStone:(NSString *)stoneType inContext:(CGContextRef)context
-{
-	CGRect rect = CGContextGetClipBoundingBox(context);
-	UIGraphicsPushContext(context);
-    
-    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
-    
-    CGContextSetLineWidth(context, kStoneLineWidth);
-    if ([stoneType isEqualToString:@"WhiteStone"]) {
-        CGContextSetRGBStrokeColor(context, 1.0, 1.0, 1.0, 1.0);
-        CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0);
-    } else {
-        CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, 1.0);
-        CGContextSetRGBFillColor(context, 0.0, 0.0, 0.0, 1.0);
-    }
-    
-    CGContextAddEllipseInRect(context, CGRectMake(rect.origin.x + (kStoneLineWidth/2), rect.origin.y + (kStoneLineWidth/2), rect.size.width - kStoneLineWidth, rect.size.height - kStoneLineWidth));
-    CGContextStrokePath(context);
-    CGContextFillEllipseInRect(context, rect);
-    
-    UIGraphicsPopContext(); 
-}
-
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context;
 {
-    NSString *stoneType = [layer valueForKey:@"StoneType"];
     if (layer == _gridLayer) {
         [self _drawGridInContext:context];
     }
-    else if (stoneType) {
-        [self _drawStone:stoneType inContext:context];
-    }
-}
-
-- (id) init
-{
-    if ((self = [super init])) {
-        _allStones = [[NSMutableArray alloc] init];
-    }
-    return self;
-}
-
-- (void) dealloc;
-{
-	[_gridLayer release];
-	[_stoneLayer release];
-    [_allStones release];
-    
-	[super dealloc];
-}
-
-
-+ (BoardLayer*) layer;
-{
-	BoardLayer* _new = [super layer];
-	
-	if (_new) {
-		_new.gridLayer = nil;
-        _new.stoneLayer = [CALayer layer];
-        [_new addSublayer:_new.stoneLayer];
-	}
-	
-	return _new;
 }
 @end

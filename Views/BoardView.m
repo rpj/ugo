@@ -7,6 +7,12 @@
 //
 
 #import "BoardView.h"
+#import "BoardLayer.h"
+#import "MarkerLayer.h"
+
+NSString * const kGoMarkerOptionTemporaryMarker = @"MarkerIsTemporary";
+NSString * const kGoMarkerOptionColor = @"MarkerColor";
+NSString * const kGoMarkerOptionLabel = @"MarkerLabel";
 
 @implementation BoardView
 
@@ -25,6 +31,9 @@
 - (id) init
 {
     if ((self = [super init])) {
+        _curStone = kGoMarkerBlackStone;
+        _tempStoneLocation = CGPointMake(-1, -1);
+        
         self.frame = CGRectMake(0, 0, kBoardSize, kBoardSize);
         self._boardLayer = [BoardLayer layer];
         _boardLayer.frame = self.frame;
@@ -47,17 +56,33 @@
 	[super dealloc];
 }
 
+- (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options
+{
+    [_boardLayer placeMarker:type atLocation:boardLocation options:options];
+}
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    NSMutableDictionary *options = [NSMutableDictionary dictionary];
     if ([touches count] < 1) return;
     UITouch *touch = [[touches allObjects] objectAtIndex:0];
     
     CGPoint boardLocation = [_boardLayer boardPointForUIPoint:[touch locationInView:self]];
-    if (touch.tapCount == 1) {
-        [_boardLayer placeTemporaryStone:boardLocation];
+    
+    if (_tempStoneLocation.x > 0) {
+        [_boardLayer removeMarkerAtLocation:_tempStoneLocation];
+        _tempStoneLocation = CGPointMake(-1, -1);
     }
-    else {
-        [_boardLayer placeStone:boardLocation];
+    
+    if (touch.tapCount == 1) {
+        [options setValue:[NSNumber numberWithBool:YES] forKey:kGoMarkerOptionTemporaryMarker];
+        _tempStoneLocation = boardLocation;
+    }
+    
+    [_boardLayer placeMarker:_curStone atLocation:boardLocation options:options];
+
+    if (touch.tapCount == 2) {
+        _curStone = (_curStone == kGoMarkerBlackStone) ? kGoMarkerWhiteStone : kGoMarkerBlackStone;
     }
 }
 

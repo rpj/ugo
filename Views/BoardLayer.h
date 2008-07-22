@@ -10,28 +10,29 @@
 #import <QuartzCore/QuartzCore.h>
 #import <CoreGraphics/CoreGraphics.h>
 
+#import "BoardView.h"
+
+@class MarkerLayer;
+
 @interface BoardLayer : CALayer {
 	CALayer*            _gridLayer;
-    CALayer*            _stoneLayer;
-    CALayer*            _tempStoneLayer;
-    NSMutableArray*     _allStones;
+    MarkerLayer*        _markerLayer;
 	
 	NSUInteger	_gridSize;
 	CGFloat		_gridInnerBorder;
     CGFloat     _lineSep;
-    
-    BOOL        _whiteTurn;
 }
 
 @property (nonatomic, retain) CALayer* gridLayer;
-@property (nonatomic, retain) CALayer* stoneLayer;
+@property (nonatomic, retain) CALayer* markerLayer;
 
 // returns a point in Go board coordinates (1,1) to (boardSize,boardSize) for a given UIView coordinate
 - (CGPoint) boardPointForUIPoint:(CGPoint)point;
 
-- (void) placeTemporaryStone:(CGPoint)boardLocation;
-- (void) placeStone:(CGPoint)boardLocation;
+- (void) drawGridOfSize:(NSInteger)size;
 
-- (void) drawGridOfSize: (NSInteger)size;
+- (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options;
+- (void) removeMarkerAtLocation:(CGPoint)boardLocation;
+- (void) removeAllMarkers;
 
 @end
