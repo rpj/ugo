@@ -42,4 +42,33 @@
 	[super dealloc];
 }
 
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView { return 1; }
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return [[[uGoSettings sharedSettings] allThemes] count];
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    NSArray *allThemes = [[uGoSettings sharedSettings] allThemes];
+    if (row >=0 && row < [allThemes count]) {
+        return [allThemes objectAtIndex:row];
+    }
+    else {
+        NSLog(@"Error: Picker row out of range: %d", row);
+    }
+    return @"";
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    NSArray *allThemes = [[uGoSettings sharedSettings] allThemes];
+    if (row >=0 && row < [allThemes count]) {
+        [[uGoSettings sharedSettings] setThemeName:[allThemes objectAtIndex:row]];
+    }
+    else {
+        NSLog(@"Error: Picker selection out of range: %d", row);
+    }
+}
+
 @end

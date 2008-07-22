@@ -7,13 +7,18 @@
 //
 
 #import "MarkerLayer.h"
-
-#define kStoneLineWidth 8
+#import "MarkerTheme.h"
 
 static NSString * const kMarkerTypeKey = @"MarkerType";
 static NSString * const kMarkerOptionsKey = @"MarkerOptions";
 
+@interface MarkerLayer (KnownStuff)
+- (void)removeAllMarkers;
+@end
+
 @implementation MarkerLayer
+
+@synthesize theme = _theme;
 
 - (void) _gridSizeChanged:(NSNotification *)notif
 {
@@ -24,11 +29,22 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
     for (int i = 0; i < boardSize * boardSize; i++) [_allMarkers addObject:[NSNull null]];
 }
 
+- (void) _themeChanged:(NSNotification *)notif
+{
+    NSString *themeName = [[uGoSettings sharedSettings] themeName];
+    Class themeClass = [[NSBundle mainBundle] classNamed:themeName];
+    NSAssert1(themeClass, @"Could not load a theme with the name %@", themeName);
+    self.theme = [[themeClass alloc] init];
+}
+
 - (id) init
 {
     if ((self = [super init])) {
         [self _gridSizeChanged:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_gridSizeChanged:) name:kBoardSizeChangedNotification object:nil];
+        
+        [self _themeChanged:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_themeChanged:) name:kMarkerThemeChangedNotification object:nil];
     }
     return self;
 }
@@ -37,6 +53,7 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_allMarkers release];
+    [_theme release];
     
     [super dealloc];
 }
@@ -81,52 +98,19 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
     [markerLayer setNeedsDisplay];
 }
 
-- (void) _drawStone:(GoMarkerType)stoneType inContext:(CGContextRef)context
-{
-	CGRect rect = CGContextGetClipBoundingBox(context);
-	UIGraphicsPushContext(context);
-    
-    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
-    
-    CGContextSetLineWidth(context, kStoneLineWidth);
-    if (stoneType == kGoMarkerWhiteStone) {
-        CGContextSetRGBStrokeColor(context, 1.0, 1.0, 1.0, 1.0);
-        CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0);
-    } else {
-        CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, 1.0);
-        CGContextSetRGBFillColor(context, 0.0, 0.0, 0.0, 1.0);
-    }
-    
-    CGContextAddEllipseInRect(context, CGRectMake(rect.origin.x + (kStoneLineWidth/2), rect.origin.y + (kStoneLineWidth/2), rect.size.width - kStoneLineWidth, rect.size.height - kStoneLineWidth));
-    CGContextStrokePath(context);
-    CGContextFillEllipseInRect(context, rect);
-    
-    UIGraphicsPopContext(); 
-}
-
-- (void) _drawShape:(NSDictionary *)options inContext:(CGContextRef)context
-{
-    // TODO: implement _drawShape
-}
-
-- (void) _drawLabel:(NSDictionary *)options inContext:(CGContextRef)context
-{
-    // TODO: implement _drawLabel
-}
-
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context;
 {
     GoMarkerType type = [[layer valueForKey:kMarkerTypeKey] intValue];
     switch (type) {
         case kGoMarkerWhiteStone:
         case kGoMarkerBlackStone:
-            [self _drawStone:type inContext:context];
+            [_theme drawStone:type inContext:context];
             break;
         case kGoMarkerShape:
-            [self _drawShape:[layer valueForKey:kMarkerOptionsKey] inContext:context];
+            [_theme drawShape:[layer valueForKey:kMarkerOptionsKey] inContext:context];
             break;
         case kGoMarkerLabel:
-            [self _drawLabel:[layer valueForKey:kMarkerOptionsKey] inContext:context];
+            [_theme drawLabel:[layer valueForKey:kMarkerOptionsKey] inContext:context];
             break;
     }    
 }

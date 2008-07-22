@@ -20,6 +20,8 @@
 		43B3F2700E3592A500D4B02B /* MarkerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B3F26F0E3592A500D4B02B /* MarkerLayer.m */; };
 		43BC12B70E35B9E300431B28 /* GridLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC12B60E35B9E300431B28 /* GridLayer.m */; };
 		43BC14BA0E36594500431B28 /* MarkerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC14B90E36594500431B28 /* MarkerController.m */; };
+		43BC15720E36609D00431B28 /* FlatTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC15710E36609D00431B28 /* FlatTheme.m */; };
+		43BC15C20E36647E00431B28 /* MarkerTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC15C10E36647E00431B28 /* MarkerTheme.m */; };
 		43BFB9450E340A2000846875 /* uGoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BFB9440E340A2000846875 /* uGoSettings.m */; };
 		946A49390E30485900F5659E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946A49380E30485900F5659E /* QuartzCore.framework */; };
 		946A4A5E0E305D2A00F5659E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946A4A5D0E305D2A00F5659E /* CoreGraphics.framework */; };
@@ -70,6 +72,10 @@
 		43BC14B80E36594500431B28 /* MarkerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkerController.h; sourceTree = "<group>"; };
 		43BC14B90E36594500431B28 /* MarkerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkerController.m; sourceTree = "<group>"; };
 		43BC14BC0E3659BD00431B28 /* GoMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoMarker.h; sourceTree = "<group>"; };
+		43BC15700E36609D00431B28 /* FlatTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlatTheme.h; sourceTree = "<group>"; };
+		43BC15710E36609D00431B28 /* FlatTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlatTheme.m; sourceTree = "<group>"; };
+		43BC15C00E36647E00431B28 /* MarkerTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkerTheme.h; sourceTree = "<group>"; };
+		43BC15C10E36647E00431B28 /* MarkerTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkerTheme.m; sourceTree = "<group>"; };
 		43BFB8D30E3403F600846875 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		43BFB9430E340A2000846875 /* uGoSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uGoSettings.h; sourceTree = "<group>"; };
 		43BFB9440E340A2000846875 /* uGoSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = uGoSettings.m; sourceTree = "<group>"; };
@@ -196,9 +202,21 @@
 			path = Parser;
 			sourceTree = "<group>";
 		};
+		43BC15A20E36621C00431B28 /* Marker Themes */ = {
+			isa = PBXGroup;
+			children = (
+				43BC15C00E36647E00431B28 /* MarkerTheme.h */,
+				43BC15C10E36647E00431B28 /* MarkerTheme.m */,
+				43BC15700E36609D00431B28 /* FlatTheme.h */,
+				43BC15710E36609D00431B28 /* FlatTheme.m */,
+			);
+			name = "Marker Themes";
+			sourceTree = "<group>";
+		};
 		43BFB8FE0E34074F00846875 /* Board */ = {
 			isa = PBXGroup;
 			children = (
+				43BC15A20E36621C00431B28 /* Marker Themes */,
 				946A4A8F0E305EB400F5659E /* BoardView.h */,
 				946A4A900E305EB400F5659E /* BoardView.m */,
 				43B3F26E0E3592A500D4B02B /* MarkerLayer.h */,
@@ -307,6 +325,8 @@
 				43B3F2700E3592A500D4B02B /* MarkerLayer.m in Sources */,
 				43BC12B70E35B9E300431B28 /* GridLayer.m in Sources */,
 				43BC14BA0E36594500431B28 /* MarkerController.m in Sources */,
+				43BC15720E36609D00431B28 /* FlatTheme.m in Sources */,
+				43BC15C20E36647E00431B28 /* MarkerTheme.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

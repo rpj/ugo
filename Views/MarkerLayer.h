@@ -12,8 +12,13 @@
 
 #import "GoMarker.h"
 
+@class MarkerTheme;
+
 @interface MarkerLayer : CALayer {
     NSMutableArray*     _allMarkers;
+    MarkerTheme*        _theme;
 }
+
+@property(nonatomic, retain) MarkerTheme *theme;
 
 @end

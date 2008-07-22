@@ -10,10 +10,11 @@
 
 @class RootViewController;
 
-@interface FlipsideViewController : UIViewController {
+@interface FlipsideViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate> {
     RootViewController*             _rootViewController;
     
     IBOutlet UISegmentedControl*	_sizeSel;
+    IBOutlet UIPickerView*          _picker;
 }
 
 @property (nonatomic,assign) RootViewController *rootViewController;
