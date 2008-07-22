@@ -16,7 +16,7 @@
 }
 
 @property (nonatomic, readonly) NSString *name;
-@property (nonatomic, readonly) UIImage *image; // theme coverflow?
+@property (nonatomic, readonly) UIImage *image; // theme coverflow? brilliant!
 
 - (void) drawStone:(GoMarkerType)stoneType inContext:(CGContextRef)context;
 - (void) drawShape:(NSDictionary *)options inContext:(CGContextRef)context;

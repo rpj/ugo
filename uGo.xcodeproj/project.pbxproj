@@ -29,6 +29,20 @@
 		946A4E400E30F17100F5659E /* board1.png in Resources */ = {isa = PBXBuildFile; fileRef = 946A4E3F0E30F17100F5659E /* board1.png */; };
 		9475F1590E3137990053C4BE /* grad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9475F1580E3137990053C4BE /* grad.png */; };
 		948586550E3141280087D7CD /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 948586540E3141280087D7CD /* gradient.png */; };
+		94C4B9800E36899B00739E57 /* GobanStonesTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 94C4B97F0E36899B00739E57 /* GobanStonesTheme.m */; };
+		94C4B9B40E368BC300739E57 /* WhiteStone130-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9A60E368BC300739E57 /* WhiteStone130-0.png */; };
+		94C4B9B50E368BC300739E57 /* WhiteStone130-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9A70E368BC300739E57 /* WhiteStone130-1.png */; };
+		94C4B9B60E368BC300739E57 /* WhiteStone130-10.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9A80E368BC300739E57 /* WhiteStone130-10.png */; };
+		94C4B9B70E368BC300739E57 /* WhiteStone130-11.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9A90E368BC300739E57 /* WhiteStone130-11.png */; };
+		94C4B9B80E368BC300739E57 /* WhiteStone130-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9AA0E368BC300739E57 /* WhiteStone130-2.png */; };
+		94C4B9B90E368BC300739E57 /* WhiteStone130-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9AB0E368BC300739E57 /* WhiteStone130-3.png */; };
+		94C4B9BA0E368BC300739E57 /* WhiteStone130-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9AC0E368BC300739E57 /* WhiteStone130-4.png */; };
+		94C4B9BB0E368BC300739E57 /* WhiteStone130-5.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9AD0E368BC300739E57 /* WhiteStone130-5.png */; };
+		94C4B9BC0E368BC300739E57 /* WhiteStone130-6.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9AE0E368BC300739E57 /* WhiteStone130-6.png */; };
+		94C4B9BD0E368BC300739E57 /* WhiteStone130-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9AF0E368BC300739E57 /* WhiteStone130-7.png */; };
+		94C4B9BE0E368BC300739E57 /* WhiteStone130-8.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9B00E368BC300739E57 /* WhiteStone130-8.png */; };
+		94C4B9BF0E368BC300739E57 /* WhiteStone130-9.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9B10E368BC300739E57 /* WhiteStone130-9.png */; };
+		94C4B9C30E368D4600739E57 /* BlackStone130-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9C20E368D4600739E57 /* BlackStone130-0.png */; };
 		94C4D4D00E2AE164007A76B5 /* goboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4D4CF0E2AE164007A76B5 /* goboard.png */; };
 		94FD82B70E31827A000611DC /* goicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 94FD82B60E31827A000611DC /* goicon.png */; };
 /* End PBXBuildFile section */
@@ -87,6 +101,21 @@
 		946A4E3F0E30F17100F5659E /* board1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = board1.png; sourceTree = "<group>"; };
 		9475F1580E3137990053C4BE /* grad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grad.png; sourceTree = "<group>"; };
 		948586540E3141280087D7CD /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradient.png; sourceTree = "<group>"; };
+		94C4B97E0E36899B00739E57 /* GobanStonesTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GobanStonesTheme.h; sourceTree = "<group>"; };
+		94C4B97F0E36899B00739E57 /* GobanStonesTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GobanStonesTheme.m; sourceTree = "<group>"; };
+		94C4B9A60E368BC300739E57 /* WhiteStone130-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteStone130-0.png"; sourceTree = "<group>"; };
+		94C4B9A70E368BC300739E57 /* WhiteStone130-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteStone130-1.png"; sourceTree = "<group>"; };
+		94C4B9A80E368BC300739E57 /* WhiteStone130-10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteStone130-10.png"; sourceTree = "<group>"; };
+		94C4B9A90E368BC300739E57 /* WhiteStone130-11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteStone130-11.png"; sourceTree = "<group>"; };
+		94C4B9AA0E368BC300739E57 /* WhiteStone130-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteStone130-2.png"; sourceTree = "<group>"; };
+		94C4B9AB0E368BC300739E57 /* WhiteStone130-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteStone130-3.png"; sourceTree = "<group>"; };
+		94C4B9AC0E368BC300739E57 /* WhiteStone130-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteStone130-4.png"; sourceTree = "<group>"; };
+		94C4B9AD0E368BC300739E57 /* WhiteStone130-5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteStone130-5.png"; sourceTree = "<group>"; };
+		94C4B9AE0E368BC300739E57 /* WhiteStone130-6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteStone130-6.png"; sourceTree = "<group>"; };
+		94C4B9AF0E368BC300739E57 /* WhiteStone130-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteStone130-7.png"; sourceTree = "<group>"; };
+		94C4B9B00E368BC300739E57 /* WhiteStone130-8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteStone130-8.png"; sourceTree = "<group>"; };
+		94C4B9B10E368BC300739E57 /* WhiteStone130-9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteStone130-9.png"; sourceTree = "<group>"; };
+		94C4B9C20E368D4600739E57 /* BlackStone130-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BlackStone130-0.png"; sourceTree = "<group>"; };
 		94C4D4CF0E2AE164007A76B5 /* goboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goboard.png; sourceTree = "<group>"; };
 		94FD82B60E31827A000611DC /* goicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goicon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -156,6 +185,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				94C4B9850E368B2500739E57 /* GobanStones */,
 				94FD82B60E31827A000611DC /* goicon.png */,
 				948586540E3141280087D7CD /* gradient.png */,
 				9475F1580E3137990053C4BE /* grad.png */,
@@ -209,6 +239,8 @@
 				43BC15C10E36647E00431B28 /* MarkerTheme.m */,
 				43BC15700E36609D00431B28 /* FlatTheme.h */,
 				43BC15710E36609D00431B28 /* FlatTheme.m */,
+				94C4B97E0E36899B00739E57 /* GobanStonesTheme.h */,
+				94C4B97F0E36899B00739E57 /* GobanStonesTheme.m */,
 			);
 			name = "Marker Themes";
 			sourceTree = "<group>";
@@ -246,6 +278,44 @@
 				43BC14B90E36594500431B28 /* MarkerController.m */,
 			);
 			path = GameModel;
+			sourceTree = "<group>";
+		};
+		94C4B9850E368B2500739E57 /* GobanStones */ = {
+			isa = PBXGroup;
+			children = (
+				94C4B9A50E368BC300739E57 /* White */,
+				94C4B9B20E368BC300739E57 /* Black */,
+			);
+			name = GobanStones;
+			sourceTree = "<group>";
+		};
+		94C4B9A50E368BC300739E57 /* White */ = {
+			isa = PBXGroup;
+			children = (
+				94C4B9A60E368BC300739E57 /* WhiteStone130-0.png */,
+				94C4B9A70E368BC300739E57 /* WhiteStone130-1.png */,
+				94C4B9A80E368BC300739E57 /* WhiteStone130-10.png */,
+				94C4B9A90E368BC300739E57 /* WhiteStone130-11.png */,
+				94C4B9AA0E368BC300739E57 /* WhiteStone130-2.png */,
+				94C4B9AB0E368BC300739E57 /* WhiteStone130-3.png */,
+				94C4B9AC0E368BC300739E57 /* WhiteStone130-4.png */,
+				94C4B9AD0E368BC300739E57 /* WhiteStone130-5.png */,
+				94C4B9AE0E368BC300739E57 /* WhiteStone130-6.png */,
+				94C4B9AF0E368BC300739E57 /* WhiteStone130-7.png */,
+				94C4B9B00E368BC300739E57 /* WhiteStone130-8.png */,
+				94C4B9B10E368BC300739E57 /* WhiteStone130-9.png */,
+			);
+			name = White;
+			path = GobanStones/White;
+			sourceTree = "<group>";
+		};
+		94C4B9B20E368BC300739E57 /* Black */ = {
+			isa = PBXGroup;
+			children = (
+				94C4B9C20E368D4600739E57 /* BlackStone130-0.png */,
+			);
+			name = Black;
+			path = GobanStones/Black;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -305,6 +375,19 @@
 				9475F1590E3137990053C4BE /* grad.png in Resources */,
 				948586550E3141280087D7CD /* gradient.png in Resources */,
 				94FD82B70E31827A000611DC /* goicon.png in Resources */,
+				94C4B9B40E368BC300739E57 /* WhiteStone130-0.png in Resources */,
+				94C4B9B50E368BC300739E57 /* WhiteStone130-1.png in Resources */,
+				94C4B9B60E368BC300739E57 /* WhiteStone130-10.png in Resources */,
+				94C4B9B70E368BC300739E57 /* WhiteStone130-11.png in Resources */,
+				94C4B9B80E368BC300739E57 /* WhiteStone130-2.png in Resources */,
+				94C4B9B90E368BC300739E57 /* WhiteStone130-3.png in Resources */,
+				94C4B9BA0E368BC300739E57 /* WhiteStone130-4.png in Resources */,
+				94C4B9BB0E368BC300739E57 /* WhiteStone130-5.png in Resources */,
+				94C4B9BC0E368BC300739E57 /* WhiteStone130-6.png in Resources */,
+				94C4B9BD0E368BC300739E57 /* WhiteStone130-7.png in Resources */,
+				94C4B9BE0E368BC300739E57 /* WhiteStone130-8.png in Resources */,
+				94C4B9BF0E368BC300739E57 /* WhiteStone130-9.png in Resources */,
+				94C4B9C30E368D4600739E57 /* BlackStone130-0.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -327,6 +410,7 @@
 				43BC14BA0E36594500431B28 /* MarkerController.m in Sources */,
 				43BC15720E36609D00431B28 /* FlatTheme.m in Sources */,
 				43BC15C20E36647E00431B28 /* MarkerTheme.m in Sources */,
+				94C4B9800E36899B00739E57 /* GobanStonesTheme.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
