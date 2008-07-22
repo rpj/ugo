@@ -15,21 +15,30 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
 
 @implementation MarkerLayer
 
-- (void) dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_allMarkers release];
-    
-    [super dealloc];
-}
-
-- (void) gridSizeChanged
+- (void) _gridSizeChanged:(NSNotification *)notif
 {
     [self removeAllMarkers];
     [_allMarkers release];
     NSUInteger boardSize = [[uGoSettings sharedSettings] boardSize];
     _allMarkers = [[NSMutableArray alloc] initWithCapacity:boardSize * boardSize];
     for (int i = 0; i < boardSize * boardSize; i++) [_allMarkers addObject:[NSNull null]];
+}
+
+- (id) init
+{
+    if ((self = [super init])) {
+        [self _gridSizeChanged:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_gridSizeChanged:) name:kBoardSizeChangedNotification object:nil];
+    }
+    return self;
+}
+
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_allMarkers release];
+    
+    [super dealloc];
 }
 
 - (void) removeMarkerAtLocation:(CGPoint)boardLocation

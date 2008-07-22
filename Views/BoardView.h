@@ -24,17 +24,22 @@ extern NSString * const kGoMarkerOptionColor;
 // NSString to use as the label for the marker 
 extern NSString * const kGoMarkerOptionLabel;
 
-@class BoardLayer, MarkerLayer;
+@class GridLayer, MarkerLayer;
 
 @interface BoardView : UIView {
-    BoardLayer*     _boardLayer;
+	GridLayer*          _gridLayer;
+    MarkerLayer*        _markerLayer;
     
-    GoMarkerType    _curStone; // hack for testing
+    // hacks so we can pretend to play go. these should not be allowed to live long
+    GoMarkerType    _curStone;
     CGPoint         _tempStoneLocation;
 }
 
-@property (nonatomic, retain) BoardLayer* _boardLayer;
+@property (nonatomic, retain) GridLayer* gridLayer;
+@property (nonatomic, retain) MarkerLayer* markerLayer;
 
-- (void) drawGridOfSize: (NSInteger)size;
+- (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options;
+- (void) removeMarkerAtLocation:(CGPoint)boardLocation;
+- (void) removeAllMarkers;
 
 @end

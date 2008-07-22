@@ -16,8 +16,6 @@
     NSMutableArray*     _allMarkers;
 }
 
-- (void) gridSizeChanged;
-
 - (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options;
 - (void) removeMarkerAtLocation:(CGPoint)boardLocation;
 - (void) removeAllMarkers;

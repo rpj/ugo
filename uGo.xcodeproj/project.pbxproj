@@ -18,7 +18,7 @@
 		289233AF0DB2D0DB0083E9F9 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233AB0DB2D0DB0083E9F9 /* RootViewController.m */; };
 		289233B00DB2D0DB0083E9F9 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233AD0DB2D0DB0083E9F9 /* FlipsideViewController.m */; };
 		43B3F2700E3592A500D4B02B /* MarkerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B3F26F0E3592A500D4B02B /* MarkerLayer.m */; };
-		43BFB5740E33DBE700846875 /* BoardLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BFB5730E33DBE700846875 /* BoardLayer.m */; };
+		43BC12B70E35B9E300431B28 /* GridLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC12B60E35B9E300431B28 /* GridLayer.m */; };
 		43BFB8D40E3403F600846875 /* TODO in Resources */ = {isa = PBXBuildFile; fileRef = 43BFB8D30E3403F600846875 /* TODO */; };
 		43BFB9450E340A2000846875 /* uGoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BFB9440E340A2000846875 /* uGoSettings.m */; };
 		946A49390E30485900F5659E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946A49380E30485900F5659E /* QuartzCore.framework */; };
@@ -50,8 +50,8 @@
 		32CA4F630368D1EE00C91783 /* uGo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uGo_Prefix.pch; sourceTree = "<group>"; };
 		43B3F26E0E3592A500D4B02B /* MarkerLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkerLayer.h; sourceTree = "<group>"; };
 		43B3F26F0E3592A500D4B02B /* MarkerLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkerLayer.m; sourceTree = "<group>"; };
-		43BFB5720E33DBE700846875 /* BoardLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardLayer.h; sourceTree = "<group>"; };
-		43BFB5730E33DBE700846875 /* BoardLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoardLayer.m; sourceTree = "<group>"; };
+		43BC12B50E35B9E300431B28 /* GridLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridLayer.h; sourceTree = "<group>"; };
+		43BC12B60E35B9E300431B28 /* GridLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridLayer.m; sourceTree = "<group>"; };
 		43BFB8D30E3403F600846875 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		43BFB9430E340A2000846875 /* uGoSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uGoSettings.h; sourceTree = "<group>"; };
 		43BFB9440E340A2000846875 /* uGoSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = uGoSettings.m; sourceTree = "<group>"; };
@@ -160,10 +160,10 @@
 			children = (
 				946A4A8F0E305EB400F5659E /* BoardView.h */,
 				946A4A900E305EB400F5659E /* BoardView.m */,
-				43BFB5720E33DBE700846875 /* BoardLayer.h */,
-				43BFB5730E33DBE700846875 /* BoardLayer.m */,
 				43B3F26E0E3592A500D4B02B /* MarkerLayer.h */,
 				43B3F26F0E3592A500D4B02B /* MarkerLayer.m */,
+				43BC12B50E35B9E300431B28 /* GridLayer.h */,
+				43BC12B60E35B9E300431B28 /* GridLayer.m */,
 			);
 			name = Board;
 			sourceTree = "<group>";
@@ -260,9 +260,9 @@
 				289233AF0DB2D0DB0083E9F9 /* RootViewController.m in Sources */,
 				289233B00DB2D0DB0083E9F9 /* FlipsideViewController.m in Sources */,
 				946A4A910E305EB400F5659E /* BoardView.m in Sources */,
-				43BFB5740E33DBE700846875 /* BoardLayer.m in Sources */,
 				43BFB9450E340A2000846875 /* uGoSettings.m in Sources */,
 				43B3F2700E3592A500D4B02B /* MarkerLayer.m in Sources */,
+				43BC12B70E35B9E300431B28 /* GridLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
