@@ -8,6 +8,7 @@
 
 #import "FlipsideViewController.h"
 #import "RootViewController.h"
+#import "MarkerTheme.h"
 
 @implementation FlipsideViewController
 
@@ -52,7 +53,15 @@
 {
     NSArray *allThemes = [[uGoSettings sharedSettings] allThemes];
     if (row >=0 && row < [allThemes count]) {
-        return [allThemes objectAtIndex:row];
+        // This is really slow and the wrong way to do it. The class stuff should move into settings
+        NSString *className = [allThemes objectAtIndex:row];
+        Class curClass = [[NSBundle mainBundle] classNamed:className];
+        if (curClass) {
+            MarkerTheme *theme = [[curClass alloc] init];
+            NSString *themeName = [theme name];
+            [theme release];
+            return themeName;
+        }
     }
     else {
         NSLog(@"Error: Picker row out of range: %d", row);
