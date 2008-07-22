@@ -13,6 +13,19 @@
 
 @synthesize boardView = _boardView;
 
+- (void) _drawReflectionImage;
+{
+	id img = _boardView.layer.contents;
+	
+	if (img) {
+		UIImage* uiimg = [UIImage imageWithCGImage:(CGImageRef)img];
+		
+		if (uiimg) {
+			[_reflectionView setImage: uiimg];
+		}
+	}
+}
+
 - (void) viewDidLoad
 {
     // XXX (fark): I want the first view of the board to be of the entire board. I can't figure out how to do that.
@@ -21,8 +34,11 @@
     _boardScrollView.scrollsToTop = NO;
     _boardScrollView.contentSize = CGSizeMake(kBoardSize, kBoardSize);
     _boardScrollView.delegate = self;
+	_boardScrollView.layer.masksToBounds = YES;
     _boardView = [[BoardView alloc] init];
     [_boardScrollView addSubview:_boardView];
+	
+	[self _drawReflectionImage];
 }
 
 - (void)dealloc {

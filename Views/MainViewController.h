@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 @class BoardView;
 
 @interface MainViewController : UIViewController <UIScrollViewDelegate> {
     IBOutlet UIScrollView*          _boardScrollView;
+	IBOutlet UIImageView*			_reflectionView;
 	
 	BoardView*		_boardView;
 }

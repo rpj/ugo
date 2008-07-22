@@ -44,6 +44,7 @@
 		94C4B9BE0E368BC300739E57 /* WhiteStone130-8.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9B00E368BC300739E57 /* WhiteStone130-8.png */; };
 		94C4B9BF0E368BC300739E57 /* WhiteStone130-9.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9B10E368BC300739E57 /* WhiteStone130-9.png */; };
 		94C4B9C30E368D4600739E57 /* BlackStone130-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9C20E368D4600739E57 /* BlackStone130-0.png */; };
+		94C4BA5E0E36971C00739E57 /* gradient-trans.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4BA5D0E36971C00739E57 /* gradient-trans.png */; };
 		94C4D4D00E2AE164007A76B5 /* goboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4D4CF0E2AE164007A76B5 /* goboard.png */; };
 		94FD82B70E31827A000611DC /* goicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 94FD82B60E31827A000611DC /* goicon.png */; };
 /* End PBXBuildFile section */
@@ -118,6 +119,7 @@
 		94C4B9B00E368BC300739E57 /* WhiteStone130-8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteStone130-8.png"; sourceTree = "<group>"; };
 		94C4B9B10E368BC300739E57 /* WhiteStone130-9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteStone130-9.png"; sourceTree = "<group>"; };
 		94C4B9C20E368D4600739E57 /* BlackStone130-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BlackStone130-0.png"; sourceTree = "<group>"; };
+		94C4BA5D0E36971C00739E57 /* gradient-trans.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gradient-trans.png"; sourceTree = "<group>"; };
 		94C4D4CF0E2AE164007A76B5 /* goboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goboard.png; sourceTree = "<group>"; };
 		94FD82B60E31827A000611DC /* goicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goicon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -189,6 +191,7 @@
 			children = (
 				94C4B9850E368B2500739E57 /* GobanStones */,
 				94FD82B60E31827A000611DC /* goicon.png */,
+				94C4BA5D0E36971C00739E57 /* gradient-trans.png */,
 				948586540E3141280087D7CD /* gradient.png */,
 				9475F1580E3137990053C4BE /* grad.png */,
 				946A4E3F0E30F17100F5659E /* board1024.png */,
@@ -392,6 +395,7 @@
 				94C4B9BF0E368BC300739E57 /* WhiteStone130-9.png in Resources */,
 				94C4B9C30E368D4600739E57 /* BlackStone130-0.png in Resources */,
 				43BC16790E36F87700431B28 /* board512.png in Resources */,
+				94C4BA5E0E36971C00739E57 /* gradient-trans.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
