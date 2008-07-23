@@ -29,6 +29,12 @@
 	self.view.backgroundColor = [UIColor viewFlipsideBackgroundColor];		
 }
 
+- (void)viewDidAppear:(BOOL)animated 
+{
+	NSUInteger boardSize = [[uGoSettings sharedSettings] boardSize];
+	_sizeSel.selectedSegmentIndex = (boardSize == 9 ? 0 : (boardSize == 13 ? 1 : 2));
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -79,5 +85,4 @@
         NSLog(@"Error: Picker selection out of range: %d", row);
     }
 }
-
 @end
