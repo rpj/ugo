@@ -71,9 +71,9 @@ NSString * const kGoMarkerOptionLabel = @"MarkerLabel";
 
 - (CGPoint) _boardPointForUIPoint:(CGPoint)point
 {
-    NSUInteger boardSize = [[uGoSettings sharedSettings] boardSize] - 1;
+    NSUInteger boardSize = [[uGoSettings sharedSettings] boardSize];
     CGPoint gpoint;
-    CGFloat lineSep = (_gridLayer.frame.size.width / boardSize);
+    CGFloat lineSep = (_gridLayer.frame.size.width / (boardSize - 1));
     gpoint.x = (int)((point.x - (_gridLayer.frame.origin.x - self.frame.origin.x) + (lineSep/2)) / lineSep) + 1;
     gpoint.y = (int)((point.y - (_gridLayer.frame.origin.y - self.frame.origin.y) + (lineSep/2)) / lineSep) + 1;
     
