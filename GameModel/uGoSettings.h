@@ -8,18 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
+@class MarkerTheme;
+
 extern NSString * const kBoardSizeChangedNotification;
 extern NSString * const kMarkerThemeChangedNotification;
 
 @interface uGoSettings : NSObject {
-    NSUInteger  _boardSize;
-    NSString *  _themeName;
-    NSArray*    _allThemes;
+    NSUInteger      _boardSize;
+    MarkerTheme *   _markerTheme;
+    NSArray*        _allThemes;
 }
 
 @property (nonatomic) NSUInteger boardSize;
-@property (nonatomic,copy) NSString *themeName;
-@property (nonatomic,readonly) NSArray *allThemes; // array of MarkerTheme class names
+@property (nonatomic,retain) MarkerTheme *markerTheme;
+@property (nonatomic,readonly) NSArray *allThemes; // array of MarkerTheme subclass instances
 
 + (uGoSettings *)sharedSettings;
 

@@ -31,10 +31,7 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
 
 - (void) _themeChanged:(NSNotification *)notif
 {
-    NSString *themeName = [[uGoSettings sharedSettings] themeName];
-    Class themeClass = [[NSBundle mainBundle] classNamed:themeName];
-    NSAssert1(themeClass, @"Could not load a theme with the name %@", themeName);
-    self.theme = [[themeClass alloc] init];
+    self.theme = [[uGoSettings sharedSettings] markerTheme];
 }
 
 - (id) init

@@ -29,6 +29,21 @@
 	self.view.backgroundColor = [UIColor viewFlipsideBackgroundColor];		
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    int themeIndex = 0;
+    NSArray *allThemes = [[uGoSettings sharedSettings] allThemes];
+    MarkerTheme *curTheme = [[uGoSettings sharedSettings] markerTheme];
+    // pointer equality isn't the greatest, but it should work here
+    for (MarkerTheme *theme in allThemes) {
+        if (curTheme == theme) {
+            break;
+        }
+        themeIndex++;
+    }
+    [_picker selectRow:themeIndex inComponent:0 animated:NO];
+}
+
 - (void)viewDidAppear:(BOOL)animated 
 {
 	NSUInteger boardSize = [[uGoSettings sharedSettings] boardSize];
@@ -59,15 +74,8 @@
 {
     NSArray *allThemes = [[uGoSettings sharedSettings] allThemes];
     if (row >=0 && row < [allThemes count]) {
-        // This is really slow and the wrong way to do it. The class stuff should move into settings
-        NSString *className = [allThemes objectAtIndex:row];
-        Class curClass = [[NSBundle mainBundle] classNamed:className];
-        if (curClass) {
-            MarkerTheme *theme = [[curClass alloc] init];
-            NSString *themeName = [theme name];
-            [theme release];
-            return themeName;
-        }
+        MarkerTheme *theme = [allThemes objectAtIndex:row];
+        return [theme name];
     }
     else {
         NSLog(@"Error: Picker row out of range: %d", row);
@@ -79,7 +87,7 @@
 {
     NSArray *allThemes = [[uGoSettings sharedSettings] allThemes];
     if (row >=0 && row < [allThemes count]) {
-        [[uGoSettings sharedSettings] setThemeName:[allThemes objectAtIndex:row]];
+        [[uGoSettings sharedSettings] setMarkerTheme:[allThemes objectAtIndex:row]];
     }
     else {
         NSLog(@"Error: Picker selection out of range: %d", row);

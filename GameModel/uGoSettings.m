@@ -16,6 +16,17 @@ NSString * const kMarkerThemeChangedNotification = @"MarkerThemeChanged";
 
 static uGoSettings *_sSettings;
 
+@interface NSObject (ClassName)
+- (NSString *)getClassName;
+@end
+
+@implementation NSObject (ClassName)
+- (NSString *)getClassName
+{
+    return [NSString stringWithUTF8String:object_getClassName(self)];
+}
+@end
+
 @implementation uGoSettings
 
 @synthesize allThemes = _allThemes;
@@ -39,9 +50,8 @@ static uGoSettings *_sSettings;
         for (int ii = 0; ii < numClasses; ii++) {
             Class curClass = allClasses[ii];
             if (class_getSuperclass(curClass) == markerThemeClass) {
-                NSString *className = [NSString stringWithUTF8String:class_getName(curClass)];
-                NSLog(@"Found theme class: %@", className);
-                [themes addObject:className];
+                NSLog(@"Found theme class: %s", class_getName(curClass));
+                [themes addObject:[[[curClass alloc] init] autorelease]];
             }
         }
         free(allClasses);
@@ -56,17 +66,24 @@ static uGoSettings *_sSettings;
         _boardSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"BoardSize"];
         if (_boardSize == 0) _boardSize = 19;
         
-        _themeName = [[NSUserDefaults standardUserDefaults] valueForKey:@"ThemeName"];
-        if (_themeName == nil) _themeName = @"FlatTheme";
-        
         [self _loadThemeClasses];
+        
+        NSString *themeName = [[NSUserDefaults standardUserDefaults] valueForKey:@"ThemeName"];
+        if (themeName == nil) themeName = @"GobanStonesTheme";
+        
+        for (MarkerTheme *theme in _allThemes) {
+            if ([[theme getClassName] isEqualToString:themeName]) {
+                _markerTheme = [theme retain];
+                break;
+            }
+        }
     }
     return self;
 }
 
 - (void) dealloc
 {
-    [_themeName release];
+    [_markerTheme release];
     [_allThemes release];
     [super dealloc];
 }
@@ -80,11 +97,14 @@ static uGoSettings *_sSettings;
     [[NSNotificationCenter defaultCenter] postNotificationName:kBoardSizeChangedNotification object:nil];
 }
 
-- (NSString *) themeName { return _themeName; }
-- (void) setThemeName:(NSString*)themeName
+- (MarkerTheme *) markerTheme { return _markerTheme; }
+- (void) setMarkerTheme:(MarkerTheme*)theme
 {
-    _themeName = [themeName copy];
-    [[NSUserDefaults standardUserDefaults] setValue:_themeName forKey:@"ThemeName"];
+    if (theme != _markerTheme) {
+        [_markerTheme release];
+        _markerTheme = [theme retain];
+    }
+    [[NSUserDefaults standardUserDefaults] setValue:[_markerTheme getClassName] forKey:@"ThemeName"];
     [[NSNotificationCenter defaultCenter] postNotificationName:kMarkerThemeChangedNotification object:nil];
 }
 
