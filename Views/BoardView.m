@@ -37,7 +37,7 @@ NSString * const kGoMarkerOptionLabel = @"MarkerLabel";
 {
     if ((self = [super init])) {        
         self.frame = CGRectMake(0, 0, kBoardSize, kBoardSize);
-        self.layer.contents = (id)[UIImage imageNamed: @"board1.png"].CGImage;
+        self.layer.contents = (id)[UIImage imageNamed: @"board512.png"].CGImage;
         
         self.markerLayer = [MarkerLayer layer];
         [self.layer addSublayer:self.markerLayer];

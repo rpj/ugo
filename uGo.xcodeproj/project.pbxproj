@@ -22,11 +22,12 @@
 		43BC14BA0E36594500431B28 /* MarkerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC14B90E36594500431B28 /* MarkerController.m */; };
 		43BC15720E36609D00431B28 /* FlatTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC15710E36609D00431B28 /* FlatTheme.m */; };
 		43BC15C20E36647E00431B28 /* MarkerTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC15C10E36647E00431B28 /* MarkerTheme.m */; };
+		43BC16790E36F87700431B28 /* board512.png in Resources */ = {isa = PBXBuildFile; fileRef = 43BC16780E36F87700431B28 /* board512.png */; };
 		43BFB9450E340A2000846875 /* uGoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BFB9440E340A2000846875 /* uGoSettings.m */; };
 		946A49390E30485900F5659E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946A49380E30485900F5659E /* QuartzCore.framework */; };
 		946A4A5E0E305D2A00F5659E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946A4A5D0E305D2A00F5659E /* CoreGraphics.framework */; };
 		946A4A910E305EB400F5659E /* BoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 946A4A900E305EB400F5659E /* BoardView.m */; };
-		946A4E400E30F17100F5659E /* board1.png in Resources */ = {isa = PBXBuildFile; fileRef = 946A4E3F0E30F17100F5659E /* board1.png */; };
+		946A4E400E30F17100F5659E /* board1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 946A4E3F0E30F17100F5659E /* board1024.png */; };
 		9475F1590E3137990053C4BE /* grad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9475F1580E3137990053C4BE /* grad.png */; };
 		948586550E3141280087D7CD /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 948586540E3141280087D7CD /* gradient.png */; };
 		94C4B9800E36899B00739E57 /* GobanStonesTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 94C4B97F0E36899B00739E57 /* GobanStonesTheme.m */; };
@@ -90,6 +91,7 @@
 		43BC15710E36609D00431B28 /* FlatTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlatTheme.m; sourceTree = "<group>"; };
 		43BC15C00E36647E00431B28 /* MarkerTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkerTheme.h; sourceTree = "<group>"; };
 		43BC15C10E36647E00431B28 /* MarkerTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkerTheme.m; sourceTree = "<group>"; };
+		43BC16780E36F87700431B28 /* board512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = board512.png; sourceTree = "<group>"; };
 		43BFB8D30E3403F600846875 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		43BFB9430E340A2000846875 /* uGoSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uGoSettings.h; sourceTree = "<group>"; };
 		43BFB9440E340A2000846875 /* uGoSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = uGoSettings.m; sourceTree = "<group>"; };
@@ -98,7 +100,7 @@
 		946A4A5D0E305D2A00F5659E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		946A4A8F0E305EB400F5659E /* BoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardView.h; sourceTree = "<group>"; };
 		946A4A900E305EB400F5659E /* BoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoardView.m; sourceTree = "<group>"; };
-		946A4E3F0E30F17100F5659E /* board1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = board1.png; sourceTree = "<group>"; };
+		946A4E3F0E30F17100F5659E /* board1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = board1024.png; sourceTree = "<group>"; };
 		9475F1580E3137990053C4BE /* grad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grad.png; sourceTree = "<group>"; };
 		948586540E3141280087D7CD /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradient.png; sourceTree = "<group>"; };
 		94C4B97E0E36899B00739E57 /* GobanStonesTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GobanStonesTheme.h; sourceTree = "<group>"; };
@@ -189,7 +191,8 @@
 				94FD82B60E31827A000611DC /* goicon.png */,
 				948586540E3141280087D7CD /* gradient.png */,
 				9475F1580E3137990053C4BE /* grad.png */,
-				946A4E3F0E30F17100F5659E /* board1.png */,
+				946A4E3F0E30F17100F5659E /* board1024.png */,
+				43BC16780E36F87700431B28 /* board512.png */,
 				94C4D4CF0E2AE164007A76B5 /* goboard.png */,
 				280E754A0DD40C5E005A515E /* FlipsideView.xib */,
 				280E754B0DD40C5E005A515E /* MainView.xib */,
@@ -371,7 +374,7 @@
 				280E754E0DD40C5E005A515E /* MainView.xib in Resources */,
 				280E754F0DD40C5E005A515E /* MainWindow.xib in Resources */,
 				94C4D4D00E2AE164007A76B5 /* goboard.png in Resources */,
-				946A4E400E30F17100F5659E /* board1.png in Resources */,
+				946A4E400E30F17100F5659E /* board1024.png in Resources */,
 				9475F1590E3137990053C4BE /* grad.png in Resources */,
 				948586550E3141280087D7CD /* gradient.png in Resources */,
 				94FD82B70E31827A000611DC /* goicon.png in Resources */,
@@ -388,6 +391,7 @@
 				94C4B9BE0E368BC300739E57 /* WhiteStone130-8.png in Resources */,
 				94C4B9BF0E368BC300739E57 /* WhiteStone130-9.png in Resources */,
 				94C4B9C30E368D4600739E57 /* BlackStone130-0.png in Resources */,
+				43BC16790E36F87700431B28 /* board512.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
