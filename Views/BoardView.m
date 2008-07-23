@@ -12,6 +12,8 @@
 
 #define kGridBorderMultiplier			(0.20)
 
+NSString * const kBoardChangedNotification = @"BoardChanged";
+
 NSString * const kGoMarkerOptionTemporaryMarker = @"MarkerIsTemporary";
 NSString * const kGoMarkerOptionColor = @"MarkerColor";
 NSString * const kGoMarkerOptionLabel = @"MarkerLabel";
@@ -86,11 +88,23 @@ NSString * const kGoMarkerOptionLabel = @"MarkerLabel";
     return gpoint;
 }
 
-- (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options { [_markerLayer placeMarker:type atLocation:boardLocation options:options]; }
+- (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options 
+{ 
+    [_markerLayer placeMarker:type atLocation:boardLocation options:options];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kBoardChangedNotification object:nil];
+}
 
-- (void) removeMarkerAtLocation:(CGPoint)boardLocation { [_markerLayer removeMarkerAtLocation:boardLocation]; }
+- (void) removeMarkerAtLocation:(CGPoint)boardLocation 
+{ 
+    [_markerLayer removeMarkerAtLocation:boardLocation]; 
+    [[NSNotificationCenter defaultCenter] postNotificationName:kBoardChangedNotification object:nil];
+}
 
-- (void) removeAllMarkers { [_markerLayer removeAllMarkers]; }
+- (void) removeAllMarkers 
+{ 
+    [_markerLayer removeAllMarkers]; 
+    [[NSNotificationCenter defaultCenter] postNotificationName:kBoardChangedNotification object:nil];
+}
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {

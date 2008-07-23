@@ -14,6 +14,8 @@
 @class GridLayer, MarkerLayer;
 @protocol BoardViewDelegate;
 
+extern NSString * const kBoardChangedNotification;
+
 @interface BoardView : UIView {
 	GridLayer*          _gridLayer;
     MarkerLayer*        _markerLayer;
