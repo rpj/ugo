@@ -29,6 +29,8 @@
     
     _markerController = [[MarkerController alloc] init];
     _markerController.boardView = rootViewController.mainViewController.boardView;
+    
+    srand(time(NULL));
 }
 
 

@@ -20,3 +20,5 @@ extern NSString * const kGoMarkerOptionTemporaryMarker;
 extern NSString * const kGoMarkerOptionColor;
 // NSString to use as the label for the marker 
 extern NSString * const kGoMarkerOptionLabel;
+// By default the stones are placed imperfectly. Pass NO to place perfectly grid-aligned
+extern NSString * const kGoMarkerAllowWiggle;

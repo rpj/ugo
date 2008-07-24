@@ -3,3 +3,4 @@
 - Make sure artwork is acceptable to use
 - Draw labels on the grid
 - Landscape mode
+- Real Go boards are actually rectangular. We should update the grid to the dimensions of a real board

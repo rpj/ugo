@@ -8,24 +8,44 @@
 
 #import "GridLayer.h"
 
-#define kGridLineWidth					(4.0)
-#define kDotSquareWH					(20.0)
-
 @implementation GridLayer
+
+/*
+ http://senseis.xmp.net/?EquipmentDimensions
+ 
+ Dimension                  SI       Imperial      Japanese
+ (mm)       (inch)
+ Board width               424.2     16 23/32     1.4  shaku 尺
+ Board length              454.5     17 29/32     1.5  shaku 尺
+ Board thickness           151.5      5 31/32     0.5  shaku 尺
+ Line spacing width-wise    22           7/8      7.26 bu 分
+ Line spacing length-wise   23.7        15/16     7.82 bu 分
+ Line thickness              1           1/32     0.3  bu 分
+ Star point marker diameter  4           5/32     1.2  bu 分
+ Stone diameter             22.5        29/32     7.5  bu 分
+ 
+ Making the grid rectangular would be nice, but not necessary yet. 
+ However, we can get the rest of the proportions correct in terms of the line spacing width-wise:
+*/
+
+#define kStarPointDiameterRatio     0.18182
+#define kLineWidthRatio             0.04545
 
 - (void)drawInContext:(CGContextRef)context
 {
 	CGRect rect = CGContextGetClipBoundingBox(context);
     NSUInteger gridSize = [[uGoSettings sharedSettings] boardSize] - 1;
-    CGFloat lineSep = (rect.size.width / gridSize);
+    CGFloat lineSep = rect.size.width / gridSize;
+    CGFloat lineWidth = lineSep * kLineWidthRatio;
+    CGFloat starPointDiameter = lineSep * kStarPointDiameterRatio;
+    
     UIGraphicsPushContext(context);
     if (rect.size.width != rect.size.height)
         NSLog(@"Rect for drawLayer::_gridLayer isn't a square!");
     
     // draw grid border
     CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, 1.0);
-    CGContextSetLineWidth(context, kGridLineWidth);
-    
+    CGContextSetLineWidth(context, lineWidth);
     
     // draw grid lines
     for (NSUInteger count = 0; count <= gridSize; count++)
@@ -35,7 +55,7 @@
 		// account for the fact that grid borders were getting drawn with half of their line width outside the frame
 		// probably not the best fix, but it does work and fixes things "correctly"
 		// that is, if you ignore the issue that frame-to-board coordinate mapping will be off by kGridLineWidth/2 at the edges...
-		float frameadd = (kGridLineWidth / 2);
+		float frameadd = (lineWidth / 2);
 		add += (count == 0 ? frameadd : (count == gridSize ? -frameadd : 0));
         
         // draw with paths...
@@ -64,7 +84,7 @@
     CGFloat _y		= rect.origin.y;
     CGFloat _w		= rect.size.width;
     CGFloat _h		= rect.size.height;
-    CGFloat _whmod	= (kDotSquareWH / 2);
+    CGFloat _whmod	= (starPointDiameter / 2);
     
     
     CGPoint tl = CGPointMake(_x + add, _y + add);
@@ -74,22 +94,22 @@
     
     CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, 1.0);
     CGContextSetRGBFillColor(context, 0.0, 0.0, 0.0, 1.0);
-    CGContextStrokeEllipseInRect(context, CGRectMake(tl.x - _whmod, tl.y - _whmod, kDotSquareWH, kDotSquareWH));
-    CGContextStrokeEllipseInRect(context, CGRectMake(tr.x - _whmod, tr.y - _whmod, kDotSquareWH, kDotSquareWH));
-    CGContextStrokeEllipseInRect(context, CGRectMake(br.x - _whmod, br.y - _whmod, kDotSquareWH, kDotSquareWH));
-    CGContextStrokeEllipseInRect(context, CGRectMake(bl.x - _whmod, bl.y - _whmod, kDotSquareWH, kDotSquareWH));
+    CGContextStrokeEllipseInRect(context, CGRectMake(tl.x - _whmod, tl.y - _whmod, starPointDiameter, starPointDiameter));
+    CGContextStrokeEllipseInRect(context, CGRectMake(tr.x - _whmod, tr.y - _whmod, starPointDiameter, starPointDiameter));
+    CGContextStrokeEllipseInRect(context, CGRectMake(br.x - _whmod, br.y - _whmod, starPointDiameter, starPointDiameter));
+    CGContextStrokeEllipseInRect(context, CGRectMake(bl.x - _whmod, bl.y - _whmod, starPointDiameter, starPointDiameter));
     
-    CGContextFillEllipseInRect(context, CGRectMake(tl.x - _whmod, tl.y - _whmod, kDotSquareWH, kDotSquareWH));
-    CGContextFillEllipseInRect(context, CGRectMake(tr.x - _whmod, tr.y - _whmod, kDotSquareWH, kDotSquareWH));
-    CGContextFillEllipseInRect(context, CGRectMake(br.x - _whmod, br.y - _whmod, kDotSquareWH, kDotSquareWH));
-    CGContextFillEllipseInRect(context, CGRectMake(bl.x - _whmod, bl.y - _whmod, kDotSquareWH, kDotSquareWH));
+    CGContextFillEllipseInRect(context, CGRectMake(tl.x - _whmod, tl.y - _whmod, starPointDiameter, starPointDiameter));
+    CGContextFillEllipseInRect(context, CGRectMake(tr.x - _whmod, tr.y - _whmod, starPointDiameter, starPointDiameter));
+    CGContextFillEllipseInRect(context, CGRectMake(br.x - _whmod, br.y - _whmod, starPointDiameter, starPointDiameter));
+    CGContextFillEllipseInRect(context, CGRectMake(bl.x - _whmod, bl.y - _whmod, starPointDiameter, starPointDiameter));
     
     // draw the center dot (if needed) and the other side dots (if needed)
     if (numDots > 4) {
         CGFloat _wd2 = (_w / 2);
         CGFloat _hd2 = (_h / 2);
         
-        CGRect _rect = CGRectMake(_wd2 - _whmod, _hd2 - _whmod, kDotSquareWH, kDotSquareWH);
+        CGRect _rect = CGRectMake(_wd2 - _whmod, _hd2 - _whmod, starPointDiameter, starPointDiameter);
         CGContextStrokeEllipseInRect(context, _rect);
         CGContextFillEllipseInRect(context, _rect);
         
@@ -101,15 +121,15 @@
             
             CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, 1.0);
             CGContextSetRGBFillColor(context, 0.0, 0.0, 0.0, 1.0);
-            CGContextStrokeEllipseInRect(context, CGRectMake(tl.x - _whmod, tl.y - _whmod, kDotSquareWH, kDotSquareWH));
-            CGContextStrokeEllipseInRect(context, CGRectMake(tr.x - _whmod, tr.y - _whmod, kDotSquareWH, kDotSquareWH));
-            CGContextStrokeEllipseInRect(context, CGRectMake(br.x - _whmod, br.y - _whmod, kDotSquareWH, kDotSquareWH));
-            CGContextStrokeEllipseInRect(context, CGRectMake(bl.x - _whmod, bl.y - _whmod, kDotSquareWH, kDotSquareWH));
+            CGContextStrokeEllipseInRect(context, CGRectMake(tl.x - _whmod, tl.y - _whmod, starPointDiameter, starPointDiameter));
+            CGContextStrokeEllipseInRect(context, CGRectMake(tr.x - _whmod, tr.y - _whmod, starPointDiameter, starPointDiameter));
+            CGContextStrokeEllipseInRect(context, CGRectMake(br.x - _whmod, br.y - _whmod, starPointDiameter, starPointDiameter));
+            CGContextStrokeEllipseInRect(context, CGRectMake(bl.x - _whmod, bl.y - _whmod, starPointDiameter, starPointDiameter));
             
-            CGContextFillEllipseInRect(context, CGRectMake(tl.x - _whmod, tl.y - _whmod, kDotSquareWH, kDotSquareWH));
-            CGContextFillEllipseInRect(context, CGRectMake(tr.x - _whmod, tr.y - _whmod, kDotSquareWH, kDotSquareWH));
-            CGContextFillEllipseInRect(context, CGRectMake(br.x - _whmod, br.y - _whmod, kDotSquareWH, kDotSquareWH));
-            CGContextFillEllipseInRect(context, CGRectMake(bl.x - _whmod, bl.y - _whmod, kDotSquareWH, kDotSquareWH));
+            CGContextFillEllipseInRect(context, CGRectMake(tl.x - _whmod, tl.y - _whmod, starPointDiameter, starPointDiameter));
+            CGContextFillEllipseInRect(context, CGRectMake(tr.x - _whmod, tr.y - _whmod, starPointDiameter, starPointDiameter));
+            CGContextFillEllipseInRect(context, CGRectMake(br.x - _whmod, br.y - _whmod, starPointDiameter, starPointDiameter));
+            CGContextFillEllipseInRect(context, CGRectMake(bl.x - _whmod, bl.y - _whmod, starPointDiameter, starPointDiameter));
         }
     }
 	

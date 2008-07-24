@@ -15,6 +15,7 @@
 NSString * const kGoMarkerOptionTemporaryMarker = @"MarkerIsTemporary";
 NSString * const kGoMarkerOptionColor = @"MarkerColor";
 NSString * const kGoMarkerOptionLabel = @"MarkerLabel";
+NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
 
 @interface MarkerLayer (KnownPrivate)
 - (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options;

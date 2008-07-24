@@ -65,12 +65,16 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
     [_allMarkers replaceObjectAtIndex:idx withObject:[NSNull null]];
 }
 
+#define _stoneWiggle(x) ((((rand() % 21) - 10)/10.0) * (x))
+
 - (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options
 {    
     NSUInteger boardSize = [[uGoSettings sharedSettings] boardSize];
     CGFloat lineSep = self.frame.size.width / (boardSize - 1);
     CGFloat stoneSize = lineSep * .95;
     CALayer *markerLayer = [CALayer layer];
+    BOOL wiggleStone = YES;
+    if ([options valueForKey:kGoMarkerAllowWiggle]) wiggleStone = [[options valueForKey:kGoMarkerAllowWiggle] boolValue];
     
     NSUInteger idx = (boardLocation.x - 1) + ((boardLocation.y - 1) * boardSize);
     NSAssert4([_allMarkers count] > idx, @"Request to add a marker at location (%dx%d) that is beyond the board size (%dx%d)", boardLocation.x, boardLocation.y, boardSize, boardSize);    
@@ -87,8 +91,15 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
     [markerLayer setValue:[NSNumber numberWithInt:type] forKey:kMarkerTypeKey];
     
     CGPoint vpoint;
+    // Perfect placement makes for a boring looking board. On a real board, the stones are slightly larger
+    //  than the line width, forcing imperfect placement.
+    // We should mix things up a bit. However, we need to make sure the stones don't overlap. 
+    // For now, space between the stones and a small tolerance should be ok. 
+    // In the future we can come up with something better.
     vpoint.x = (boardLocation.x - 1) * lineSep;
+    if (wiggleStone) vpoint.x += _stoneWiggle(lineSep * 0.03);
     vpoint.y = (boardLocation.y - 1) * lineSep;
+    if (wiggleStone) vpoint.y += _stoneWiggle(lineSep * 0.03);
     markerLayer.frame = CGRectMake(vpoint.x - stoneSize/2.0, vpoint.y - stoneSize/2.0, stoneSize, stoneSize);
     markerLayer.delegate = self;
     [self addSublayer:markerLayer];
