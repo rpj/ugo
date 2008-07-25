@@ -17,6 +17,13 @@
 		289233AE0DB2D0DB0083E9F9 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A90DB2D0DB0083E9F9 /* MainViewController.m */; };
 		289233AF0DB2D0DB0083E9F9 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233AB0DB2D0DB0083E9F9 /* RootViewController.m */; };
 		289233B00DB2D0DB0083E9F9 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233AD0DB2D0DB0083E9F9 /* FlipsideViewController.m */; };
+		4355750D0E3A498600F1D159 /* GameSettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4355750C0E3A498600F1D159 /* GameSettings.xib */; };
+		4355750F0E3A499100F1D159 /* BoardSettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4355750E0E3A499100F1D159 /* BoardSettings.xib */; };
+		435575110E3A499B00F1D159 /* AboutSettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 435575100E3A499B00F1D159 /* AboutSettings.xib */; };
+		435575320E3A4E1500F1D159 /* GameSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 435575310E3A4E1500F1D159 /* GameSettingsViewController.m */; };
+		435575350E3A4E1E00F1D159 /* BoardSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 435575340E3A4E1E00F1D159 /* BoardSettingsViewController.m */; };
+		435578090E3A793000F1D159 /* AboutSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 435578080E3A793000F1D159 /* AboutSettingsViewController.m */; };
+		435578210E3A79E600F1D159 /* legal.html in Resources */ = {isa = PBXBuildFile; fileRef = 435578200E3A79E600F1D159 /* legal.html */; };
 		43B3F2700E3592A500D4B02B /* MarkerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B3F26F0E3592A500D4B02B /* MarkerLayer.m */; };
 		43BC12B70E35B9E300431B28 /* GridLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC12B60E35B9E300431B28 /* GridLayer.m */; };
 		43BC14BA0E36594500431B28 /* MarkerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC14B90E36594500431B28 /* MarkerController.m */; };
@@ -65,6 +72,16 @@
 		289233AD0DB2D0DB0083E9F9 /* FlipsideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlipsideViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* uGo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uGo_Prefix.pch; sourceTree = "<group>"; };
+		4355750C0E3A498600F1D159 /* GameSettings.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GameSettings.xib; sourceTree = "<group>"; };
+		4355750E0E3A499100F1D159 /* BoardSettings.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BoardSettings.xib; sourceTree = "<group>"; };
+		435575100E3A499B00F1D159 /* AboutSettings.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AboutSettings.xib; sourceTree = "<group>"; };
+		435575300E3A4E1500F1D159 /* GameSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameSettingsViewController.h; sourceTree = "<group>"; };
+		435575310E3A4E1500F1D159 /* GameSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameSettingsViewController.m; sourceTree = "<group>"; };
+		435575330E3A4E1E00F1D159 /* BoardSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardSettingsViewController.h; sourceTree = "<group>"; };
+		435575340E3A4E1E00F1D159 /* BoardSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoardSettingsViewController.m; sourceTree = "<group>"; };
+		435578070E3A793000F1D159 /* AboutSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutSettingsViewController.h; sourceTree = "<group>"; };
+		435578080E3A793000F1D159 /* AboutSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutSettingsViewController.m; sourceTree = "<group>"; };
+		435578200E3A79E600F1D159 /* legal.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = legal.html; sourceTree = "<group>"; };
 		43B3F26E0E3592A500D4B02B /* MarkerLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkerLayer.h; sourceTree = "<group>"; };
 		43B3F26F0E3592A500D4B02B /* MarkerLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkerLayer.m; sourceTree = "<group>"; };
 		43BC12B50E35B9E300431B28 /* GridLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridLayer.h; sourceTree = "<group>"; };
@@ -187,17 +204,15 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				94C4B9850E368B2500739E57 /* GobanStones */,
-				94FD82B60E31827A000611DC /* goicon.png */,
-				948586540E3141280087D7CD /* gradient.png */,
-				9475F1580E3137990053C4BE /* grad.png */,
-				946A4E3F0E30F17100F5659E /* board1024.png */,
-				43BC16780E36F87700431B28 /* board512.png */,
-				94C4D4CF0E2AE164007A76B5 /* goboard.png */,
+				4355750A0E3A495A00F1D159 /* Images */,
 				280E754A0DD40C5E005A515E /* FlipsideView.xib */,
 				280E754B0DD40C5E005A515E /* MainView.xib */,
 				280E754C0DD40C5E005A515E /* MainWindow.xib */,
+				4355750C0E3A498600F1D159 /* GameSettings.xib */,
+				4355750E0E3A499100F1D159 /* BoardSettings.xib */,
+				435575100E3A499B00F1D159 /* AboutSettings.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
+				435578200E3A79E600F1D159 /* legal.html */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -211,6 +226,20 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4355750A0E3A495A00F1D159 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				94C4B9850E368B2500739E57 /* GobanStones */,
+				94FD82B60E31827A000611DC /* goicon.png */,
+				948586540E3141280087D7CD /* gradient.png */,
+				9475F1580E3137990053C4BE /* grad.png */,
+				946A4E3F0E30F17100F5659E /* board1024.png */,
+				43BC16780E36F87700431B28 /* board512.png */,
+				94C4D4CF0E2AE164007A76B5 /* goboard.png */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 		43BC144B0E35CFC700431B28 /* Parser */ = {
@@ -268,6 +297,12 @@
 			children = (
 				289233AC0DB2D0DB0083E9F9 /* FlipsideViewController.h */,
 				289233AD0DB2D0DB0083E9F9 /* FlipsideViewController.m */,
+				435575300E3A4E1500F1D159 /* GameSettingsViewController.h */,
+				435575310E3A4E1500F1D159 /* GameSettingsViewController.m */,
+				435575330E3A4E1E00F1D159 /* BoardSettingsViewController.h */,
+				435575340E3A4E1E00F1D159 /* BoardSettingsViewController.m */,
+				435578070E3A793000F1D159 /* AboutSettingsViewController.h */,
+				435578080E3A793000F1D159 /* AboutSettingsViewController.m */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -392,6 +427,10 @@
 				94C4B9BF0E368BC300739E57 /* WhiteStone130-9.png in Resources */,
 				94C4B9C30E368D4600739E57 /* BlackStone130-0.png in Resources */,
 				43BC16790E36F87700431B28 /* board512.png in Resources */,
+				4355750D0E3A498600F1D159 /* GameSettings.xib in Resources */,
+				4355750F0E3A499100F1D159 /* BoardSettings.xib in Resources */,
+				435575110E3A499B00F1D159 /* AboutSettings.xib in Resources */,
+				435578210E3A79E600F1D159 /* legal.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,6 +454,9 @@
 				43BC15720E36609D00431B28 /* FlatTheme.m in Sources */,
 				43BC15C20E36647E00431B28 /* MarkerTheme.m in Sources */,
 				94C4B9800E36899B00739E57 /* GobanStonesTheme.m in Sources */,
+				435575320E3A4E1500F1D159 /* GameSettingsViewController.m in Sources */,
+				435575350E3A4E1E00F1D159 /* BoardSettingsViewController.m in Sources */,
+				435578090E3A793000F1D159 /* AboutSettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

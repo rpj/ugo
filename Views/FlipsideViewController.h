@@ -10,18 +10,17 @@
 
 @class RootViewController;
 
-@interface FlipsideViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate> {
+@interface FlipsideViewController : UIViewController <UITabBarControllerDelegate> {
     RootViewController*             _rootViewController;
     
-    IBOutlet UISegmentedControl*	_sizeSel;
-    IBOutlet UIPickerView*          _picker;
-    
-    BOOL                            _isLoading;
+    IBOutlet UITabBarController *   _tabBarController;
+    IBOutlet UINavigationBar *      _navBar;
+    IBOutlet UINavigationItem *     _navBarTitle;
 }
 
 @property (nonatomic,assign) RootViewController *rootViewController;
+@property (nonatomic,assign) UITabBarController *tabBarController;
 
-- (IBAction) selectorChanged;
 - (IBAction) donePressed;
 
 @end
