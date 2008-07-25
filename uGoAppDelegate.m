@@ -12,6 +12,8 @@
 #import "MarkerController.h"
 #import "BoardView.h"
 
+#import "ParserBridge.h"
+
 @implementation uGoAppDelegate
 
 
@@ -31,6 +33,9 @@
     _markerController.boardView = rootViewController.mainViewController.boardView;
     
     srand(time(NULL));
+	
+	ParserBridge* pB = [[[ParserBridge alloc] init] autorelease];
+	[pB loadSGFFromPath: [[NSBundle mainBundle] pathForResource:@"test" ofType:@"sgf"]];
 }
 
 

@@ -52,6 +52,8 @@
 		94B1E49B0E3A894400A4A133 /* gameinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC14580E35D34200431B28 /* gameinfo.c */; };
 		94B1E49C0E3A894400A4A133 /* execute.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC145A0E35D34200431B28 /* execute.c */; };
 		94B1E49D0E3A894500A4A133 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC145B0E35D34200431B28 /* main.c */; };
+		94B1E4B20E3A8A2900A4A133 /* ParserBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 94B1E4B10E3A8A2900A4A133 /* ParserBridge.m */; };
+		94B1E4C50E3A8D8000A4A133 /* test2.sgf in Resources */ = {isa = PBXBuildFile; fileRef = 94B1E4C40E3A8D8000A4A133 /* test2.sgf */; };
 		94C4B9800E36899B00739E57 /* GobanStonesTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 94C4B97F0E36899B00739E57 /* GobanStonesTheme.m */; };
 		94C4B9B40E368BC300739E57 /* WhiteStone130-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9A60E368BC300739E57 /* WhiteStone130-0.png */; };
 		94C4B9B50E368BC300739E57 /* WhiteStone130-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9A70E368BC300739E57 /* WhiteStone130-1.png */; };
@@ -143,6 +145,9 @@
 		946A4E3F0E30F17100F5659E /* board1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = board1024.png; sourceTree = "<group>"; };
 		9475F1580E3137990053C4BE /* grad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grad.png; sourceTree = "<group>"; };
 		948586540E3141280087D7CD /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradient.png; sourceTree = "<group>"; };
+		94B1E4B00E3A8A2900A4A133 /* ParserBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParserBridge.h; sourceTree = "<group>"; };
+		94B1E4B10E3A8A2900A4A133 /* ParserBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParserBridge.m; sourceTree = "<group>"; };
+		94B1E4C40E3A8D8000A4A133 /* test2.sgf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test2.sgf; sourceTree = "<group>"; };
 		94C4B97E0E36899B00739E57 /* GobanStonesTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GobanStonesTheme.h; sourceTree = "<group>"; };
 		94C4B97F0E36899B00739E57 /* GobanStonesTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GobanStonesTheme.m; sourceTree = "<group>"; };
 		94C4B9A60E368BC300739E57 /* WhiteStone130-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteStone130-0.png"; sourceTree = "<group>"; };
@@ -228,6 +233,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				94B1E4C40E3A8D8000A4A133 /* test2.sgf */,
 				4355750A0E3A495A00F1D159 /* Images */,
 				280E754A0DD40C5E005A515E /* FlipsideView.xib */,
 				280E754B0DD40C5E005A515E /* MainView.xib */,
@@ -353,6 +359,8 @@
 				43437EF90E3AF688004C60B8 /* GoPlayer.m */,
 				43437EFB0E3AF69A004C60B8 /* GoLocalPlayer.h */,
 				43437EFC0E3AF69A004C60B8 /* GoLocalPlayer.m */,
+				94B1E4B00E3A8A2900A4A133 /* ParserBridge.h */,
+				94B1E4B10E3A8A2900A4A133 /* ParserBridge.m */,
 			);
 			path = GameModel;
 			sourceTree = "<group>";
@@ -471,6 +479,7 @@
 				4355750F0E3A499100F1D159 /* BoardSettings.xib in Resources */,
 				435575110E3A499B00F1D159 /* AboutSettings.xib in Resources */,
 				435578210E3A79E600F1D159 /* legal.html in Resources */,
+				94B1E4C50E3A8D8000A4A133 /* test2.sgf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -511,6 +520,7 @@
 				43437EFA0E3AF688004C60B8 /* GoPlayer.m in Sources */,
 				43437EFD0E3AF69A004C60B8 /* GoLocalPlayer.m in Sources */,
 				43437F020E3AF6CB004C60B8 /* GoBoard.m in Sources */,
+				94B1E4B20E3A8A2900A4A133 /* ParserBridge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
