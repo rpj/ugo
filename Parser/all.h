@@ -16,7 +16,7 @@
 						** compiler clean up anyway (which is much faster)
 						*/
 
-/* #define VERSION_NO_MAIN */		/* In case you've written a new main()
+#define VERSION_NO_MAIN		/* In case you've written a new main()
 									** e.g. for writing a mouse-interface
 									** (drag & drop shell)
 									*/

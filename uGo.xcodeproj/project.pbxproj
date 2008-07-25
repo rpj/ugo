@@ -37,6 +37,16 @@
 		946A4E400E30F17100F5659E /* board1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 946A4E3F0E30F17100F5659E /* board1024.png */; };
 		9475F1590E3137990053C4BE /* grad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9475F1580E3137990053C4BE /* grad.png */; };
 		948586550E3141280087D7CD /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 948586540E3141280087D7CD /* gradient.png */; };
+		94B1E4940E3A893E00A4A133 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC144E0E35D34200431B28 /* util.c */; };
+		94B1E4950E3A893F00A4A133 /* load.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC144D0E35D34200431B28 /* load.c */; };
+		94B1E4960E3A893F00A4A133 /* properties.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC144F0E35D34200431B28 /* properties.c */; };
+		94B1E4970E3A894000A4A133 /* parse.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC14510E35D34200431B28 /* parse.c */; };
+		94B1E4980E3A894100A4A133 /* save.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC14530E35D34200431B28 /* save.c */; };
+		94B1E4990E3A894200A4A133 /* parse2.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC14540E35D34200431B28 /* parse2.c */; };
+		94B1E49A0E3A894300A4A133 /* strict.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC14560E35D34200431B28 /* strict.c */; };
+		94B1E49B0E3A894400A4A133 /* gameinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC14580E35D34200431B28 /* gameinfo.c */; };
+		94B1E49C0E3A894400A4A133 /* execute.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC145A0E35D34200431B28 /* execute.c */; };
+		94B1E49D0E3A894500A4A133 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC145B0E35D34200431B28 /* main.c */; };
 		94C4B9800E36899B00739E57 /* GobanStonesTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 94C4B97F0E36899B00739E57 /* GobanStonesTheme.m */; };
 		94C4B9B40E368BC300739E57 /* WhiteStone130-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9A60E368BC300739E57 /* WhiteStone130-0.png */; };
 		94C4B9B50E368BC300739E57 /* WhiteStone130-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9A70E368BC300739E57 /* WhiteStone130-1.png */; };
@@ -381,7 +391,7 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "uGo" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "ugo" */;
 			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -457,6 +467,16 @@
 				435575320E3A4E1500F1D159 /* GameSettingsViewController.m in Sources */,
 				435575350E3A4E1E00F1D159 /* BoardSettingsViewController.m in Sources */,
 				435578090E3A793000F1D159 /* AboutSettingsViewController.m in Sources */,
+				94B1E4940E3A893E00A4A133 /* util.c in Sources */,
+				94B1E4950E3A893F00A4A133 /* load.c in Sources */,
+				94B1E4960E3A893F00A4A133 /* properties.c in Sources */,
+				94B1E4970E3A894000A4A133 /* parse.c in Sources */,
+				94B1E4980E3A894100A4A133 /* save.c in Sources */,
+				94B1E4990E3A894200A4A133 /* parse2.c in Sources */,
+				94B1E49A0E3A894300A4A133 /* strict.c in Sources */,
+				94B1E49B0E3A894400A4A133 /* gameinfo.c in Sources */,
+				94B1E49C0E3A894400A4A133 /* execute.c in Sources */,
+				94B1E49D0E3A894500A4A133 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -536,7 +556,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "uGo" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "ugo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
