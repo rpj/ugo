@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "GoMarker.h"
 
-#define kBoardSize 1280
-
 @class GridLayer, MarkerLayer;
 @protocol BoardViewDelegate;
 
@@ -19,11 +17,15 @@
     MarkerLayer*        _markerLayer;
     
     id                  _delegate;
+    
+    CGFloat             _boardSize;
 }
 
 @property (nonatomic, retain) GridLayer* gridLayer;
 @property (nonatomic, retain) MarkerLayer* markerLayer;
 @property (nonatomic, assign) id<BoardViewDelegate> delegate;
+
+@property (nonatomic, assign) CGFloat boardSize;
 
 - (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options;
 - (void) removeMarkerAtLocation:(CGPoint)boardLocation;

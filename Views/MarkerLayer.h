@@ -17,6 +17,8 @@
 @interface MarkerLayer : CALayer {
     NSMutableArray*     _allMarkers;
     MarkerTheme*        _theme;
+    
+    NSUInteger          _boardSize;
 }
 
 @property(nonatomic, retain) MarkerTheme *theme;

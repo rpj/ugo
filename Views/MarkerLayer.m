@@ -24,9 +24,9 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
 {
     [self removeAllMarkers];
     [_allMarkers release];
-    NSUInteger boardSize = [[uGoSettings sharedSettings] boardSize];
-    _allMarkers = [[NSMutableArray alloc] initWithCapacity:boardSize * boardSize];
-    for (int i = 0; i < boardSize * boardSize; i++) [_allMarkers addObject:[NSNull null]];
+    _boardSize = [[uGoSettings sharedSettings] boardSize];
+    _allMarkers = [[NSMutableArray alloc] initWithCapacity:_boardSize * _boardSize];
+    for (int i = 0; i < _boardSize * _boardSize; i++) [_allMarkers addObject:[NSNull null]];
 }
 
 - (void) _themeChanged:(NSNotification *)notif
@@ -37,6 +37,8 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
 - (id) init
 {
     if ((self = [super init])) {
+        [self removeAllAnimations];
+        
         [self _gridSizeChanged:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_gridSizeChanged:) name:kBoardSizeChangedNotification object:nil];
         
@@ -57,9 +59,8 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
 
 - (void) removeMarkerAtLocation:(CGPoint)boardLocation
 {
-    NSUInteger boardSize = [[uGoSettings sharedSettings] boardSize];
-    NSUInteger idx = (boardLocation.x - 1) + ((boardLocation.y - 1) * boardSize);
-    NSAssert4([_allMarkers count] > idx, @"Request to remove a marker at location (%dx%d) that is beyond the board size (%dx%d)", boardLocation.x, boardLocation.y, boardSize, boardSize);
+    NSUInteger idx = (boardLocation.x - 1) + ((boardLocation.y - 1) * _boardSize);
+    NSAssert4([_allMarkers count] > idx, @"Request to remove a marker at location (%dx%d) that is beyond the board size (%dx%d)", boardLocation.x, boardLocation.y, _boardSize, _boardSize);
     CALayer *markerLayer = [_allMarkers objectAtIndex:idx];
     if (markerLayer && (NSNull *)markerLayer != [NSNull null]) [markerLayer removeFromSuperlayer];
     [_allMarkers replaceObjectAtIndex:idx withObject:[NSNull null]];
@@ -67,17 +68,38 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
 
 #define _stoneWiggle(x) ((((rand() % 21) - 10)/10.0) * (x))
 
-- (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options
-{    
-    NSUInteger boardSize = [[uGoSettings sharedSettings] boardSize];
-    CGFloat lineSep = self.frame.size.width / (boardSize - 1);
+- (void) _resizeMarkerLayer:(CALayer *)markerLayer atLocation:(CGPoint)boardLocation
+{
+    CGFloat lineSep = self.frame.size.width / (_boardSize - 1);
     CGFloat stoneSize = lineSep * .95;
+    
+    NSUInteger idx = (boardLocation.x - 1) + ((boardLocation.y - 1) * _boardSize);
+    NSAssert4([_allMarkers count] > idx, @"Request to add a marker at location (%dx%d) that is beyond the board size (%dx%d)", boardLocation.x, boardLocation.y, _boardSize, _boardSize);
+    
+    CGPoint vpoint;
+    // Perfect placement makes for a boring looking board. On a real board, the stones are slightly larger
+    //  than the line width, forcing imperfect placement.
+    // We should mix things up a bit. However, we need to make sure the stones don't overlap. 
+    // For now, space between the stones and a small tolerance should be ok. 
+    // In the future we can come up with something better.
+    vpoint.x = (boardLocation.x - 1) * lineSep;
+    NSNumber *xWiggle = [markerLayer valueForKey:@"xwiggle"];
+    if (xWiggle) vpoint.x += [xWiggle doubleValue];
+    vpoint.y = (boardLocation.y - 1) * lineSep;
+    NSNumber *yWiggle = [markerLayer valueForKey:@"ywiggle"];
+    if (yWiggle) vpoint.y += [yWiggle doubleValue];
+    markerLayer.frame = CGRectMake(vpoint.x - stoneSize/2.0, vpoint.y - stoneSize/2.0, stoneSize, stoneSize);
+    markerLayer.delegate = self;
+}
+
+- (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options
+{
     CALayer *markerLayer = [CALayer layer];
     BOOL wiggleStone = YES;
     if ([options valueForKey:kGoMarkerAllowWiggle]) wiggleStone = [[options valueForKey:kGoMarkerAllowWiggle] boolValue];
     
-    NSUInteger idx = (boardLocation.x - 1) + ((boardLocation.y - 1) * boardSize);
-    NSAssert4([_allMarkers count] > idx, @"Request to add a marker at location (%dx%d) that is beyond the board size (%dx%d)", boardLocation.x, boardLocation.y, boardSize, boardSize);    
+    NSUInteger idx = (boardLocation.x - 1) + ((boardLocation.y - 1) * _boardSize);
+    NSAssert4([_allMarkers count] > idx, @"Request to add a marker at location (%dx%d) that is beyond the board size (%dx%d)", boardLocation.x, boardLocation.y, _boardSize, _boardSize);
     
     CALayer *existingLayer = [_allMarkers objectAtIndex:idx];
     if (existingLayer && (NSNull *)existingLayer != [NSNull null]) [existingLayer removeFromSuperlayer];
@@ -87,21 +109,17 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
         markerLayer.opacity = 0.5;
     }
     
+    CGFloat lineSep = self.frame.size.width / (_boardSize - 1);
+    if (wiggleStone) {
+        [markerLayer setValue:[NSNumber numberWithDouble:_stoneWiggle(lineSep * 0.03)] forKey:@"xwiggle"];
+        [markerLayer setValue:[NSNumber numberWithDouble:_stoneWiggle(lineSep * 0.03)] forKey:@"ywiggle"];
+    }
+    
     if (options) [markerLayer setValue:options forKey:kMarkerOptionsKey];
     [markerLayer setValue:[NSNumber numberWithInt:type] forKey:kMarkerTypeKey];
     
-    CGPoint vpoint;
-    // Perfect placement makes for a boring looking board. On a real board, the stones are slightly larger
-    //  than the line width, forcing imperfect placement.
-    // We should mix things up a bit. However, we need to make sure the stones don't overlap. 
-    // For now, space between the stones and a small tolerance should be ok. 
-    // In the future we can come up with something better.
-    vpoint.x = (boardLocation.x - 1) * lineSep;
-    if (wiggleStone) vpoint.x += _stoneWiggle(lineSep * 0.03);
-    vpoint.y = (boardLocation.y - 1) * lineSep;
-    if (wiggleStone) vpoint.y += _stoneWiggle(lineSep * 0.03);
-    markerLayer.frame = CGRectMake(vpoint.x - stoneSize/2.0, vpoint.y - stoneSize/2.0, stoneSize, stoneSize);
-    markerLayer.delegate = self;
+    [self _resizeMarkerLayer:markerLayer atLocation:boardLocation];
+
     [self addSublayer:markerLayer];
     [markerLayer setNeedsDisplay];
 }
@@ -121,6 +139,24 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
             [_theme drawLabel:[layer valueForKey:kMarkerOptionsKey] inContext:context];
             break;
     }    
+}
+
+- (void)_redrawAllMarkers
+{
+    NSLog(@"Redrawing all markers...");
+    int ii = 0;
+    for (CALayer *marker in _allMarkers) {
+        ii++;
+        if ((NSNull *)marker != [NSNull null]) {
+            CGPoint boardLocation = CGPointMake(ii % _boardSize, (int)(ii / _boardSize) + 1);
+            [self _resizeMarkerLayer:marker atLocation:boardLocation];
+        }
+    }
+}
+
+- (void)drawInContext:(CGContextRef)context
+{
+    [self _redrawAllMarkers];
 }
 
 - (void)removeAllMarkers

@@ -1,6 +1,14 @@
+Code Stuff
 - A real play model. I just wanted to be able to put stones on the board, so I put in a terrible hack
+- Architecture. Yeh, this is a big one.
+
+UI Stuff
 - Get UIScrollView to show the board all the way zoomed out at the start
-- Make sure artwork is acceptable to use
 - Draw labels on the grid
 - Landscape mode
 - Real Go boards are actually rectangular. We should update the grid to the dimensions of a real board
+- Board theme coverflow
+
+Art Stuff
+- Go stone and board artwork. Sen:te doesn't want to share.
+- Art for settings tabs

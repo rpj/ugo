@@ -10,6 +10,7 @@
 #import "MarkerLayer.h"
 #import "GridLayer.h"
 
+#define kBoardStartingSize              320
 #define kGridBorderMultiplier			(0.20)
 
 NSString * const kGoMarkerOptionTemporaryMarker = @"MarkerIsTemporary";
@@ -28,16 +29,37 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
 @synthesize gridLayer = _gridLayer;
 @synthesize markerLayer = _markerLayer;
 @synthesize delegate = _delegate;
+@synthesize boardSize = _boardSize;
 
 - (void) boardSizeDidChange:(NSNotification *)notif
 {
     [_gridLayer setNeedsDisplay];
 }
 
+- (void) _setSublayerFrames
+{
+    
+    CGFloat gridInnerBorder = self.frame.size.width * kGridBorderMultiplier;
+    _gridLayer.frame = CGRectMake((gridInnerBorder/2), (gridInnerBorder/2), 
+                                  self.frame.size.width-gridInnerBorder, 
+                                  self.frame.size.height-gridInnerBorder);
+    _markerLayer.frame = _gridLayer.frame;
+    
+    [_markerLayer setNeedsDisplay];
+    [_gridLayer setNeedsDisplay];
+}
+
+- (void) setFrame:(CGRect)frame
+{
+    super.frame = frame;
+    [self _setSublayerFrames];
+}
+
 - (id) init
 {
     if ((self = [super init])) {        
-        self.frame = CGRectMake(0, 0, kBoardSize, kBoardSize);
+        self.boardSize = kBoardStartingSize;
+        self.frame = CGRectMake(0, 0, _boardSize, _boardSize);
         self.layer.contents = (id)[UIImage imageNamed: @"board512.png"].CGImage;
         
         self.markerLayer = [MarkerLayer layer];
@@ -46,16 +68,14 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
         self.gridLayer = [GridLayer layer];
         [self.layer insertSublayer:_gridLayer below:_markerLayer];
         
-        CGFloat gridInnerBorder = self.frame.size.width * kGridBorderMultiplier;
-        _gridLayer.frame = CGRectMake((gridInnerBorder/2), (gridInnerBorder/2), 
-                                      self.frame.size.width-gridInnerBorder, 
-                                      self.frame.size.height-gridInnerBorder);
-        _markerLayer.frame = _gridLayer.frame;
+        [self _setSublayerFrames];
         
         [_markerLayer setNeedsDisplay];
         [_gridLayer setNeedsDisplay];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(boardSizeDidChange:) name:kBoardSizeChangedNotification object:nil];
+        
+        [self.layer removeAllAnimations];
     }
     return self;
 }

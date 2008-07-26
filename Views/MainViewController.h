@@ -14,6 +14,7 @@
     IBOutlet UIScrollView*          _boardScrollView;
 	
 	BoardView*		_boardView;
+    CGFloat         _boardScale;
 }
 
 @property(readonly) BoardView *boardView;

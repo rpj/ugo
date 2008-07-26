@@ -10,6 +10,15 @@
 
 @implementation GridLayer
 
+- (id) init
+{
+    if ((self = [super init])) {
+        self.needsDisplayOnBoundsChange = YES;
+        [self removeAllAnimations];
+    }
+    return self;
+}
+
 /*
  http://senseis.xmp.net/?EquipmentDimensions
  
@@ -33,6 +42,7 @@
 
 - (void)drawInContext:(CGContextRef)context
 {
+    NSLog(@"Drawing grid");
 	CGRect rect = CGContextGetClipBoundingBox(context);
     NSUInteger gridSize = [[uGoSettings sharedSettings] boardSize] - 1;
     CGFloat lineSep = rect.size.width / gridSize;
