@@ -40,6 +40,12 @@
 #define kStarPointDiameterRatio     0.18182
 #define kLineWidthRatio             0.04545
 
+- (id<CAAction>)actionForKey:(NSString *)key;
+{
+	// return nil to disable animations on this layer
+	return nil;
+}
+
 - (void)drawInContext:(CGContextRef)context
 {
     NSLog(@"Drawing grid");
