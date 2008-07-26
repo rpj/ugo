@@ -10,6 +10,9 @@
 
 
 @implementation ParserBridge
+
+@synthesize boardSize = _boardSize;
+
 - (void) _clearSGFInfo;
 {
 	FreeSGFInfo(&_sgf);
@@ -20,6 +23,8 @@
 {
 	if ((self = [super init])) {
 		[self _clearSGFInfo];
+		
+		_boardSize = 0;
 	}
 	
 	return self;
@@ -70,6 +75,51 @@
 	}
 }
 
+- (NSArray*) _searchForValueWithID:(token)tid startingWithProperty:(struct Property*)start;
+{
+	NSMutableArray* ret = [NSMutableArray array];
+	
+	for (; start; start = start->next) {
+		if (start->id == tid) {
+			struct PropValue* tmp = start->value;
+			
+			for (; tmp; tmp = tmp->next) {
+				// stringWithFormat: is probably too slow for use here, but stringWithCString: worries
+				// me with it's request for a const string...
+				[ret addObject: [NSString stringWithFormat:@"%s", tmp->value]];
+				if (tmp->value2) [ret addObject: [NSString stringWithFormat:@"%s", tmp->value2]];
+			}
+		}
+	}
+	
+	return (NSArray*)ret;
+}
+
+/////// getters/setters
+
+- (NSUInteger) boardSize;
+{
+	if (!_boardSize && _sgf.root) {
+		NSArray *res = [self _searchForValueWithID: TKN_SZ startingWithProperty: _sgf.root->prop];
+		
+		if ([res count])
+			_boardSize = (NSUInteger)[(NSString*)[res objectAtIndex:0] intValue];
+	}
+	
+	return _boardSize;
+}
+
+- (void) setBoardSize:(NSUInteger)newSize;
+{
+	_boardSize = newSize;
+	
+	if (_sgf.root) {
+		// need to find the property pointers and set them; should change the whole buffer if I'm right.
+	}
+}
+
+/////// end getters/setters
+
 - (void) loadSGFFromPath:(NSString*)path;
 {
 	NSFileManager* fMgr = [NSFileManager defaultManager];
@@ -80,6 +130,7 @@
 		NSLog(@"root node is %x", _sgf.root);
 		
 		[self _examineSGF];
+		NSLog(@"\n\ngot board size of: %d", [self boardSize]);
 	}
 }
 @end

@@ -13,7 +13,11 @@
 
 @interface ParserBridge : NSObject {
 	struct SGFInfo	_sgf;
+	
+	NSUInteger _boardSize;
 }
+
+@property (nonatomic) NSUInteger boardSize;
 
 - (void) loadSGFFromPath:(NSString*)path;
 @end
