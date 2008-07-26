@@ -1,0 +1,81 @@
+(;
+GM[1]FF[4]VW[]AP[Many Faces of Go:11.0]
+SZ[19]
+HA[0]
+ST[0]
+PB[Fujisawa Shuko]
+PW[Kobayashi Koichi]
+DT[1987-03-02]
+KM[5.5]
+RU[Japanese]
+RE[B+ 0.5]
+SO[Go World #100]
+US[SFG file created by Chris Garlock and William Cobb using SmartGo]
+EV[12th Meijin League]
+BR[9p]
+WR[Kisei]
+C[This game record and the comments are taken from Go World #100 \
+(Winter 2003-04), an excellent English language go magazine. \
+It is part of an article called "Original Moves".
+
+The "original move" is Black 13.
+
+Published in the April 19, 2004 edition of the American Go E-Journal.]
+;B[pd];W[dd];B[pq];W[cp];B[ep];W[eq];B[fq];W[dq]
+;B[fp];W[cn];B[em];W[mp]
+C[White 12 is an unusual approach move. White wants to stop Black \
+from building a moyo; White 12 tries to strike a balance between \
+attacking the right side and the group to the left. If Black \
+makes the ordinary answer of X (Q5) or Y (P4), White will be \
+happy to extend to Z (K4). Black came up with an answer that \
+was unexpected but immediately convincing.
+
+Where do you think Shuko will play?]
+LB[jp:Z][op:Y][po:X]
+;B[no]
+C[Striking at 13, a kind of shoulder hit, is a move that exemplifies \
+the bold, original style of Fujisawa Shuko. White 12 had looked \
+like an interesting idea, but Black 13 turned out to be so severe \
+that Kobayashi commented that he should have played at X (O3).
+
+In the game, Kobayashi took sente with 14 and 16 so that he could \
+switch to the right side with 18.]
+LB[nq:X]
+;W[jp];B[np];W[mq];B[nq];W[qj]
+;B[mo];W[hp];B[ho]
+C[Instead of 21, Black could have played more aggressively by peeping \
+at X (J5).]
+LB[io:X]
+;W[io];B[hn];W[in];B[hm];W[jl]
+C[Black was probably not completely satisfied when White moved \
+out into the center up to 26. Even so, attacking with 27 secured \
+a big right side territory, so Black had an easy game.]
+;B[ql];W[qg]
+;B[qe];W[mc];B[oc];W[jc];B[kq];W[kp];B[mr];W[ik];B[dp];W[co]
+;B[fr];W[dr];B[br];W[cq];B[dl];W[cf];B[bm];W[ec];B[fd];W[fc]
+;B[hd];W[ie];B[he];W[if];B[gg];W[ih];B[dg];W[cg];B[dh];W[ch]
+;B[di];W[pl];B[qm]
+C[When Black has to give way with 61, the position is not good \
+for him.]
+;W[qk];B[pg];W[pm];B[qn];W[ph];B[og];W[pn]
+;B[qo];W[oh];B[ng];W[nh];B[mg];W[nb];B[ob];W[hb];B[id];W[ic]
+;B[jd];W[li];B[ml];W[cm];B[cl];W[rf];B[qf];W[rh];B[kc];W[kb]
+;B[kd];W[lc];B[bn];W[bo];B[ds];W[es];B[er];W[cs];B[bq];W[an]
+C[White 98 is the losing move.]
+
+;B[bk]
+C[When Black jumps to 99, ...]
+;W[am];B[bl];W[ar];B[bi]
+C[... then jumps to 103, ...]
+;W[lr];B[lq];W[lp];B[kr];W[mn]
+;B[ln];W[lm];B[nn];W[mm];B[nm];W[ll];B[af]
+C[... followed by 115, he has a win.]
+;W[be];B[ok];W[mk]
+;B[nl];W[pk];B[iq];W[hq];B[ir];W[ip];B[re];W[se];B[sd];W[sf]
+;B[rc];W[rl];B[rm];W[gk];B[gi];W[hi];B[hh];W[hg];B[gh];W[hj]
+;B[lo];W[rk];B[po];W[oa];B[jh];W[ji];B[jg];W[ig];B[pa];W[na]
+;B[pb]
+C[Moves after 140 omitted.
+
+Black wins by a half point.]
+)
