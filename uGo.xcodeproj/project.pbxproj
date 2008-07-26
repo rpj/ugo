@@ -36,6 +36,7 @@
 		43BC15C20E36647E00431B28 /* MarkerTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC15C10E36647E00431B28 /* MarkerTheme.m */; };
 		43BC16790E36F87700431B28 /* board512.png in Resources */ = {isa = PBXBuildFile; fileRef = 43BC16780E36F87700431B28 /* board512.png */; };
 		43BFB9450E340A2000846875 /* uGoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BFB9440E340A2000846875 /* uGoSettings.m */; };
+		9431826D0E3BEC7D007069AE /* ShukoOriginalMove.sgf in Resources */ = {isa = PBXBuildFile; fileRef = 9431826C0E3BEC7D007069AE /* ShukoOriginalMove.sgf */; };
 		946A49390E30485900F5659E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946A49380E30485900F5659E /* QuartzCore.framework */; };
 		946A4A5E0E305D2A00F5659E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946A4A5D0E305D2A00F5659E /* CoreGraphics.framework */; };
 		946A4A910E305EB400F5659E /* BoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 946A4A900E305EB400F5659E /* BoardView.m */; };
@@ -138,6 +139,7 @@
 		43BFB9430E340A2000846875 /* uGoSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uGoSettings.h; sourceTree = "<group>"; };
 		43BFB9440E340A2000846875 /* uGoSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = uGoSettings.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9431826C0E3BEC7D007069AE /* ShukoOriginalMove.sgf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ShukoOriginalMove.sgf; sourceTree = "<group>"; };
 		946A49380E30485900F5659E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		946A4A5D0E305D2A00F5659E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		946A4A8F0E305EB400F5659E /* BoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardView.h; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9431826C0E3BEC7D007069AE /* ShukoOriginalMove.sgf */,
 				94B1E4C40E3A8D8000A4A133 /* test2.sgf */,
 				4355750A0E3A495A00F1D159 /* Images */,
 				280E754A0DD40C5E005A515E /* FlipsideView.xib */,
@@ -480,6 +483,7 @@
 				435575110E3A499B00F1D159 /* AboutSettings.xib in Resources */,
 				435578210E3A79E600F1D159 /* legal.html in Resources */,
 				94B1E4C50E3A8D8000A4A133 /* test2.sgf in Resources */,
+				9431826D0E3BEC7D007069AE /* ShukoOriginalMove.sgf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

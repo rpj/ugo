@@ -12,19 +12,30 @@
 @implementation ParserBridge
 
 @synthesize boardSize = _boardSize;
+@synthesize whiteName = _whiteName;
+@synthesize blackName = _blackName;
+@synthesize komi = _komi;
+@synthesize handicap = _handicap;
+
+@dynamic isActive;
+@dynamic hash;		// different from [NSObject hash]; it's the [NSString hash] value of the current SGF buffer string
 
 - (void) _clearSGFInfo;
 {
 	FreeSGFInfo(&_sgf);
 	memset((void*)&_sgf, 0, sizeof(struct SGFInfo));
+	
+	// need to clear all member variables so that their getters can update on next call
+	_boardSize = 0;
+	_whiteName = nil;
+	_blackName = nil;
+	_komi = 0;
 }
 
 - (id) init;
 {
 	if ((self = [super init])) {
 		[self _clearSGFInfo];
-		
-		_boardSize = 0;
 	}
 	
 	return self;
@@ -95,19 +106,17 @@
 	return (NSArray*)ret;
 }
 
-/////// getters/setters
-
-- (NSUInteger) boardSize;
+- (void*) _findFirstValueWithID:(token)tid startingWithProperty:(struct Property*)start;
 {
-	if (!_boardSize && _sgf.root) {
-		NSArray *res = [self _searchForValueWithID: TKN_SZ startingWithProperty: _sgf.root->prop];
-		
-		if ([res count])
-			_boardSize = (NSUInteger)[(NSString*)[res objectAtIndex:0] intValue];
-	}
+	NSArray* tmp = [self _searchForValueWithID: tid startingWithProperty: start];
+	void* ret = nil;
 	
-	return _boardSize;
+	if ([tmp count]) ret = [tmp objectAtIndex:0];
+	
+	return ret;
 }
+
+/////// getters/setters
 
 - (void) setBoardSize:(NSUInteger)newSize;
 {
@@ -118,6 +127,65 @@
 	}
 }
 
+- (NSUInteger) boardSize;
+{
+	if (!_boardSize && _sgf.root)
+		_boardSize = (NSUInteger)[(NSString*)[self _findFirstValueWithID: TKN_SZ startingWithProperty: _sgf.root->prop] intValue];
+	
+	return _boardSize;
+}
+
+- (void) setWhiteName:(NSString*)newName;
+{
+	if (newName) {
+		[_whiteName release];
+		_whiteName = [newName copy];
+		
+		// do stuff...
+	}
+}
+
+- (NSString*) whiteName;
+{
+	if (!_whiteName && _sgf.root)
+		self.whiteName = (NSString*)[self _findFirstValueWithID: TKN_PW startingWithProperty: _sgf.root->prop];
+	
+	return _whiteName;
+}
+
+- (void) setBlackName:(NSString*)newName;
+{
+	if (newName) {
+		[_blackName release];
+		_blackName = [newName copy];
+		
+		// do stuff...
+	}
+}
+
+- (NSString*) blackName;
+{
+	if (!_blackName && _sgf.root)
+		self.blackName = (NSString*)[self _findFirstValueWithID: TKN_PB startingWithProperty: _sgf.root->prop];
+	
+	return _blackName;
+}
+
+- (BOOL) isActive;
+{
+	return (_sgf.root != NULL);
+}
+
+- (NSUInteger) hash;
+{
+	NSUInteger hash = 0;
+	
+	if (_sgf.buffer)
+		hash = [[NSString stringWithFormat:@"%s", _sgf.buffer] hash];
+	
+	return hash;
+}
+
 /////// end getters/setters
 
 - (void) loadSGFFromPath:(NSString*)path;
@@ -125,12 +193,19 @@
 	NSFileManager* fMgr = [NSFileManager defaultManager];
 	
 	if ([fMgr fileExistsAtPath:path] && [fMgr isReadableFileAtPath:path]) {
+		if (self.isActive)
+			[self _clearSGFInfo];
+		
 		_sgf.name = (char*)[path cStringUsingEncoding:NSASCIIStringEncoding];
 		LoadSGF(&_sgf);
-		NSLog(@"root node is %x", _sgf.root);
+		NSLog(@"Loaded SGF file: %@", path);
 		
-		[self _examineSGF];
-		NSLog(@"\n\ngot board size of: %d", [self boardSize]);
+		//[self _examineSGF];
+		
+		NSLog(@"Got board size of: %d", self.boardSize);
+		NSLog(@"Got white name: %@", self.whiteName);
+		NSLog(@"Got black name: %@", self.blackName);
+		NSLog(@"Got current SGF hash value: 0x%x", self.hash);
 	}
 }
 @end
