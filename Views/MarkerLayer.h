@@ -15,7 +15,8 @@
 @class MarkerTheme;
 
 @interface MarkerLayer : CALayer {
-    NSMutableArray*     _allMarkers;
+    // I'm not sure if using a set is going to be too slow or not. It sure is easier to program.
+    NSMutableSet*       _allMarkers;
     MarkerTheme*        _theme;
     
     NSUInteger          _boardSize;

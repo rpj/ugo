@@ -8,9 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class BoardView;
 
 @interface GoBoard : NSObject {
-
+    BoardView *_boardView;
 }
+
+// not good separation. this needs more thought.
+@property (nonatomic, assign) BoardView *boardView;
 
 @end

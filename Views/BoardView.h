@@ -28,7 +28,7 @@
 @property (nonatomic, assign) CGFloat boardSize;
 
 - (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options;
-- (void) removeMarkerAtLocation:(CGPoint)boardLocation;
+- (void) removeAllMarkersAtLocation:(CGPoint)boardLocation;
 - (void) removeAllMarkers;
 
 @end

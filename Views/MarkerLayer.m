@@ -11,6 +11,8 @@
 
 static NSString * const kMarkerTypeKey = @"MarkerType";
 static NSString * const kMarkerOptionsKey = @"MarkerOptions";
+static NSString * const kMarkerXPos = @"XPosition";
+static NSString * const kMarkerYPos = @"YPosition";
 
 @interface MarkerLayer (KnownStuff)
 - (void)removeAllMarkers;
@@ -27,8 +29,7 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
     [self removeAllMarkers];
     [_allMarkers release];
     _boardSize = [[uGoSettings sharedSettings] boardSize];
-    _allMarkers = [[NSMutableArray alloc] initWithCapacity:_boardSize * _boardSize];
-    for (int i = 0; i < _boardSize * _boardSize; i++) [_allMarkers addObject:[NSNull null]];
+    _allMarkers = [[NSMutableSet alloc] init];
 }
 
 - (void) _themeChanged:(NSNotification *)notif
@@ -60,24 +61,35 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
     [super dealloc];
 }
 
-- (void) removeMarkerAtLocation:(CGPoint)boardLocation
+- (void) removeAllMarkersAtLocation:(CGPoint)boardLocation
 {
-    NSUInteger idx = (boardLocation.x - 1) + ((boardLocation.y - 1) * _boardSize);
-    NSAssert4([_allMarkers count] > idx, @"Request to remove a marker at location (%dx%d) that is beyond the board size (%dx%d)", boardLocation.x, boardLocation.y, _boardSize, _boardSize);
-    CALayer *markerLayer = [_allMarkers objectAtIndex:idx];
-    if (markerLayer && (NSNull *)markerLayer != [NSNull null]) [markerLayer removeFromSuperlayer];
-    [_allMarkers replaceObjectAtIndex:idx withObject:[NSNull null]];
+    CGFloat xpos = boardLocation.x;
+    CGFloat ypos = boardLocation.y;
+    NSMutableSet *layersToRemove = [[NSMutableSet alloc] init];
+    for (CALayer *layer in _allMarkers) {
+        CGFloat foundx = [[layer valueForKey:kMarkerXPos] floatValue];
+        CGFloat foundy = [[layer valueForKey:kMarkerYPos] floatValue];
+        if (foundx == xpos && foundy == ypos) [layersToRemove addObject:layer];
+    }
+    
+    for (CALayer *layer in layersToRemove) {
+        [layer removeFromSuperlayer];
+        [_allMarkers removeObject:layer];
+    }
+    [layersToRemove release];
 }
 
 #define _stoneWiggle(x) ((((rand() % 21) - 10)/10.0) * (x))
 
-- (void) _resizeMarkerLayer:(CALayer *)markerLayer atLocation:(CGPoint)boardLocation
+- (void) _resizeMarkerLayer:(CALayer *)markerLayer
 {
+    NSAssert1([markerLayer valueForKey:kMarkerXPos], @"Could not get a x coordinate for the layer %@", markerLayer);
+    NSAssert1([markerLayer valueForKey:kMarkerYPos], @"Could not get a y coordinate for the layer %@", markerLayer);
+    CGFloat xpos = [[markerLayer valueForKey:kMarkerXPos] floatValue];
+    CGFloat ypos = [[markerLayer valueForKey:kMarkerYPos] floatValue];
+    CGPoint boardLocation = CGPointMake(xpos, ypos);
     CGFloat lineSep = self.frame.size.width / (_boardSize - 1);
     CGFloat stoneSize = lineSep * .95;
-    
-    NSUInteger idx = (boardLocation.x - 1) + ((boardLocation.y - 1) * _boardSize);
-    NSAssert4([_allMarkers count] > idx, @"Request to add a marker at location (%dx%d) that is beyond the board size (%dx%d)", boardLocation.x, boardLocation.y, _boardSize, _boardSize);
     
     CGPoint vpoint;
     // Perfect placement makes for a boring looking board. On a real board, the stones are slightly larger
@@ -101,12 +113,10 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
     BOOL wiggleStone = YES;
     if ([options valueForKey:kGoMarkerAllowWiggle]) wiggleStone = [[options valueForKey:kGoMarkerAllowWiggle] boolValue];
     
-    NSUInteger idx = (boardLocation.x - 1) + ((boardLocation.y - 1) * _boardSize);
-    NSAssert4([_allMarkers count] > idx, @"Request to add a marker at location (%dx%d) that is beyond the board size (%dx%d)", boardLocation.x, boardLocation.y, _boardSize, _boardSize);
+    [markerLayer setValue:[NSNumber numberWithFloat:boardLocation.x] forKey:kMarkerXPos];
+    [markerLayer setValue:[NSNumber numberWithFloat:boardLocation.y] forKey:kMarkerYPos];
     
-    CALayer *existingLayer = [_allMarkers objectAtIndex:idx];
-    if (existingLayer && (NSNull *)existingLayer != [NSNull null]) [existingLayer removeFromSuperlayer];
-    [_allMarkers replaceObjectAtIndex:idx withObject:markerLayer];
+    [_allMarkers addObject:markerLayer];
      
     if ([[options objectForKey:kGoMarkerOptionTemporaryMarker] boolValue] == YES) {
         markerLayer.opacity = 0.5;
@@ -121,7 +131,7 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
     if (options) [markerLayer setValue:options forKey:kMarkerOptionsKey];
     [markerLayer setValue:[NSNumber numberWithInt:type] forKey:kMarkerTypeKey];
     
-    [self _resizeMarkerLayer:markerLayer atLocation:boardLocation];
+    [self _resizeMarkerLayer:markerLayer];
 
     [self addSublayer:markerLayer];
     [markerLayer setNeedsDisplay];
@@ -151,22 +161,20 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
 
 - (void)_redrawAllMarkers
 {
-    int ii = 0;
     for (CALayer *marker in _allMarkers) {
-        ii++;
         if ((NSNull *)marker != [NSNull null]) {
-            CGPoint boardLocation = CGPointMake(ii % _boardSize, (int)(ii / _boardSize) + 1);
-            [self _resizeMarkerLayer:marker atLocation:boardLocation];
+            [self _resizeMarkerLayer:marker];
             [marker setNeedsDisplay];
         }
     }
-}\
+}
 
 - (void)removeAllMarkers
 {
     for (CALayer *marker in _allMarkers) {
         if ((NSNull *)marker != [NSNull null]) [marker removeFromSuperlayer];
     }
+    [_allMarkers removeAllObjects];
 }
 
 @end

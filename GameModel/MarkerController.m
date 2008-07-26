@@ -32,7 +32,7 @@
 {
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
     if (_tempStoneLocation.x > 0) {
-        [_boardView removeMarkerAtLocation:_tempStoneLocation];
+        [_boardView removeAllMarkersAtLocation:_tempStoneLocation];
         _tempStoneLocation = CGPointMake(-1, -1);
     }
     

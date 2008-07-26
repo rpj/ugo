@@ -8,9 +8,13 @@
 
 #import "GoBoard.h"
 
+#import "BoardView.h"
+
 #define _boardPositionToIndex(pos, boardSize) ((pos).x - 1) + (((pos).y - 1) * boardSize)
 #define _indexToBoardPosition(idx, boardSize) (CGPointMake((x) % boardSize, (int)((x) / boardSize) + 1))
 
 @implementation GoBoard
+
+@synthesize boardView = _boardView;
 
 @end

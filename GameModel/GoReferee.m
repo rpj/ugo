@@ -20,6 +20,14 @@
 
 @synthesize board = _board;
 
+- (id) init
+{
+    if ((self = [super init])) {
+        
+    }
+    return self;
+}
+
 - (GoMoveResponse) attemptMoveAtLocation:(CGPoint)location
 {
     return kGoMoveAccepted;

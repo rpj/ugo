@@ -20,7 +20,7 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
 
 @interface MarkerLayer (KnownPrivate)
 - (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options;
-- (void) removeMarkerAtLocation:(CGPoint)boardLocation;
+- (void) removeAllMarkersAtLocation:(CGPoint)boardLocation;
 - (void) removeAllMarkers;
 @end
 
@@ -109,7 +109,7 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
 
 - (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options { [_markerLayer placeMarker:type atLocation:boardLocation options:options]; }
 
-- (void) removeMarkerAtLocation:(CGPoint)boardLocation { [_markerLayer removeMarkerAtLocation:boardLocation]; }
+- (void) removeAllMarkersAtLocation:(CGPoint)boardLocation { [_markerLayer removeAllMarkersAtLocation:boardLocation]; }
 
 - (void) removeAllMarkers { [_markerLayer removeAllMarkers]; }
 
