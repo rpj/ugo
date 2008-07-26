@@ -14,6 +14,8 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
 
 @interface MarkerLayer (KnownStuff)
 - (void)removeAllMarkers;
+- (void)_redrawAllMarkers;
+- (void) _resizeMarkerLayer:(CALayer *)markerLayer atLocation:(CGPoint)boardLocation;
 @end
 
 @implementation MarkerLayer
@@ -32,6 +34,7 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
 - (void) _themeChanged:(NSNotification *)notif
 {
     self.theme = [[uGoSettings sharedSettings] markerTheme];
+    [self _redrawAllMarkers];
 }
 
 - (id) init
@@ -141,23 +144,23 @@ static NSString * const kMarkerOptionsKey = @"MarkerOptions";
     }    
 }
 
+- (void)drawInContext:(CGContextRef)context
+{
+    [self _redrawAllMarkers];
+}
+
 - (void)_redrawAllMarkers
 {
-    NSLog(@"Redrawing all markers...");
     int ii = 0;
     for (CALayer *marker in _allMarkers) {
         ii++;
         if ((NSNull *)marker != [NSNull null]) {
             CGPoint boardLocation = CGPointMake(ii % _boardSize, (int)(ii / _boardSize) + 1);
             [self _resizeMarkerLayer:marker atLocation:boardLocation];
+            [marker setNeedsDisplay];
         }
     }
-}
-
-- (void)drawInContext:(CGContextRef)context
-{
-    [self _redrawAllMarkers];
-}
+}\
 
 - (void)removeAllMarkers
 {

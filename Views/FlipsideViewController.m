@@ -16,8 +16,10 @@
 
 - (IBAction) selectorChanged
 {
-	NSInteger s = [_sizeSel selectedSegmentIndex];
-	[[uGoSettings sharedSettings] setBoardSize:(s == 0 ? 9 : (s == 1 ? 13 : 19))];
+    if (!_isLoading) {
+        NSInteger s = [_sizeSel selectedSegmentIndex];
+        [[uGoSettings sharedSettings] setBoardSize:(s == 0 ? 9 : (s == 1 ? 13 : 19))];
+    }
 }
 
 - (IBAction) donePressed 
@@ -26,7 +28,11 @@
 }
 
 - (void)viewDidLoad {
+    _isLoading = YES;
+	NSUInteger boardSize = [[uGoSettings sharedSettings] boardSize];
 	self.view.backgroundColor = [UIColor viewFlipsideBackgroundColor];		
+	_sizeSel.selectedSegmentIndex = (boardSize == 9 ? 0 : (boardSize == 13 ? 1 : 2));
+    _isLoading = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -42,12 +48,6 @@
         themeIndex++;
     }
     [_picker selectRow:themeIndex inComponent:0 animated:NO];
-}
-
-- (void)viewDidAppear:(BOOL)animated 
-{
-	NSUInteger boardSize = [[uGoSettings sharedSettings] boardSize];
-	_sizeSel.selectedSegmentIndex = (boardSize == 9 ? 0 : (boardSize == 13 ? 1 : 2));
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

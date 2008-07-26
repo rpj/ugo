@@ -15,6 +15,8 @@
     
     IBOutlet UISegmentedControl*	_sizeSel;
     IBOutlet UIPickerView*          _picker;
+    
+    BOOL                            _isLoading;
 }
 
 @property (nonatomic,assign) RootViewController *rootViewController;
