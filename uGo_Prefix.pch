@@ -7,4 +7,5 @@
 #import <UIKit/UIKit.h>
 
 #import "uGoSettings.h"
+#import "GoUtil.h"
 #endif

@@ -110,7 +110,7 @@ static NSString * const kMarkerYPos = @"YPosition";
 
 - (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options
 {
-    CALayer *markerLayer = [CALayer layer];
+    CALayer *markerLayer = [CALayerNonAnimating layer];
     BOOL wiggleStone = YES;
     if ([options valueForKey:kGoMarkerAllowWiggle]) wiggleStone = [[options valueForKey:kGoMarkerAllowWiggle] boolValue];
     

@@ -1,8 +1,8 @@
 //
-//  GridLayer.h
+//  GoUtil.h
 //  uGo
 //
-//  Created by Jacob Farkas on 7/21/08.
+//  Created by Jacob Farkas on 7/27/08.
 //  Copyright 2008 Apple Computer. All rights reserved.
 //
 
@@ -10,8 +10,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-@interface GridLayer : CALayerNonAnimating {
-
-}
-
+@interface CALayerNonAnimating : CALayer
+- (id<CAAction>)actionForKey:(NSString *)key;
 @end

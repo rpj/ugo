@@ -22,6 +22,7 @@
 		43437EFA0E3AF688004C60B8 /* GoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43437EF90E3AF688004C60B8 /* GoPlayer.m */; };
 		43437EFD0E3AF69A004C60B8 /* GoLocalPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43437EFC0E3AF69A004C60B8 /* GoLocalPlayer.m */; };
 		43437F020E3AF6CB004C60B8 /* GoBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 43437F010E3AF6CB004C60B8 /* GoBoard.m */; };
+		431ABAEF0E3CFE08009EE3DE /* GoUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 431ABAEE0E3CFE08009EE3DE /* GoUtil.m */; };
 		4355750D0E3A498600F1D159 /* GameSettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4355750C0E3A498600F1D159 /* GameSettings.xib */; };
 		4355750F0E3A499100F1D159 /* BoardSettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4355750E0E3A499100F1D159 /* BoardSettings.xib */; };
 		435575110E3A499B00F1D159 /* AboutSettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 435575100E3A499B00F1D159 /* AboutSettings.xib */; };
@@ -103,6 +104,8 @@
 		43437EFC0E3AF69A004C60B8 /* GoLocalPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoLocalPlayer.m; sourceTree = "<group>"; };
 		43437F000E3AF6CB004C60B8 /* GoBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoBoard.h; sourceTree = "<group>"; };
 		43437F010E3AF6CB004C60B8 /* GoBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoBoard.m; sourceTree = "<group>"; };
+		431ABAED0E3CFE08009EE3DE /* GoUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoUtil.h; sourceTree = "<group>"; };
+		431ABAEE0E3CFE08009EE3DE /* GoUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoUtil.m; sourceTree = "<group>"; };
 		4355750C0E3A498600F1D159 /* GameSettings.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GameSettings.xib; sourceTree = "<group>"; };
 		4355750E0E3A499100F1D159 /* BoardSettings.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BoardSettings.xib; sourceTree = "<group>"; };
 		435575100E3A499B00F1D159 /* AboutSettings.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AboutSettings.xib; sourceTree = "<group>"; };
@@ -239,6 +242,8 @@
 				1D3623240D0F684500981E51 /* uGoAppDelegate.h */,
 				1D3623250D0F684500981E51 /* uGoAppDelegate.m */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
+				431ABAED0E3CFE08009EE3DE /* GoUtil.h */,
+				431ABAEE0E3CFE08009EE3DE /* GoUtil.m */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -547,6 +552,7 @@
 				43437F020E3AF6CB004C60B8 /* GoBoard.m in Sources */,
 				94B1E4B20E3A8A2900A4A133 /* ParserBridge.m in Sources */,
 				94B67EAC0E44F68300A58855 /* GoMove.m in Sources */,
+				431ABAEF0E3CFE08009EE3DE /* GoUtil.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
