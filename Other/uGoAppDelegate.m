@@ -34,18 +34,24 @@
     
     srand(time(NULL));
 
-#if 0
-	ParserBridge* pb = [[[ParserBridge alloc] init] autorelease];
-	[pb loadSGFFromPath: [[NSBundle mainBundle] pathForResource:@"ShukoOriginalMove" ofType:@"sgf"]];
+#if 1
+	//ParserBridge* pb = [[[ParserBridge alloc] init] autorelease];
+	//[pb loadSGFFromPath: [[NSBundle mainBundle] pathForResource:@"ShukoOriginalMove" ofType:@"sgf"]];
 	
 	ParserBridge* pbn = [[[ParserBridge alloc] init] autorelease];
 	pbn.path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: @"new.sgf"];
 	pbn.boardSize = 19;
+	pbn.addWhite = [NSArray arrayWithObjects: @"ab", @"cd", @"pq", @"df", nil];
+	pbn.addBlack = [NSArray arrayWithObjects: @"cc", @"dd", @"ee", @"ff", @"gg", nil];
 	pbn.whiteName = @"Fark";
 	pbn.blackName = @"Tweek";
+	pbn.blackRank = @"1k";
+	pbn.gameComment = @"Game, the first.";
 	pbn.handicap = 4;
 	pbn.gameDate = [NSDate date];
 	[pbn _unitTest];
+	
+	//[pb loadSGFFromPath: [[NSBundle mainBundle] pathForResource:@"FromSensei" ofType:@"sgf"]];
 #endif
 }
 

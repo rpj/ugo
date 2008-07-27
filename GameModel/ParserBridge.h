@@ -15,6 +15,10 @@
 	struct SGFInfo	_sgf;
 	NSString* _path;
 	
+	// record keeping ivars
+	struct Node *_curNode;
+	
+	// property ivars
 	NSUInteger _boardSize;
 	NSString *_whiteName;
 	NSString *_blackName;
@@ -22,6 +26,11 @@
 	NSInteger _handicap;
 	NSString *_gameComment;
 	NSDate *_gameDate;
+	NSInteger _timeLimit;
+	NSString *_whiteRank;
+	NSString *_blackRank;
+	NSArray *_addWhite;
+	NSArray *_addBlack;
 }
 
 // question: when using 'copy' here and having a *custom setter*, has the variable passed in as a parameter to
@@ -35,9 +44,18 @@
 @property (nonatomic) NSInteger handicap;
 @property (nonatomic, copy) NSString *gameComment;
 @property (nonatomic, copy) NSDate *gameDate;
+@property (nonatomic) NSInteger timeLimit;
+@property (nonatomic, copy) NSString *whiteRank;
+@property (nonatomic, retain) NSString *blackRank;		// still kinda confused about memory management here, so trying a retain instead...
+@property (nonatomic, copy) NSArray *addWhite;
+@property (nonatomic, copy) NSArray *addBlack;
 
+// dynamic properties
 @property (nonatomic, readonly) BOOL isActive;
 @property (nonatomic, readonly) NSUInteger hash;
+
+// the public API for ParserBridge should not expose *any* of the parser types, so this needs to be changed
+@property (nonatomic, readonly) struct Node *nextNode;
 
 - (void) loadSGFFromPath:(NSString*)path;
 - (void) loadSGFFile;

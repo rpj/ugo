@@ -13,7 +13,8 @@
 - (void) _clearSGFInfo;
 - (void) _ensureRoot;
 
-- (NSArray*) _searchForValueWithID:(token)tid startingWithProperty:(struct Property*)start;
+- (NSArray*) _searchAllNodesForValuesWithID:(token)tid;
+- (NSArray*) _searchForValuesWithID:(token)tid startingWithProperty:(struct Property*)start;
 - (void*) _findFirstValueWithID:(token)tid startingWithProperty:(struct Property*)start;
 
 // debug methods
@@ -29,14 +30,33 @@
 	FreeSGFInfo(&_sgf);
 	memset((void*)&_sgf, 0, sizeof(struct SGFInfo));
 	
+	_curNode = nil;
+	
 	// need to clear all member variables so that their getters can update on next call
 	_boardSize = 0;
-	_whiteName = nil;
-	_blackName = nil;
 	_komi = -1.0;
 	_handicap = -1;
+	_timeLimit = -1;
+	
+	[_whiteName release];
+	_whiteName = nil;
+	[_blackName release];
+	_blackName = nil;
+	[_gameComment release];
 	_gameComment = nil;
+	[_gameDate release];
 	_gameDate = nil;
+	[_whiteRank release];
+	_whiteRank = nil;
+	[_blackRank release];
+	_blackRank = nil;
+	[_addWhite release];
+	_addWhite = nil;
+	[_addBlack release];
+	_addBlack = nil;
+	
+	// this is needed to initialize the sgfc context pointer within the parser
+	ParseSGF(&_sgf);
 }
 
 - (void) _ensureRoot;
@@ -44,7 +64,23 @@
 	if (!_sgf.root) _sgf.root = NewNode(nil, YES);
 }
 
-- (NSArray*) _searchForValueWithID:(token)tid startingWithProperty:(struct Property*)start;
+- (NSArray*) _searchAllNodesForValuesWithID:(token)tid;
+{
+	NSMutableArray* ret = [NSMutableArray array];
+	struct Node* node = _sgf.first;
+	
+	for (; node; node = node->next) {
+		if (node->prop) {
+			NSArray* pVals = [self _searchForValuesWithID:tid startingWithProperty:node->prop];
+			
+			if ([pVals count]) [ret addObjectsFromArray:pVals];
+		}
+	}
+	
+	return (NSArray*)ret;
+}
+
+- (NSArray*) _searchForValuesWithID:(token)tid startingWithProperty:(struct Property*)start;
 {
 	NSMutableArray* ret = [NSMutableArray array];
 	
@@ -66,7 +102,7 @@
 
 - (void*) _findFirstValueWithID:(token)tid startingWithProperty:(struct Property*)start;
 {
-	NSArray* tmp = [self _searchForValueWithID: tid startingWithProperty: start];
+	NSArray* tmp = [self _searchForValuesWithID: tid startingWithProperty: start];
 	void* ret = nil;
 	
 	if ([tmp count]) ret = [tmp objectAtIndex:0];
@@ -119,13 +155,31 @@
 	
 	//[self _examineSGF];
 	
-	NSLog(@"Got board size of: %d", self.boardSize);
-	NSLog(@"Got white name: %@", self.whiteName);
-	NSLog(@"Got black name: %@", self.blackName);
-	NSLog(@"Got game comment: %@", self.gameComment);
-	NSLog(@"Got komi: %f", self.komi);
-	NSLog(@"Got handicap: %d", self.handicap);
+	NSLog(@"Board size of: %d", self.boardSize);
+	NSLog(@"White name: %@", self.whiteName);
+	NSLog(@"White rank: %@", self.whiteRank);
+	NSLog(@"Black name: %@", self.blackName);
+	NSLog(@"Black rank: %@", self.blackRank);
+	NSLog(@"Game comment: %@", self.gameComment);
+	NSLog(@"Komi: %f", self.komi);
+	NSLog(@"Handicap: %d", self.handicap);
+	NSLog(@"Game date: %@", self.gameDate);
+	NSLog(@"Time limit: %d secs", self.timeLimit);
 	NSLog(@"Got current SGF hash value: 0x%x", self.hash);
+	/*
+	struct Node* node = self.nextNode;
+	for(; node; node = self.nextNode) {
+		NSLog(@"---------- Move node 0x%x ----------", node);
+		[self _examinePropsForNode: node];
+	}*/
+	
+	NSLog(@"Add white:");
+	for (NSString* add in self.addWhite)
+		NSLog(@"%@", add);
+	
+	NSLog(@"Add black:");
+	for (NSString* add in self.addBlack)
+		NSLog(@"%@", add);
 }
 @end
 
@@ -141,9 +195,15 @@
 @synthesize handicap = _handicap;
 @synthesize gameComment = _gameComment;
 @synthesize gameDate = _gameDate;
+@synthesize timeLimit = _timeLimit;
+@synthesize whiteRank = _whiteRank;
+@synthesize blackRank = _blackRank;
+@synthesize addWhite = _addWhite;
+@synthesize addBlack = _addBlack;
 
 @dynamic isActive;
-@dynamic hash;		// different from [NSObject hash]; it's the [NSString hash] value of the current SGF buffer string
+@dynamic hash;		// this needs to be a hash of *only* the board state, to be able to use for Ko checks
+@dynamic nextNode;
 
 - (id) init;
 {
@@ -197,7 +257,7 @@
 {
 	if (newName) {
 		[_whiteName release];
-		_whiteName = newName;	// and this is the way to do it if the param *has* been copied before being passed in...
+		_whiteName = [newName copy];	// and this is the way to do it if the param *has* been copied before being passed in...
 		
 		[self _ensureRoot];
 		New_PropValue(_sgf.root, TKN_PW, (char*)[_whiteName cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
@@ -220,7 +280,7 @@
 {
 	if (newName) {
 		[_blackName release];
-		_blackName = newName;
+		_blackName = [newName copy];
 		
 		[self _ensureRoot];
 		New_PropValue(_sgf.root, TKN_PB, (char*)[_blackName cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
@@ -283,7 +343,7 @@
 {
 	if (comment) {
 		[_gameComment release];
-		_gameComment = comment;
+		_gameComment = [comment copy];
 		
 		[self _ensureRoot];
 		char* str = (char*)[_gameComment cStringUsingEncoding:NSASCIIStringEncoding];
@@ -312,7 +372,7 @@
 {
 	if (date) {
 		[_gameDate release];
-		_gameDate = date;
+		_gameDate = [date copy];
 		
 		[self _ensureRoot];
 		NSDateFormatter* frmtr = [[[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%d" allowNaturalLanguage:NO] autorelease];
@@ -340,6 +400,120 @@
 	return _gameDate;
 }
 
+- (void) setTimeLimit:(NSInteger)tl;
+{
+	if (tl >= 0) {
+		[self _ensureRoot];
+		_timeLimit = tl;
+		New_PropValue(_sgf.root, TKN_TM, (char*)[[NSString stringWithFormat:@"%d", _timeLimit] cStringUsingEncoding:NSASCIIStringEncoding], nil, YES);
+		[self refreshSGFFile];
+	}
+}
+
+- (NSInteger) timeLimit;
+{
+	[self _ensureRoot];
+	
+	if (_timeLimit == -1)
+		_timeLimit = (NSInteger)[(NSString*)[self _findFirstValueWithID: TKN_TM startingWithProperty: _sgf.root->prop] integerValue];
+	
+	return _timeLimit;
+}
+
+- (void) setWhiteRank:(NSString*)rank;
+{
+	if (rank) {
+		[_whiteRank release];
+		_whiteRank = [rank copy];
+		
+		[self _ensureRoot];
+		New_PropValue(_sgf.root, TKN_WR, (char*)[_whiteRank cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
+		[self refreshSGFFile];
+	}
+}
+
+- (NSString*) whiteRank;
+{
+	if (!_whiteRank) {
+		[self _ensureRoot];
+		_whiteRank = [(NSString*)[self _findFirstValueWithID: TKN_WR startingWithProperty: _sgf.root->prop] copy];
+	}
+	
+	return _whiteRank;
+}
+
+- (void) setBlackRank:(NSString*)rank;
+{
+	if (rank) {
+		[_blackRank release];
+		_blackRank = [rank retain];
+		
+		[self _ensureRoot];
+		New_PropValue(_sgf.root, TKN_BR, (char*)[_blackRank cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
+		[self refreshSGFFile];
+	}
+}
+
+- (NSString*) blackRank;
+{	
+	if (!_blackRank) {
+		[self _ensureRoot];
+		_blackRank = [(NSString*)[self _findFirstValueWithID: TKN_BR startingWithProperty: _sgf.root->prop] retain];
+	}
+	
+	return _blackRank;
+}
+
+- (void) setAddWhite:(NSArray*)array;
+{
+	if (array) {
+		[_addWhite release];
+		_addWhite = [array retain];
+		
+		[self _ensureRoot];
+		for (NSString* add in _addWhite)
+			New_PropValue(_sgf.root, TKN_AW, (char*)[add cStringUsingEncoding:NSASCIIStringEncoding], nil, NO);
+		[self refreshSGFFile];
+	}
+}
+
+- (NSArray*) addWhite;
+{
+	if (!_addWhite) {
+		[self _ensureRoot];
+		NSArray* allVals = [self _searchAllNodesForValuesWithID: TKN_AW];
+		
+		if ([allVals count]) _addWhite = [allVals retain];
+	}
+	
+	return _addWhite;
+}
+
+- (void) setAddBlack:(NSArray*)array;
+{
+	if (array) {
+		[_addBlack release];
+		_addBlack = [array retain];
+		
+		[self _ensureRoot];
+		for (NSString* add in _addBlack)
+			New_PropValue(_sgf.root, TKN_AB, (char*)[add cStringUsingEncoding:NSASCIIStringEncoding], nil, NO);
+		[self refreshSGFFile];
+	}
+}
+
+- (NSArray*) addBlack;
+{
+	if (!_addBlack) {
+		[self _ensureRoot];
+		NSArray* allVals = [self _searchAllNodesForValuesWithID: TKN_AB];
+		
+		if ([allVals count]) _addBlack = [allVals retain];
+	}
+	
+	return _addBlack;
+}
+
 #pragma mark Dyanmic getters
 //// dynamic getters
 
@@ -351,6 +525,12 @@
 - (NSUInteger) hash;
 {
 	return (_sgf.buffer ? [[NSString stringWithFormat:@"%s", _sgf.buffer] hash] : 0);
+}
+
+// a node iterator that wraps around, returning 'nil' once before wrapping
+- (struct Node*) nextNode;
+{
+	return (_curNode = (!_curNode ? _sgf.first : _curNode->next));
 }
 
 /////// end getters/setters
