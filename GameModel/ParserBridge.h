@@ -13,6 +13,7 @@
 
 @interface ParserBridge : NSObject {
 	struct SGFInfo	_sgf;
+	NSString* _path;
 	
 	NSUInteger _boardSize;
 	NSString *_whiteName;
@@ -31,4 +32,7 @@
 @property (nonatomic, readonly) NSUInteger hash;
 
 - (void) loadSGFFromPath:(NSString*)path;
+- (void) loadSGFFile;
+- (void) saveSGFFile;
+- (void) refreshSGFFile;
 @end

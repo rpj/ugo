@@ -122,9 +122,10 @@
 {
 	_boardSize = newSize;
 	
-	if (_sgf.root) {
-		// need to find the property pointers and set them; should change the whole buffer if I'm right.
-	}
+	if (_sgf.root)
+		New_PropValue(_sgf.root, TKN_SZ, (char*)[[NSString stringWithFormat:@"%d", newSize] cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
+	
+	[self refreshSGFFile];
 }
 
 - (NSUInteger) boardSize;
@@ -141,14 +142,17 @@
 		[_whiteName release];
 		_whiteName = [newName copy];
 		
-		// do stuff...
+		if (_sgf.root)
+			New_PropValue(_sgf.root, TKN_PW, (char*)[_whiteName cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
+		
+		[self refreshSGFFile];
 	}
 }
 
 - (NSString*) whiteName;
 {
 	if (!_whiteName && _sgf.root)
-		self.whiteName = (NSString*)[self _findFirstValueWithID: TKN_PW startingWithProperty: _sgf.root->prop];
+		_whiteName = (NSString*)[self _findFirstValueWithID: TKN_PW startingWithProperty: _sgf.root->prop];
 	
 	return _whiteName;
 }
@@ -166,7 +170,7 @@
 - (NSString*) blackName;
 {
 	if (!_blackName && _sgf.root)
-		self.blackName = (NSString*)[self _findFirstValueWithID: TKN_PB startingWithProperty: _sgf.root->prop];
+		_blackName = (NSString*)[self _findFirstValueWithID: TKN_PB startingWithProperty: _sgf.root->prop];
 	
 	return _blackName;
 }
@@ -188,24 +192,73 @@
 
 /////// end getters/setters
 
+- (void) saveSGFFile;
+{
+	struct TreeInfo* info = _sgf.tree;
+	
+	if (!info)
+		// not sure why, but the parser isn't creating any TreeInfo structs at all, so we have to do it ourselves
+		info = (struct TreeInfo*)malloc(sizeof(struct TreeInfo));
+		
+	info->num = 1;		// XXX use real accessor
+	info->FF = 4;		// XXX use real accessor
+	info->GM = 1;		// this really must be 1
+	info->bwidth = self.boardSize;
+	info->bheight = self.boardSize;
+	
+	info->root = _sgf.root;
+	info->next = info->prev = nil;
+	
+	_sgf.info = _sgf.tree = info;
+	
+	SaveSGF(&_sgf);
+}
+
+- (void) loadSGFFile;
+{
+	if (self.isActive)
+		[self _clearSGFInfo];
+	
+	_sgf.name = (char*)[_path cStringUsingEncoding:NSASCIIStringEncoding];
+	LoadSGF(&_sgf);
+}
+
+- (void) refreshSGFFile;
+{
+	[self saveSGFFile];
+	[self loadSGFFile];
+}
+
+- (void) _unitTest;
+{
+	NSLog(@"Loaded SGF file: %@", _path);
+	
+	//[self _examineSGF];
+	
+	NSLog(@"Got board size of: %d", self.boardSize);
+	NSLog(@"Got white name: %@", self.whiteName);
+	NSLog(@"Got black name: %@", self.blackName);
+	NSLog(@"Got current SGF hash value: 0x%x", self.hash);
+	
+	self.boardSize = 17;
+	NSLog(@"Set board size, did we? %d", self.boardSize);
+	NSLog(@"Hash should have changed: 0x%x", self.hash);
+	
+	self.whiteName = @"Ryan P. Joseph";
+	NSLog(@"Name changed to: %@", self.whiteName);
+	NSLog(@"New hash: 0x%x", self.hash);
+}
+
 - (void) loadSGFFromPath:(NSString*)path;
 {
 	NSFileManager* fMgr = [NSFileManager defaultManager];
 	
 	if ([fMgr fileExistsAtPath:path] && [fMgr isReadableFileAtPath:path]) {
-		if (self.isActive)
-			[self _clearSGFInfo];
+		[_path release];
+		_path = [path copy];
 		
-		_sgf.name = (char*)[path cStringUsingEncoding:NSASCIIStringEncoding];
-		LoadSGF(&_sgf);
-		NSLog(@"Loaded SGF file: %@", path);
-		
-		//[self _examineSGF];
-		
-		NSLog(@"Got board size of: %d", self.boardSize);
-		NSLog(@"Got white name: %@", self.whiteName);
-		NSLog(@"Got black name: %@", self.blackName);
-		NSLog(@"Got current SGF hash value: 0x%x", self.hash);
+		[self loadSGFFile];
+		[self _unitTest];
 	}
 }
 @end
