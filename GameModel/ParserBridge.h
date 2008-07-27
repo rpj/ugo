@@ -19,14 +19,16 @@
 	NSString *_whiteName;
 	NSString *_blackName;
 	float _komi;
-	NSUInteger _handicap;
+	NSInteger _handicap;
+	NSString* _gameComment;
 }
 
 @property (nonatomic) NSUInteger boardSize;
-@property (nonatomic, assign) NSString *whiteName;
-@property (nonatomic, assign) NSString *blackName;
+@property (nonatomic, copy) NSString *whiteName;
+@property (nonatomic, copy) NSString *blackName;
 @property (nonatomic) float komi;
-@property (nonatomic) NSUInteger handicap;
+@property (nonatomic) NSInteger handicap;
+@property (nonatomic, copy) NSString *gameComment;
 
 @property (nonatomic, readonly) BOOL isActive;
 @property (nonatomic, readonly) NSUInteger hash;

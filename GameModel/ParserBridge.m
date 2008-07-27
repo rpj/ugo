@@ -8,18 +8,21 @@
 
 #import "ParserBridge.h"
 
+///////////////////////////////////////////////////////////////////////////////
+@interface ParserBridge (Private)
+- (void) _clearSGFInfo;
 
-@implementation ParserBridge
+- (NSArray*) _searchForValueWithID:(token)tid startingWithProperty:(struct Property*)start;
+- (void*) _findFirstValueWithID:(token)tid startingWithProperty:(struct Property*)start;
 
-@synthesize boardSize = _boardSize;
-@synthesize whiteName = _whiteName;
-@synthesize blackName = _blackName;
-@synthesize komi = _komi;
-@synthesize handicap = _handicap;
+// debug methods
+- (void) _examinePropsForNode: (struct Node*)node;
+- (void) _examineSGF;
+- (void) _unitTest;
+@end
 
-@dynamic isActive;
-@dynamic hash;		// different from [NSObject hash]; it's the [NSString hash] value of the current SGF buffer string
-
+///////////////////////////////////////////////////////////////////////////////
+@implementation ParserBridge (Private)
 - (void) _clearSGFInfo;
 {
 	FreeSGFInfo(&_sgf);
@@ -29,23 +32,40 @@
 	_boardSize = 0;
 	_whiteName = nil;
 	_blackName = nil;
-	_komi = 0;
+	_komi = -1.0;
+	_handicap = -1;
+	_gameComment = nil;
 }
 
-- (id) init;
+
+- (NSArray*) _searchForValueWithID:(token)tid startingWithProperty:(struct Property*)start;
 {
-	if ((self = [super init])) {
-		[self _clearSGFInfo];
+	NSMutableArray* ret = [NSMutableArray array];
+	
+	for (; start; start = start->next) {
+		if (start->id == tid) {
+			struct PropValue* tmp = start->value;
+			
+			for (; tmp; tmp = tmp->next) {
+				// stringWithFormat: is probably too slow for use here, but stringWithCString: worries
+				// me with it's request for a const string...
+				[ret addObject: [NSString stringWithFormat:@"%s", tmp->value]];
+				if (tmp->value2) [ret addObject: [NSString stringWithFormat:@"%s", tmp->value2]];
+			}
+		}
 	}
 	
-	return self;
+	return (NSArray*)ret;
 }
 
-
-- (void) dealloc;
+- (void*) _findFirstValueWithID:(token)tid startingWithProperty:(struct Property*)start;
 {
-	[self _clearSGFInfo];
-	[super dealloc];
+	NSArray* tmp = [self _searchForValueWithID: tid startingWithProperty: start];
+	void* ret = nil;
+	
+	if ([tmp count]) ret = [tmp objectAtIndex:0];
+	
+	return ret;
 }
 
 - (void) _examinePropsForNode: (struct Node*)node;
@@ -86,36 +106,60 @@
 	}
 }
 
-- (NSArray*) _searchForValueWithID:(token)tid startingWithProperty:(struct Property*)start;
+
+- (void) _unitTest;
 {
-	NSMutableArray* ret = [NSMutableArray array];
+	NSLog(@"Loaded SGF file: %@", _path);
 	
-	for (; start; start = start->next) {
-		if (start->id == tid) {
-			struct PropValue* tmp = start->value;
-			
-			for (; tmp; tmp = tmp->next) {
-				// stringWithFormat: is probably too slow for use here, but stringWithCString: worries
-				// me with it's request for a const string...
-				[ret addObject: [NSString stringWithFormat:@"%s", tmp->value]];
-				if (tmp->value2) [ret addObject: [NSString stringWithFormat:@"%s", tmp->value2]];
-			}
-		}
+	//[self _examineSGF];
+	
+	NSLog(@"Got board size of: %d", self.boardSize);
+	NSLog(@"Got white name: %@", self.whiteName);
+	NSLog(@"Got black name: %@", self.blackName);
+	NSLog(@"Got game comment: %@", self.gameComment);
+	NSLog(@"Got komi: %f", self.komi);
+	NSLog(@"Got handicap: %d", self.handicap);
+	NSLog(@"Got current SGF hash value: 0x%x", self.hash);
+	
+	self.boardSize = 17;
+	NSLog(@"Set board size, did we? %d", self.boardSize);
+	NSLog(@"Hash should have changed: 0x%x", self.hash);
+	
+	self.whiteName = @"Ryan P. Joseph";
+	NSLog(@"Name changed to: %@", self.whiteName);
+	NSLog(@"New hash: 0x%x", self.hash);
+}
+@end
+
+///////////////////////////////////////////////////////////////////////////////
+@implementation ParserBridge
+
+@synthesize boardSize = _boardSize;
+@synthesize whiteName = _whiteName;
+@synthesize blackName = _blackName;
+@synthesize komi = _komi;
+@synthesize handicap = _handicap;
+@synthesize gameComment = _gameComment;
+
+@dynamic isActive;
+@dynamic hash;		// different from [NSObject hash]; it's the [NSString hash] value of the current SGF buffer string
+
+- (id) init;
+{
+	if ((self = [super init])) {
+		[self _clearSGFInfo];
 	}
 	
-	return (NSArray*)ret;
+	return self;
 }
 
-- (void*) _findFirstValueWithID:(token)tid startingWithProperty:(struct Property*)start;
+- (void) dealloc;
 {
-	NSArray* tmp = [self _searchForValueWithID: tid startingWithProperty: start];
-	void* ret = nil;
-	
-	if ([tmp count]) ret = [tmp objectAtIndex:0];
-	
-	return ret;
+	[self _clearSGFInfo];
+	[super dealloc];
 }
 
+#pragma mark Getters and Setters
 /////// getters/setters
 
 - (void) setBoardSize:(NSUInteger)newSize;
@@ -131,7 +175,7 @@
 - (NSUInteger) boardSize;
 {
 	if (!_boardSize && _sgf.root)
-		_boardSize = (NSUInteger)[(NSString*)[self _findFirstValueWithID: TKN_SZ startingWithProperty: _sgf.root->prop] intValue];
+		_boardSize = (NSUInteger)[(NSString*)[self _findFirstValueWithID: TKN_SZ startingWithProperty: _sgf.root->prop] integerValue];
 	
 	return _boardSize;
 }
@@ -140,7 +184,7 @@
 {
 	if (newName) {
 		[_whiteName release];
-		_whiteName = [newName copy];
+		_whiteName = newName;
 		
 		if (_sgf.root)
 			New_PropValue(_sgf.root, TKN_PW, (char*)[_whiteName cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
@@ -152,7 +196,7 @@
 - (NSString*) whiteName;
 {
 	if (!_whiteName && _sgf.root)
-		_whiteName = (NSString*)[self _findFirstValueWithID: TKN_PW startingWithProperty: _sgf.root->prop];
+		_whiteName = [(NSString*)[self _findFirstValueWithID: TKN_PW startingWithProperty: _sgf.root->prop] copy];
 	
 	return _whiteName;
 }
@@ -161,19 +205,87 @@
 {
 	if (newName) {
 		[_blackName release];
-		_blackName = [newName copy];
+		_blackName = newName;
 		
-		// do stuff...
+		if (_sgf.root)
+			New_PropValue(_sgf.root, TKN_PB, (char*)[_blackName cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
+		
+		[self refreshSGFFile];
 	}
 }
 
 - (NSString*) blackName;
 {
 	if (!_blackName && _sgf.root)
-		_blackName = (NSString*)[self _findFirstValueWithID: TKN_PB startingWithProperty: _sgf.root->prop];
+		_blackName = [(NSString*)[self _findFirstValueWithID: TKN_PB startingWithProperty: _sgf.root->prop] copy];
 	
 	return _blackName;
 }
+
+- (void) setKomi:(float)newKomi;
+{
+	if (newKomi >= 0.0) {
+		_komi = newKomi;
+		New_PropValue(_sgf.root, TKN_KM, (char*)[[NSString stringWithFormat:@"%0.1f", _komi] cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
+		[self refreshSGFFile];
+	}
+}
+
+- (float) komi;
+{
+	if (_komi == -1.0 && _sgf.root)
+		_komi = (float)[(NSString*)[self _findFirstValueWithID: TKN_KM startingWithProperty: _sgf.root->prop] floatValue];
+	
+	return _komi;
+}
+
+- (void) setHandicap:(NSInteger)newHandicap;
+{
+	if (newHandicap >= 0) {
+		_handicap = newHandicap;
+		New_PropValue(_sgf.root, TKN_HA, (char*)[[NSString stringWithFormat:@"%d", _handicap] cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
+		[self refreshSGFFile];
+	}
+}
+
+- (NSInteger) handicap;
+{
+	if (_handicap == -1 && _sgf.root)
+		_handicap = (NSInteger)[(NSString*)[self _findFirstValueWithID: TKN_HA startingWithProperty: _sgf.root->prop] integerValue];
+	
+	return _handicap;
+}
+
+- (void) setGameComment:(NSString*)comment;
+{
+	if (comment) {
+		[_gameComment release];
+		_gameComment = comment;
+		
+		if (_sgf.root) {
+			char* str = (char*)[_gameComment cStringUsingEncoding:NSASCIIStringEncoding];
+			New_PropValue(_sgf.root, TKN_C, str, nil, FALSE);
+			New_PropValue(_sgf.root, TKN_GC, str, nil, TRUE);
+		}
+		
+		[self refreshSGFFile];
+	}
+}
+
+- (NSString*) gameComment;
+{
+	if (!_gameComment && _sgf.root) {
+		NSString* tmp = [self _findFirstValueWithID:TKN_GC startingWithProperty: _sgf.root->prop];
+		if (!tmp) tmp = [self _findFirstValueWithID: TKN_C startingWithProperty: _sgf.root->prop];
+		
+		if (tmp) _gameComment = [tmp copy];
+	}
+	
+	return _gameComment;
+}
+
+#pragma mark Dyanmic getters
+//// dynamic getters
 
 - (BOOL) isActive;
 {
@@ -191,6 +303,8 @@
 }
 
 /////// end getters/setters
+
+#pragma mark Loading and Saving methods
 
 - (void) saveSGFFile;
 {
@@ -227,26 +341,6 @@
 {
 	[self saveSGFFile];
 	[self loadSGFFile];
-}
-
-- (void) _unitTest;
-{
-	NSLog(@"Loaded SGF file: %@", _path);
-	
-	//[self _examineSGF];
-	
-	NSLog(@"Got board size of: %d", self.boardSize);
-	NSLog(@"Got white name: %@", self.whiteName);
-	NSLog(@"Got black name: %@", self.blackName);
-	NSLog(@"Got current SGF hash value: 0x%x", self.hash);
-	
-	self.boardSize = 17;
-	NSLog(@"Set board size, did we? %d", self.boardSize);
-	NSLog(@"Hash should have changed: 0x%x", self.hash);
-	
-	self.whiteName = @"Ryan P. Joseph";
-	NSLog(@"Name changed to: %@", self.whiteName);
-	NSLog(@"New hash: 0x%x", self.hash);
 }
 
 - (void) loadSGFFromPath:(NSString*)path;
