@@ -11,6 +11,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 @interface ParserBridge (Private)
 - (void) _clearSGFInfo;
+- (void) _ensureRoot;
 
 - (NSArray*) _searchForValueWithID:(token)tid startingWithProperty:(struct Property*)start;
 - (void*) _findFirstValueWithID:(token)tid startingWithProperty:(struct Property*)start;
@@ -35,8 +36,13 @@
 	_komi = -1.0;
 	_handicap = -1;
 	_gameComment = nil;
+	_gameDate = nil;
 }
 
+- (void) _ensureRoot;
+{
+	if (!_sgf.root) _sgf.root = NewNode(nil, YES);
+}
 
 - (NSArray*) _searchForValueWithID:(token)tid startingWithProperty:(struct Property*)start;
 {
@@ -120,19 +126,13 @@
 	NSLog(@"Got komi: %f", self.komi);
 	NSLog(@"Got handicap: %d", self.handicap);
 	NSLog(@"Got current SGF hash value: 0x%x", self.hash);
-	
-	self.boardSize = 17;
-	NSLog(@"Set board size, did we? %d", self.boardSize);
-	NSLog(@"Hash should have changed: 0x%x", self.hash);
-	
-	self.whiteName = @"Ryan P. Joseph";
-	NSLog(@"Name changed to: %@", self.whiteName);
-	NSLog(@"New hash: 0x%x", self.hash);
 }
 @end
 
 ///////////////////////////////////////////////////////////////////////////////
 @implementation ParserBridge
+
+@synthesize path = _path;
 
 @synthesize boardSize = _boardSize;
 @synthesize whiteName = _whiteName;
@@ -140,6 +140,7 @@
 @synthesize komi = _komi;
 @synthesize handicap = _handicap;
 @synthesize gameComment = _gameComment;
+@synthesize gameDate = _gameDate;
 
 @dynamic isActive;
 @dynamic hash;		// different from [NSObject hash]; it's the [NSString hash] value of the current SGF buffer string
@@ -148,6 +149,7 @@
 {
 	if ((self = [super init])) {
 		[self _clearSGFInfo];
+		_path = nil;
 	}
 	
 	return self;
@@ -161,20 +163,31 @@
 
 #pragma mark Getters and Setters
 /////// getters/setters
+- (void) setPath:(NSString*)path;
+{
+	if (path) {
+		[_path release];
+		_path = [path copy];	// this is the way to do it if the parameter hasn't already been copied for us
+		
+		_sgf.name = (char*)[_path cStringUsingEncoding:NSASCIIStringEncoding];
+	}
+}
 
 - (void) setBoardSize:(NSUInteger)newSize;
 {
 	_boardSize = newSize;
 	
-	if (_sgf.root)
-		New_PropValue(_sgf.root, TKN_SZ, (char*)[[NSString stringWithFormat:@"%d", newSize] cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
+	[self _ensureRoot];
+	New_PropValue(_sgf.root, TKN_SZ, (char*)[[NSString stringWithFormat:@"%d", newSize] cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
 	
 	[self refreshSGFFile];
 }
 
 - (NSUInteger) boardSize;
 {
-	if (!_boardSize && _sgf.root)
+	[self _ensureRoot];
+	
+	if (!_boardSize)
 		_boardSize = (NSUInteger)[(NSString*)[self _findFirstValueWithID: TKN_SZ startingWithProperty: _sgf.root->prop] integerValue];
 	
 	return _boardSize;
@@ -184,10 +197,10 @@
 {
 	if (newName) {
 		[_whiteName release];
-		_whiteName = newName;
+		_whiteName = newName;	// and this is the way to do it if the param *has* been copied before being passed in...
 		
-		if (_sgf.root)
-			New_PropValue(_sgf.root, TKN_PW, (char*)[_whiteName cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
+		[self _ensureRoot];
+		New_PropValue(_sgf.root, TKN_PW, (char*)[_whiteName cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
 		
 		[self refreshSGFFile];
 	}
@@ -195,7 +208,9 @@
 
 - (NSString*) whiteName;
 {
-	if (!_whiteName && _sgf.root)
+	[self _ensureRoot];
+	
+	if (!_whiteName)
 		_whiteName = [(NSString*)[self _findFirstValueWithID: TKN_PW startingWithProperty: _sgf.root->prop] copy];
 	
 	return _whiteName;
@@ -207,8 +222,8 @@
 		[_blackName release];
 		_blackName = newName;
 		
-		if (_sgf.root)
-			New_PropValue(_sgf.root, TKN_PB, (char*)[_blackName cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
+		[self _ensureRoot];
+		New_PropValue(_sgf.root, TKN_PB, (char*)[_blackName cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
 		
 		[self refreshSGFFile];
 	}
@@ -216,7 +231,9 @@
 
 - (NSString*) blackName;
 {
-	if (!_blackName && _sgf.root)
+	[self _ensureRoot];
+	
+	if (!_blackName)
 		_blackName = [(NSString*)[self _findFirstValueWithID: TKN_PB startingWithProperty: _sgf.root->prop] copy];
 	
 	return _blackName;
@@ -226,6 +243,7 @@
 {
 	if (newKomi >= 0.0) {
 		_komi = newKomi;
+		[self _ensureRoot];
 		New_PropValue(_sgf.root, TKN_KM, (char*)[[NSString stringWithFormat:@"%0.1f", _komi] cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
 		[self refreshSGFFile];
 	}
@@ -233,7 +251,9 @@
 
 - (float) komi;
 {
-	if (_komi == -1.0 && _sgf.root)
+	[self _ensureRoot];
+	
+	if (_komi == -1.0)
 		_komi = (float)[(NSString*)[self _findFirstValueWithID: TKN_KM startingWithProperty: _sgf.root->prop] floatValue];
 	
 	return _komi;
@@ -243,6 +263,7 @@
 {
 	if (newHandicap >= 0) {
 		_handicap = newHandicap;
+		[self _ensureRoot];
 		New_PropValue(_sgf.root, TKN_HA, (char*)[[NSString stringWithFormat:@"%d", _handicap] cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
 		[self refreshSGFFile];
 	}
@@ -250,7 +271,9 @@
 
 - (NSInteger) handicap;
 {
-	if (_handicap == -1 && _sgf.root)
+	[self _ensureRoot];
+	
+	if (_handicap == -1)
 		_handicap = (NSInteger)[(NSString*)[self _findFirstValueWithID: TKN_HA startingWithProperty: _sgf.root->prop] integerValue];
 	
 	return _handicap;
@@ -262,11 +285,10 @@
 		[_gameComment release];
 		_gameComment = comment;
 		
-		if (_sgf.root) {
-			char* str = (char*)[_gameComment cStringUsingEncoding:NSASCIIStringEncoding];
-			New_PropValue(_sgf.root, TKN_C, str, nil, FALSE);
-			New_PropValue(_sgf.root, TKN_GC, str, nil, TRUE);
-		}
+		[self _ensureRoot];
+		char* str = (char*)[_gameComment cStringUsingEncoding:NSASCIIStringEncoding];
+		New_PropValue(_sgf.root, TKN_C, str, nil, FALSE);
+		New_PropValue(_sgf.root, TKN_GC, str, nil, TRUE);
 		
 		[self refreshSGFFile];
 	}
@@ -274,7 +296,9 @@
 
 - (NSString*) gameComment;
 {
-	if (!_gameComment && _sgf.root) {
+	if (!_gameComment) {
+		[self _ensureRoot];
+		
 		NSString* tmp = [self _findFirstValueWithID:TKN_GC startingWithProperty: _sgf.root->prop];
 		if (!tmp) tmp = [self _findFirstValueWithID: TKN_C startingWithProperty: _sgf.root->prop];
 		
@@ -282,6 +306,38 @@
 	}
 	
 	return _gameComment;
+}
+
+- (void) setGameDate:(NSDate*)date;
+{
+	if (date) {
+		[_gameDate release];
+		_gameDate = date;
+		
+		[self _ensureRoot];
+		NSDateFormatter* frmtr = [[[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%d" allowNaturalLanguage:NO] autorelease];
+		NSString* dstr = [frmtr stringFromDate:_gameDate];
+		
+		if (dstr) New_PropValue(_sgf.root, TKN_DT, (char*)[dstr cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
+		
+		[self refreshSGFFile];
+	}
+}
+
+- (NSDate*) gameDate;
+{
+	if (!_gameDate) {
+		[self _ensureRoot];
+		
+		NSString* sDate = (NSString*)[self _findFirstValueWithID: TKN_DT startingWithProperty: _sgf.root->prop];
+		
+		if (sDate) {
+			NSDateFormatter* frmtr = [[[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%d" allowNaturalLanguage:NO] autorelease];
+			_gameDate = [[frmtr dateFromString: sDate] retain];
+		}
+	}
+	
+	return _gameDate;
 }
 
 #pragma mark Dyanmic getters
@@ -294,12 +350,7 @@
 
 - (NSUInteger) hash;
 {
-	NSUInteger hash = 0;
-	
-	if (_sgf.buffer)
-		hash = [[NSString stringWithFormat:@"%s", _sgf.buffer] hash];
-	
-	return hash;
+	return (_sgf.buffer ? [[NSString stringWithFormat:@"%s", _sgf.buffer] hash] : 0);
 }
 
 /////// end getters/setters
@@ -348,9 +399,7 @@
 	NSFileManager* fMgr = [NSFileManager defaultManager];
 	
 	if ([fMgr fileExistsAtPath:path] && [fMgr isReadableFileAtPath:path]) {
-		[_path release];
-		_path = [path copy];
-		
+		self.path = path;
 		[self loadSGFFile];
 		[self _unitTest];
 	}

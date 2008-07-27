@@ -12,6 +12,8 @@
 #import "MarkerController.h"
 #import "BoardView.h"
 
+#import "ParserBridge.h"
+
 @implementation uGoAppDelegate
 
 
@@ -31,6 +33,20 @@
     _markerController.boardView = rootViewController.mainViewController.boardView;
     
     srand(time(NULL));
+
+#if 0
+	ParserBridge* pb = [[[ParserBridge alloc] init] autorelease];
+	[pb loadSGFFromPath: [[NSBundle mainBundle] pathForResource:@"ShukoOriginalMove" ofType:@"sgf"]];
+	
+	ParserBridge* pbn = [[[ParserBridge alloc] init] autorelease];
+	pbn.path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: @"new.sgf"];
+	pbn.boardSize = 19;
+	pbn.whiteName = @"Fark";
+	pbn.blackName = @"Tweek";
+	pbn.handicap = 4;
+	pbn.gameDate = [NSDate date];
+	[pbn _unitTest];
+#endif
 }
 
 

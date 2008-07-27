@@ -20,8 +20,13 @@
 	NSString *_blackName;
 	float _komi;
 	NSInteger _handicap;
-	NSString* _gameComment;
+	NSString *_gameComment;
+	NSDate *_gameDate;
 }
+
+// question: when using 'copy' here and having a *custom setter*, has the variable passed in as a parameter to
+// the setter *already* been copied, and thus already retained, or *needs to be copied* (and retained).
+@property (nonatomic, copy) NSString *path;
 
 @property (nonatomic) NSUInteger boardSize;
 @property (nonatomic, copy) NSString *whiteName;
@@ -29,6 +34,7 @@
 @property (nonatomic) float komi;
 @property (nonatomic) NSInteger handicap;
 @property (nonatomic, copy) NSString *gameComment;
+@property (nonatomic, copy) NSDate *gameDate;
 
 @property (nonatomic, readonly) BOOL isActive;
 @property (nonatomic, readonly) NSUInteger hash;
