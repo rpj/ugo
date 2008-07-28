@@ -12,6 +12,9 @@
 @interface ParserBridge (Private)
 - (void) _clearSGFInfo;
 - (void) _ensureRoot;
+- (void) _loadSGFFile;
+- (void) _saveSGFFile;
+- (void) _refreshSGFFile;
 
 - (NSArray*) _searchAllNodesForValuesWithID:(token)tid;
 - (NSArray*) _searchForValuesWithID:(token)tid startingWithProperty:(struct Property*)start;
@@ -19,7 +22,6 @@
 
 // debug methods
 - (void) _examinePropsForNode: (struct Node*)node;
-- (void) _examineSGF;
 - (void) _unitTest;
 @end
 
@@ -62,6 +64,43 @@
 - (void) _ensureRoot;
 {
 	if (!_sgf.root) _sgf.root = NewNode(nil, YES);
+}
+
+- (void) _saveSGFFile;
+{
+	struct TreeInfo* info = _sgf.tree;
+	
+	if (!info)
+		// not sure why, but the parser isn't creating any TreeInfo structs at all, so we have to do it ourselves
+		info = (struct TreeInfo*)malloc(sizeof(struct TreeInfo));
+	
+	info->num = 1;		// XXX use real accessor
+	info->FF = 4;		// XXX use real accessor
+	info->GM = 1;		// this really must be 1
+	info->bwidth = self.boardSize;
+	info->bheight = self.boardSize;
+	
+	info->root = _sgf.root;
+	info->next = info->prev = nil;
+	
+	_sgf.info = _sgf.tree = info;
+	
+	SaveSGF(&_sgf);
+}
+
+- (void) _loadSGFFile;
+{
+	if (self.isActive)
+		[self _clearSGFInfo];
+	
+	_sgf.name = (char*)[_path cStringUsingEncoding:NSASCIIStringEncoding];
+	LoadSGF(&_sgf);
+}
+
+- (void) _refreshSGFFile;
+{
+	[self _saveSGFFile];
+	[self _loadSGFFile];
 }
 
 - (NSArray*) _searchAllNodesForValuesWithID:(token)tid;
@@ -129,32 +168,29 @@
 	}
 }
 
-- (void) _examineSGF;
+- (void) _exploreGameTreeAtNode:(struct Node*)node;
 {
-	if (_sgf.name) {
-		if (_sgf.info) {
-		}
+	if (!node->child) {
+		NSLog(@"Leaf node at 0x%x", node);
+		[self _examinePropsForNode: node];
 		
-		if (_sgf.root) {
-			NSLog(@"Following node chaing from root:");
-			
-			struct Node* n = _sgf.root;
-			
-			for (; n; n = n->next) {
-				NSLog(@"Node 0x%x (<- 0x%x | 0x%x ->)", n, n->prev, n->next);
-				[self _examinePropsForNode:n];
-			}
+		if (node->next) {
+			NSLog(@"Next in bottom chain: 0x%x", node->next);
+			[self _exploreGameTreeAtNode: node->next];
 		}
 	}
+	else {
+		NSLog(@">>>> This node (0x%x):", node);
+		[self _examinePropsForNode: node];
+		NSLog(@"Exploring child node 0x%x for 0x%x", node->child, node);
+		[self _exploreGameTreeAtNode: node->child];
+	}
 }
-
 
 - (void) _unitTest;
 {
 	NSLog(@"Loaded SGF file: %@", _path);
-	
-	//[self _examineSGF];
-	
+	/*
 	NSLog(@"Board size of: %d", self.boardSize);
 	NSLog(@"White name: %@", self.whiteName);
 	NSLog(@"White rank: %@", self.whiteRank);
@@ -166,12 +202,6 @@
 	NSLog(@"Game date: %@", self.gameDate);
 	NSLog(@"Time limit: %d secs", self.timeLimit);
 	NSLog(@"Got current SGF hash value: 0x%x", self.hash);
-	/*
-	struct Node* node = self.nextNode;
-	for(; node; node = self.nextNode) {
-		NSLog(@"---------- Move node 0x%x ----------", node);
-		[self _examinePropsForNode: node];
-	}*/
 	
 	NSLog(@"Add white:");
 	for (NSString* add in self.addWhite)
@@ -180,6 +210,15 @@
 	NSLog(@"Add black:");
 	for (NSString* add in self.addBlack)
 		NSLog(@"%@", add);
+	
+	struct Node* node = self.nextNode;
+	for(; node; node = self.nextNode) {
+		NSLog(@"---------- Move node 0x%x ----------", node);
+		[self _examinePropsForNode: node];
+	}
+	 */
+	NSLog(@"---- Starting node exam at first (0x%x)", _sgf.first);
+	[self _exploreGameTreeAtNode: _sgf.first];
 }
 @end
 
@@ -240,7 +279,7 @@
 	[self _ensureRoot];
 	New_PropValue(_sgf.root, TKN_SZ, (char*)[[NSString stringWithFormat:@"%d", newSize] cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
 	
-	[self refreshSGFFile];
+	[self _refreshSGFFile];
 }
 
 - (NSUInteger) boardSize;
@@ -262,7 +301,7 @@
 		[self _ensureRoot];
 		New_PropValue(_sgf.root, TKN_PW, (char*)[_whiteName cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
 		
-		[self refreshSGFFile];
+		[self _refreshSGFFile];
 	}
 }
 
@@ -285,7 +324,7 @@
 		[self _ensureRoot];
 		New_PropValue(_sgf.root, TKN_PB, (char*)[_blackName cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
 		
-		[self refreshSGFFile];
+		[self _refreshSGFFile];
 	}
 }
 
@@ -305,7 +344,7 @@
 		_komi = newKomi;
 		[self _ensureRoot];
 		New_PropValue(_sgf.root, TKN_KM, (char*)[[NSString stringWithFormat:@"%0.1f", _komi] cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
-		[self refreshSGFFile];
+		[self _refreshSGFFile];
 	}
 }
 
@@ -325,7 +364,7 @@
 		_handicap = newHandicap;
 		[self _ensureRoot];
 		New_PropValue(_sgf.root, TKN_HA, (char*)[[NSString stringWithFormat:@"%d", _handicap] cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
-		[self refreshSGFFile];
+		[self _refreshSGFFile];
 	}
 }
 
@@ -350,7 +389,7 @@
 		New_PropValue(_sgf.root, TKN_C, str, nil, FALSE);
 		New_PropValue(_sgf.root, TKN_GC, str, nil, TRUE);
 		
-		[self refreshSGFFile];
+		[self _refreshSGFFile];
 	}
 }
 
@@ -380,7 +419,7 @@
 		
 		if (dstr) New_PropValue(_sgf.root, TKN_DT, (char*)[dstr cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
 		
-		[self refreshSGFFile];
+		[self _refreshSGFFile];
 	}
 }
 
@@ -406,7 +445,7 @@
 		[self _ensureRoot];
 		_timeLimit = tl;
 		New_PropValue(_sgf.root, TKN_TM, (char*)[[NSString stringWithFormat:@"%d", _timeLimit] cStringUsingEncoding:NSASCIIStringEncoding], nil, YES);
-		[self refreshSGFFile];
+		[self _refreshSGFFile];
 	}
 }
 
@@ -428,7 +467,7 @@
 		
 		[self _ensureRoot];
 		New_PropValue(_sgf.root, TKN_WR, (char*)[_whiteRank cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
-		[self refreshSGFFile];
+		[self _refreshSGFFile];
 	}
 }
 
@@ -450,7 +489,7 @@
 		
 		[self _ensureRoot];
 		New_PropValue(_sgf.root, TKN_BR, (char*)[_blackRank cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
-		[self refreshSGFFile];
+		[self _refreshSGFFile];
 	}
 }
 
@@ -473,7 +512,7 @@
 		[self _ensureRoot];
 		for (NSString* add in _addWhite)
 			New_PropValue(_sgf.root, TKN_AW, (char*)[add cStringUsingEncoding:NSASCIIStringEncoding], nil, NO);
-		[self refreshSGFFile];
+		[self _refreshSGFFile];
 	}
 }
 
@@ -498,7 +537,7 @@
 		[self _ensureRoot];
 		for (NSString* add in _addBlack)
 			New_PropValue(_sgf.root, TKN_AB, (char*)[add cStringUsingEncoding:NSASCIIStringEncoding], nil, NO);
-		[self refreshSGFFile];
+		[self _refreshSGFFile];
 	}
 }
 
@@ -537,50 +576,13 @@
 
 #pragma mark Loading and Saving methods
 
-- (void) saveSGFFile;
-{
-	struct TreeInfo* info = _sgf.tree;
-	
-	if (!info)
-		// not sure why, but the parser isn't creating any TreeInfo structs at all, so we have to do it ourselves
-		info = (struct TreeInfo*)malloc(sizeof(struct TreeInfo));
-		
-	info->num = 1;		// XXX use real accessor
-	info->FF = 4;		// XXX use real accessor
-	info->GM = 1;		// this really must be 1
-	info->bwidth = self.boardSize;
-	info->bheight = self.boardSize;
-	
-	info->root = _sgf.root;
-	info->next = info->prev = nil;
-	
-	_sgf.info = _sgf.tree = info;
-	
-	SaveSGF(&_sgf);
-}
-
-- (void) loadSGFFile;
-{
-	if (self.isActive)
-		[self _clearSGFInfo];
-	
-	_sgf.name = (char*)[_path cStringUsingEncoding:NSASCIIStringEncoding];
-	LoadSGF(&_sgf);
-}
-
-- (void) refreshSGFFile;
-{
-	[self saveSGFFile];
-	[self loadSGFFile];
-}
-
 - (void) loadSGFFromPath:(NSString*)path;
 {
 	NSFileManager* fMgr = [NSFileManager defaultManager];
 	
 	if ([fMgr fileExistsAtPath:path] && [fMgr isReadableFileAtPath:path]) {
 		self.path = path;
-		[self loadSGFFile];
+		[self _loadSGFFile];
 		[self _unitTest];
 	}
 }

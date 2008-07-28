@@ -58,7 +58,4 @@
 @property (nonatomic, readonly) struct Node *nextNode;
 
 - (void) loadSGFFromPath:(NSString*)path;
-- (void) loadSGFFile;
-- (void) saveSGFFile;
-- (void) refreshSGFFile;
 @end
