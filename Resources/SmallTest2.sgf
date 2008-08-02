@@ -1,0 +1,22 @@
+(
+;FF[4]
+ GM[1]
+ CA[UTF-8]
+ AP[Goban:3.2.12]
+ US[Ryan Joseph]
+ DT[2008-08-01]
+ SZ[9]
+ HA[0]
+ KM[6.5]
+ RU[Japanese]
+ BR[NR]
+ PB[Ryan Joseph]
+ WR[NR]
+ PW[Ryan Joseph]
+;B[aa];W[bb]
+(
+  ;B[cc];W[dd];B[ee]
+)
+(
+  ;;B[ii];W[hh];B[gg]
+))

@@ -26,13 +26,37 @@
 @end
 
 ///////////////////////////////////////////////////////////////////////////////
+@implementation GoMove
+
+@synthesize isWhite = _isWhite;
+@synthesize xPoint = _x;
+@synthesize yPoint = _y;
+
+- (id) initWithX:(char)x andY:(char)y isWhitesMove:(BOOL)white;
+{
+	if (self = [super init]) {
+		_x = x;
+		_y = y;
+		_isWhite = white;
+	}
+	
+	return self;
+}
+
++ (GoMove*) createMoveAtX:(char)x andY:(char)y isWhitesMove:(BOOL)white;
+{
+	return [[[GoMove alloc] initWithX:x andY:y isWhitesMove:white] autorelease];
+}
+@end
+
+///////////////////////////////////////////////////////////////////////////////
 @implementation ParserBridge (Private)
 - (void) _clearSGFInfo;
 {
 	FreeSGFInfo(&_sgf);
 	memset((void*)&_sgf, 0, sizeof(struct SGFInfo));
 	
-	_curNode = nil;
+	_curNodeInMainTree = nil;
 	
 	// need to clear all member variables so that their getters can update on next call
 	_boardSize = 0;
@@ -171,18 +195,24 @@
 - (void) _exploreGameTreeAtNode:(struct Node*)node;
 {
 	if (!node->child) {
-		NSLog(@"Leaf node at 0x%x", node);
+		NSLog(@">>>> Leaf node at 0x%x:", node);
 		[self _examinePropsForNode: node];
 		
 		if (node->next) {
-			NSLog(@"Next in bottom chain: 0x%x", node->next);
+			NSLog(@"Exploring NEXT node in chain from 0x%x: 0x%x", node, node->next);
 			[self _exploreGameTreeAtNode: node->next];
 		}
 	}
 	else {
 		NSLog(@">>>> This node (0x%x):", node);
 		[self _examinePropsForNode: node];
-		NSLog(@"Exploring child node 0x%x for 0x%x", node->child, node);
+		
+		if (node->sibling) {
+			NSLog(@"Exploring SIBLING node 0x%x for 0x%x", node->sibling, node);
+			[self _exploreGameTreeAtNode: node->sibling];
+		}
+		
+		NSLog(@"Exploring CHILD node 0x%x for 0x%x", node->child, node);
 		[self _exploreGameTreeAtNode: node->child];
 	}
 }
@@ -217,6 +247,14 @@
 		[self _examinePropsForNode: node];
 	}
 	 */
+	
+	NSLog(@"Trying move node accessor:");
+	GoMove* move = nil;
+	
+	while (move = self.nextMoveInMainTree) {
+		NSLog(@"Move: %s to (%c, %c)", (move.isWhite ? "white" : "black"), move.xPoint, move.yPoint);
+	}
+	
 	NSLog(@"---- Starting node exam at first (0x%x)", _sgf.first);
 	[self _exploreGameTreeAtNode: _sgf.first];
 }
@@ -242,7 +280,7 @@
 
 @dynamic isActive;
 @dynamic hash;		// this needs to be a hash of *only* the board state, to be able to use for Ko checks
-@dynamic nextNode;
+@dynamic nextMoveInMainTree;
 
 - (id) init;
 {
@@ -566,12 +604,36 @@
 	return (_sgf.buffer ? [[NSString stringWithFormat:@"%s", _sgf.buffer] hash] : 0);
 }
 
-// a node iterator that wraps around, returning 'nil' once before wrapping
-- (struct Node*) nextNode;
+- (GoMove*) nextMoveInMainTree;
 {
-	return (_curNode = (!_curNode ? _sgf.first : _curNode->next));
+	GoMove* retMove = nil;
+	BOOL isWhite = YES;
+	
+	// set the current node at first to the root, so that an ->child on it gets the first move node
+	if (!_curNodeInMainTree && _sgf.root)
+		_curNodeInMainTree = _sgf.root;
+	
+	if ((_curNodeInMainTree = _curNodeInMainTree->child)) {
+		void* prop = [self _findFirstValueWithID:TKN_W startingWithProperty:_curNodeInMainTree->prop];
+		
+		if (!prop) {
+			prop = [self _findFirstValueWithID:TKN_B startingWithProperty:_curNodeInMainTree->prop];
+			isWhite = NO;
+		}
+		
+		if (prop && [(id)prop isKindOfClass:[NSString class]]) {
+			NSString* sProp = (NSString*)prop;
+			
+			if ([sProp length] == 2) {
+				char xPoint = (char)[sProp characterAtIndex:0];
+				char yPoint = (char)[sProp characterAtIndex:1];
+				retMove = [GoMove createMoveAtX:xPoint andY:yPoint isWhitesMove:isWhite];
+			}
+		}
+	}
+	
+	return retMove;
 }
-
 /////// end getters/setters
 
 #pragma mark Loading and Saving methods

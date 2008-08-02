@@ -56,6 +56,8 @@
 		94B1E49D0E3A894500A4A133 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC145B0E35D34200431B28 /* main.c */; };
 		94B1E4B20E3A8A2900A4A133 /* ParserBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 94B1E4B10E3A8A2900A4A133 /* ParserBridge.m */; };
 		94B1E4C50E3A8D8000A4A133 /* test2.sgf in Resources */ = {isa = PBXBuildFile; fileRef = 94B1E4C40E3A8D8000A4A133 /* test2.sgf */; };
+		94B67DE40E441D6700A58855 /* SmallTest.sgf in Resources */ = {isa = PBXBuildFile; fileRef = 94B67DE30E441D6700A58855 /* SmallTest.sgf */; };
+		94B67E360E442A3300A58855 /* SmallTest2.sgf in Resources */ = {isa = PBXBuildFile; fileRef = 94B67E350E442A3300A58855 /* SmallTest2.sgf */; };
 		94C4B9800E36899B00739E57 /* GobanStonesTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 94C4B97F0E36899B00739E57 /* GobanStonesTheme.m */; };
 		94C4B9B40E368BC300739E57 /* WhiteStone130-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9A60E368BC300739E57 /* WhiteStone130-0.png */; };
 		94C4B9B50E368BC300739E57 /* WhiteStone130-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9A70E368BC300739E57 /* WhiteStone130-1.png */; };
@@ -152,6 +154,8 @@
 		94B1E4B00E3A8A2900A4A133 /* ParserBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParserBridge.h; sourceTree = "<group>"; };
 		94B1E4B10E3A8A2900A4A133 /* ParserBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParserBridge.m; sourceTree = "<group>"; };
 		94B1E4C40E3A8D8000A4A133 /* test2.sgf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test2.sgf; sourceTree = "<group>"; };
+		94B67DE30E441D6700A58855 /* SmallTest.sgf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SmallTest.sgf; sourceTree = "<group>"; };
+		94B67E350E442A3300A58855 /* SmallTest2.sgf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SmallTest2.sgf; sourceTree = "<group>"; };
 		94C4B97E0E36899B00739E57 /* GobanStonesTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GobanStonesTheme.h; sourceTree = "<group>"; };
 		94C4B97F0E36899B00739E57 /* GobanStonesTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GobanStonesTheme.m; sourceTree = "<group>"; };
 		94C4B9A60E368BC300739E57 /* WhiteStone130-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteStone130-0.png"; sourceTree = "<group>"; };
@@ -239,6 +243,8 @@
 			children = (
 				4355750A0E3A495A00F1D159 /* Images */,
 				9431826C0E3BEC7D007069AE /* ShukoOriginalMove.sgf */,
+				94B67E350E442A3300A58855 /* SmallTest2.sgf */,
+				94B67DE30E441D6700A58855 /* SmallTest.sgf */,
 				94B1E4C40E3A8D8000A4A133 /* test2.sgf */,
 				943186970E3D00D5007069AE /* FromSensei.sgf */,
 				280E754A0DD40C5E005A515E /* FlipsideView.xib */,
@@ -488,6 +494,8 @@
 				94B1E4C50E3A8D8000A4A133 /* test2.sgf in Resources */,
 				9431826D0E3BEC7D007069AE /* ShukoOriginalMove.sgf in Resources */,
 				943186980E3D00D5007069AE /* FromSensei.sgf in Resources */,
+				94B67DE40E441D6700A58855 /* SmallTest.sgf in Resources */,
+				94B67E360E442A3300A58855 /* SmallTest2.sgf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

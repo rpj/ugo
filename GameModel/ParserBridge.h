@@ -11,12 +11,26 @@
 #import "all.h"
 #import "protos.h"
 
+@interface GoMove : NSObject {
+	BOOL _isWhite;
+	char _x;
+	char _y;
+}
+
+@property (nonatomic) BOOL isWhite;
+@property (nonatomic) char xPoint;
+@property (nonatomic) char yPoint;
+
++ (GoMove*) createMoveAtX:(char)x andY:(char)y isWhitesMove:(BOOL)white;
+- (id) initWithX:(char)x andY:(char)y isWhitesMove:(BOOL)white;
+@end
+
 @interface ParserBridge : NSObject {
 	struct SGFInfo	_sgf;
 	NSString* _path;
 	
 	// record keeping ivars
-	struct Node *_curNode;
+	struct Node *_curNodeInMainTree;
 	
 	// property ivars
 	NSUInteger _boardSize;
@@ -54,8 +68,7 @@
 @property (nonatomic, readonly) BOOL isActive;
 @property (nonatomic, readonly) NSUInteger hash;
 
-// the public API for ParserBridge should not expose *any* of the parser types, so this needs to be changed
-@property (nonatomic, readonly) struct Node *nextNode;
+@property (nonatomic, readonly) GoMove* nextMoveInMainTree;
 
 - (void) loadSGFFromPath:(NSString*)path;
 @end
