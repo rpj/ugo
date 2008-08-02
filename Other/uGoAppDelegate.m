@@ -36,8 +36,8 @@
 
 #if 1
 	ParserBridge* pb = [[[ParserBridge alloc] init] autorelease];
-	//[pb loadSGFFromPath: [[NSBundle mainBundle] pathForResource:@"ShukoOriginalMove" ofType:@"sgf"]];
-	/*
+	
+	/* this tests building a parser bridge, ie: for tracking a newly-created game with SGF
 	ParserBridge* pbn = [[[ParserBridge alloc] init] autorelease];
 	pbn.path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: @"new.sgf"];
 	pbn.boardSize = 19;
@@ -51,6 +51,10 @@
 	pbn.gameDate = [NSDate date];
 	[pbn _unitTest];*/
 	
+	[pb loadSGFFromPath: [[NSBundle mainBundle] pathForResource:@"SmallTest" ofType:@"sgf"]];
+	NSLog(@"--------------------------------------------------");
+	[pb loadSGFFromPath: [[NSBundle mainBundle] pathForResource:@"SmallTest2" ofType:@"sgf"]];
+	NSLog(@"--------------------------------------------------");
 	[pb loadSGFFromPath: [[NSBundle mainBundle] pathForResource:@"SmallTest3" ofType:@"sgf"]];
 #endif
 }

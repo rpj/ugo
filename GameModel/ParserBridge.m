@@ -7,47 +7,7 @@
 //
 
 #import "ParserBridge.h"
-
-///////////////////////////////////////////////////////////////////////////////
-@implementation GoMove
-
-@synthesize isWhite = _isWhite;
-@synthesize xPoint = _x;
-@synthesize yPoint = _y;
-
-- (id) initWithX:(char)x andY:(char)y isWhitesMove:(BOOL)white;
-{
-	if (self = [super init]) {
-		_x = x;
-		_y = y;
-		_isWhite = white;
-	}
-	
-	return self;
-}
-
-+ (GoMove*) createMoveAtX:(char)x andY:(char)y isWhitesMove:(BOOL)white;
-{
-	return [[[GoMove alloc] initWithX:x andY:y isWhitesMove:white] autorelease];
-}
-@end
-
-///////////////////////////////////////////////////////////////////////////////
-@interface ParserBridge (Private)
-- (void) _clearSGFInfo;
-- (void) _ensureRoot;
-- (void) _loadSGFFile;
-- (void) _saveSGFFile;
-- (void) _refreshSGFFile;
-
-- (NSArray*) _searchAllNodesForValuesWithID:(token)tid;
-- (NSArray*) _searchForValuesWithID:(token)tid startingWithProperty:(struct Property*)start;
-- (void*) _findFirstValueWithID:(token)tid startingWithProperty:(struct Property*)start;
-
-// debug methods
-- (void) _examinePropsForNode: (struct Node*)node;
-- (void) _unitTest;
-@end
+#import "GoMove.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 @implementation ParserBridge (Private)
@@ -134,7 +94,7 @@
 	
 	for (; node; node = node->next) {
 		if (node->prop) {
-			NSArray* pVals = [self _searchForValuesWithID:tid startingWithProperty:node->prop];
+			NSArray* pVals = [ParserBridge _searchForValuesWithID:tid startingWithProperty:node->prop];
 			
 			if ([pVals count]) [ret addObjectsFromArray:pVals];
 		}
@@ -143,7 +103,7 @@
 	return (NSArray*)ret;
 }
 
-- (NSArray*) _searchForValuesWithID:(token)tid startingWithProperty:(struct Property*)start;
++ (NSArray*) _searchForValuesWithID:(token)tid startingWithProperty:(struct Property*)start;
 {
 	NSMutableArray* ret = [NSMutableArray array];
 	
@@ -163,7 +123,7 @@
 	return (NSArray*)ret;
 }
 
-- (void*) _findFirstValueWithID:(token)tid startingWithProperty:(struct Property*)start;
++ (void*) _findFirstValueWithID:(token)tid startingWithProperty:(struct Property*)start;
 {
 	NSArray* tmp = [self _searchForValuesWithID: tid startingWithProperty: start];
 	void* ret = nil;
@@ -233,11 +193,11 @@
 	NSLog(@"Time limit: %d secs", self.timeLimit);
 	NSLog(@"Got current SGF hash value: 0x%x", self.hash);
 	
-	NSLog(@"Add white:");
+	NSLog(@"Add white moves:");
 	for (NSString* add in self.addWhite)
 		NSLog(@"%@", add);
 	
-	NSLog(@"Add black:");
+	NSLog(@"Add black moves:");
 	for (NSString* add in self.addBlack)
 		NSLog(@"%@", add);
 	
@@ -245,7 +205,22 @@
 	GoMove* move = nil;
 	
 	while (move = self.nextMoveInMainTree) {
-		NSLog(@"Move: %s to (%c, %c)", (move.isWhite ? "white" : "black"), move.xPoint, move.yPoint);
+		NSLog(@"Move: %@", move);
+		
+		if (move.hasVariations) {
+			NSEnumerator* sEnum = [move.variations objectEnumerator];
+			GoMove* var = nil;
+			int count = 1;
+			
+			for (; (var = [sEnum nextObject]); count++) {
+				NSLog(@"\tVariation %d:", count);
+				GoMove* tmp = var;
+				
+				do {
+					NSLog(@"\t\t%@", tmp);
+				} while ((tmp = tmp.nextMove));
+			}
+		}
 	}
 	
 	//NSLog(@"---- Starting node exam at first (0x%x)", _sgf.first);
@@ -318,7 +293,7 @@
 	[self _ensureRoot];
 	
 	if (!_boardSize)
-		_boardSize = (NSUInteger)[(NSString*)[self _findFirstValueWithID: TKN_SZ startingWithProperty: _sgf.root->prop] integerValue];
+		_boardSize = (NSUInteger)[(NSString*)[ParserBridge _findFirstValueWithID: TKN_SZ startingWithProperty: _sgf.root->prop] integerValue];
 	
 	return _boardSize;
 }
@@ -341,7 +316,7 @@
 	[self _ensureRoot];
 	
 	if (!_whiteName)
-		_whiteName = [(NSString*)[self _findFirstValueWithID: TKN_PW startingWithProperty: _sgf.root->prop] copy];
+		_whiteName = [(NSString*)[ParserBridge _findFirstValueWithID: TKN_PW startingWithProperty: _sgf.root->prop] copy];
 	
 	return _whiteName;
 }
@@ -364,7 +339,7 @@
 	[self _ensureRoot];
 	
 	if (!_blackName)
-		_blackName = [(NSString*)[self _findFirstValueWithID: TKN_PB startingWithProperty: _sgf.root->prop] copy];
+		_blackName = [(NSString*)[ParserBridge _findFirstValueWithID: TKN_PB startingWithProperty: _sgf.root->prop] copy];
 	
 	return _blackName;
 }
@@ -384,7 +359,7 @@
 	[self _ensureRoot];
 	
 	if (_komi == -1.0)
-		_komi = (float)[(NSString*)[self _findFirstValueWithID: TKN_KM startingWithProperty: _sgf.root->prop] floatValue];
+		_komi = (float)[(NSString*)[ParserBridge _findFirstValueWithID: TKN_KM startingWithProperty: _sgf.root->prop] floatValue];
 	
 	return _komi;
 }
@@ -404,7 +379,7 @@
 	[self _ensureRoot];
 	
 	if (_handicap == -1)
-		_handicap = (NSInteger)[(NSString*)[self _findFirstValueWithID: TKN_HA startingWithProperty: _sgf.root->prop] integerValue];
+		_handicap = (NSInteger)[(NSString*)[ParserBridge _findFirstValueWithID: TKN_HA startingWithProperty: _sgf.root->prop] integerValue];
 	
 	return _handicap;
 }
@@ -429,8 +404,8 @@
 	if (!_gameComment) {
 		[self _ensureRoot];
 		
-		NSString* tmp = [self _findFirstValueWithID:TKN_GC startingWithProperty: _sgf.root->prop];
-		if (!tmp) tmp = [self _findFirstValueWithID: TKN_C startingWithProperty: _sgf.root->prop];
+		NSString* tmp = [ParserBridge _findFirstValueWithID:TKN_GC startingWithProperty: _sgf.root->prop];
+		if (!tmp) tmp = [ParserBridge _findFirstValueWithID: TKN_C startingWithProperty: _sgf.root->prop];
 		
 		if (tmp) _gameComment = [tmp copy];
 	}
@@ -459,7 +434,7 @@
 	if (!_gameDate) {
 		[self _ensureRoot];
 		
-		NSString* sDate = (NSString*)[self _findFirstValueWithID: TKN_DT startingWithProperty: _sgf.root->prop];
+		NSString* sDate = (NSString*)[ParserBridge _findFirstValueWithID: TKN_DT startingWithProperty: _sgf.root->prop];
 		
 		if (sDate) {
 			//NSDateFormatter* frmtr = [[[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%d" allowNaturalLanguage:NO] autorelease];
@@ -485,7 +460,7 @@
 	[self _ensureRoot];
 	
 	if (_timeLimit == -1)
-		_timeLimit = (NSInteger)[(NSString*)[self _findFirstValueWithID: TKN_TM startingWithProperty: _sgf.root->prop] integerValue];
+		_timeLimit = (NSInteger)[(NSString*)[ParserBridge _findFirstValueWithID: TKN_TM startingWithProperty: _sgf.root->prop] integerValue];
 	
 	return _timeLimit;
 }
@@ -506,7 +481,7 @@
 {
 	if (!_whiteRank) {
 		[self _ensureRoot];
-		_whiteRank = [(NSString*)[self _findFirstValueWithID: TKN_WR startingWithProperty: _sgf.root->prop] copy];
+		_whiteRank = [(NSString*)[ParserBridge _findFirstValueWithID: TKN_WR startingWithProperty: _sgf.root->prop] copy];
 	}
 	
 	return _whiteRank;
@@ -528,7 +503,7 @@
 {	
 	if (!_blackRank) {
 		[self _ensureRoot];
-		_blackRank = [(NSString*)[self _findFirstValueWithID: TKN_BR startingWithProperty: _sgf.root->prop] retain];
+		_blackRank = [(NSString*)[ParserBridge _findFirstValueWithID: TKN_BR startingWithProperty: _sgf.root->prop] retain];
 	}
 	
 	return _blackRank;
@@ -600,30 +575,13 @@
 - (GoMove*) nextMoveInMainTree;
 {
 	GoMove* retMove = nil;
-	BOOL isWhite = YES;
 	
 	// set the current node at first to the root, so that an ->child on it gets the first move node
 	if (!_curNodeInMainTree && _sgf.root)
 		_curNodeInMainTree = _sgf.root;
 	
-	if ((_curNodeInMainTree = _curNodeInMainTree->child)) {
-		void* prop = [self _findFirstValueWithID:TKN_W startingWithProperty:_curNodeInMainTree->prop];
-		
-		if (!prop) {
-			prop = [self _findFirstValueWithID:TKN_B startingWithProperty:_curNodeInMainTree->prop];
-			isWhite = NO;
-		}
-		
-		if (prop && [(id)prop isKindOfClass:[NSString class]]) {
-			NSString* sProp = (NSString*)prop;
-			
-			if ([sProp length] == 2) {
-				char xPoint = (char)[sProp characterAtIndex:0];
-				char yPoint = (char)[sProp characterAtIndex:1];
-				retMove = [GoMove createMoveAtX:xPoint andY:yPoint isWhitesMove:isWhite];
-			}
-		}
-	}
+	if ((_curNodeInMainTree = _curNodeInMainTree->child))
+		retMove = [GoMove createFromParserNode:_curNodeInMainTree];
 	
 	return retMove;
 }

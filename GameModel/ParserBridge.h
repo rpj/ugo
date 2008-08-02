@@ -11,20 +11,9 @@
 #import "all.h"
 #import "protos.h"
 
-@interface GoMove : NSObject {
-	BOOL _isWhite;
-	char _x;
-	char _y;
-}
+@class GoMove;
 
-@property (nonatomic) BOOL isWhite;
-@property (nonatomic) char xPoint;
-@property (nonatomic) char yPoint;
-
-+ (GoMove*) createMoveAtX:(char)x andY:(char)y isWhitesMove:(BOOL)white;
-- (id) initWithX:(char)x andY:(char)y isWhitesMove:(BOOL)white;
-@end
-
+///////////////////////////////////////////////////////////////////////////////
 @interface ParserBridge : NSObject {
 	struct SGFInfo	_sgf;
 	NSString* _path;
@@ -71,4 +60,23 @@
 @property (nonatomic, readonly) GoMove* nextMoveInMainTree;
 
 - (void) loadSGFFromPath:(NSString*)path;
+@end
+
+
+///////////////////////////////////////////////////////////////////////////////
+@interface ParserBridge (Private)
+- (void) _clearSGFInfo;
+- (void) _ensureRoot;
+- (void) _loadSGFFile;
+- (void) _saveSGFFile;
+- (void) _refreshSGFFile;
+
+- (NSArray*) _searchAllNodesForValuesWithID:(token)tid;
+
++ (NSArray*) _searchForValuesWithID:(token)tid startingWithProperty:(struct Property*)start;
++ (void*) _findFirstValueWithID:(token)tid startingWithProperty:(struct Property*)start;
+
+// debug methods
+- (void) _examinePropsForNode: (struct Node*)node;
+- (void) _unitTest;
 @end
