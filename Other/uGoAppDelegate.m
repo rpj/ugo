@@ -51,7 +51,7 @@
 	pbn.gameDate = [NSDate date];
 	[pbn _unitTest];*/
 	
-	[pb loadSGFFromPath: [[NSBundle mainBundle] pathForResource:@"SmallTest2" ofType:@"sgf"]];
+	[pb loadSGFFromPath: [[NSBundle mainBundle] pathForResource:@"SmallTest3" ofType:@"sgf"]];
 #endif
 }
 

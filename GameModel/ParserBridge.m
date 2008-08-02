@@ -9,23 +9,6 @@
 #import "ParserBridge.h"
 
 ///////////////////////////////////////////////////////////////////////////////
-@interface ParserBridge (Private)
-- (void) _clearSGFInfo;
-- (void) _ensureRoot;
-- (void) _loadSGFFile;
-- (void) _saveSGFFile;
-- (void) _refreshSGFFile;
-
-- (NSArray*) _searchAllNodesForValuesWithID:(token)tid;
-- (NSArray*) _searchForValuesWithID:(token)tid startingWithProperty:(struct Property*)start;
-- (void*) _findFirstValueWithID:(token)tid startingWithProperty:(struct Property*)start;
-
-// debug methods
-- (void) _examinePropsForNode: (struct Node*)node;
-- (void) _unitTest;
-@end
-
-///////////////////////////////////////////////////////////////////////////////
 @implementation GoMove
 
 @synthesize isWhite = _isWhite;
@@ -47,6 +30,23 @@
 {
 	return [[[GoMove alloc] initWithX:x andY:y isWhitesMove:white] autorelease];
 }
+@end
+
+///////////////////////////////////////////////////////////////////////////////
+@interface ParserBridge (Private)
+- (void) _clearSGFInfo;
+- (void) _ensureRoot;
+- (void) _loadSGFFile;
+- (void) _saveSGFFile;
+- (void) _refreshSGFFile;
+
+- (NSArray*) _searchAllNodesForValuesWithID:(token)tid;
+- (NSArray*) _searchForValuesWithID:(token)tid startingWithProperty:(struct Property*)start;
+- (void*) _findFirstValueWithID:(token)tid startingWithProperty:(struct Property*)start;
+
+// debug methods
+- (void) _examinePropsForNode: (struct Node*)node;
+- (void) _unitTest;
 @end
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -220,7 +220,7 @@
 - (void) _unitTest;
 {
 	NSLog(@"Loaded SGF file: %@", _path);
-	/*
+	
 	NSLog(@"Board size of: %d", self.boardSize);
 	NSLog(@"White name: %@", self.whiteName);
 	NSLog(@"White rank: %@", self.whiteRank);
@@ -241,13 +241,6 @@
 	for (NSString* add in self.addBlack)
 		NSLog(@"%@", add);
 	
-	struct Node* node = self.nextNode;
-	for(; node; node = self.nextNode) {
-		NSLog(@"---------- Move node 0x%x ----------", node);
-		[self _examinePropsForNode: node];
-	}
-	 */
-	
 	NSLog(@"Trying move node accessor:");
 	GoMove* move = nil;
 	
@@ -255,8 +248,8 @@
 		NSLog(@"Move: %s to (%c, %c)", (move.isWhite ? "white" : "black"), move.xPoint, move.yPoint);
 	}
 	
-	NSLog(@"---- Starting node exam at first (0x%x)", _sgf.first);
-	[self _exploreGameTreeAtNode: _sgf.first];
+	//NSLog(@"---- Starting node exam at first (0x%x)", _sgf.first);
+	//[self _exploreGameTreeAtNode: _sgf.first];
 }
 @end
 
@@ -452,8 +445,8 @@
 		_gameDate = [date copy];
 		
 		[self _ensureRoot];
-		NSDateFormatter* frmtr = [[[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%d" allowNaturalLanguage:NO] autorelease];
-		NSString* dstr = [frmtr stringFromDate:_gameDate];
+		//NSDateFormatter* frmtr = [[[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%d" allowNaturalLanguage:NO] autorelease];
+		NSString* dstr = [_gameDate description];	//[frmtr stringFromDate:_gameDate];
 		
 		if (dstr) New_PropValue(_sgf.root, TKN_DT, (char*)[dstr cStringUsingEncoding:NSASCIIStringEncoding], nil, TRUE);
 		
@@ -469,8 +462,8 @@
 		NSString* sDate = (NSString*)[self _findFirstValueWithID: TKN_DT startingWithProperty: _sgf.root->prop];
 		
 		if (sDate) {
-			NSDateFormatter* frmtr = [[[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%d" allowNaturalLanguage:NO] autorelease];
-			_gameDate = [[frmtr dateFromString: sDate] retain];
+			//NSDateFormatter* frmtr = [[[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%d" allowNaturalLanguage:NO] autorelease];
+			_gameDate = [[sDate description] retain]; //[[frmtr dateFromString: sDate] retain];
 		}
 	}
 	
