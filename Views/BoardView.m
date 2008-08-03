@@ -12,8 +12,8 @@
 #import "GoReferee.h"
 #import "GoBoard.h"
 
-#define kBoardStartingSize              320
-#define kGridBorderMultiplier			(0.20)
+#define kBoardStartingSize						320
+#define kGridBorderMultiplier					(0.20)
 
 NSString * const kGoMarkerOptionTemporaryMarker = @"MarkerIsTemporary";
 NSString * const kGoMarkerOptionColor = @"MarkerColor";
@@ -36,6 +36,8 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
 
 - (void) boardSizeDidChange:(NSNotification *)notif
 {
+	[_referee release];
+	_referee = [[GoReferee createWithBoard:_board] retain];
     [_gridLayer setNeedsDisplay];
 }
 
@@ -73,7 +75,7 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
 		
 		_board = [[GoBoard alloc] init];
 		_board.boardView = self;
-		self.referee = [GoReferee createWithBoard:_board];
+		self.referee = [[GoReferee createWithBoard:_board] retain];
         
         [self _setSublayerFrames];
         
@@ -93,6 +95,7 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
     
     [_markerLayer release];
     [_gridLayer release];
+	[_referee release];
     
 	[super dealloc];
 }
@@ -116,11 +119,32 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
 
 - (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options 
 { 
-	if ([[options objectForKey:kGoMarkerOptionTemporaryMarker] boolValue] == NO) {
-		[_referee attemptMoveAtLocation:boardLocation];
+	// this method should never be called on a non-empty location, but just to be safe...
+	BOOL placeMarker = [_referee locationIsEmpty:boardLocation];
+	NSString* statStr = nil;
+	
+	if (placeMarker && [[options valueForKey:kGoMarkerOptionTemporaryMarker] boolValue] == NO) {
+		GoMoveResponse resp = [_referee attemptMoveAtLocation:boardLocation];
+		
+		if (resp == kGoMoveDeniedSuicide)
+			statStr = @"Feeling suicidal?";
+		else if (resp == kGoMoveDeniedKoRule)
+			statStr = @"Ko rule violation.";
+		else if (resp == kGoMoveDeniedNotYourTurn)
+			statStr = @"Not your turn.";
+		else if (resp == kGoMovePieceExists)
+			statStr = @"Location is occupied.";
+		
+		placeMarker = (resp == kGoMoveAccepted);
 	}
 	
-	[_markerLayer placeMarker:type atLocation:boardLocation options:options]; 
+	if (statStr)
+		[[NSNotificationCenter defaultCenter] postNotificationName:kGoBoardViewStatusUpdateNotification
+															object:nil
+														  userInfo:[NSDictionary dictionaryWithObject:statStr forKey:@"status"]];
+		
+	if (placeMarker)
+		[_markerLayer placeMarker:type atLocation:boardLocation options:options];
 }
 
 - (void) removeAllMarkersAtLocation:(CGPoint)boardLocation { [_markerLayer removeAllMarkersAtLocation:boardLocation]; }
@@ -134,7 +158,9 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
         UITouch *touch = [[touches allObjects] objectAtIndex:0];
         
         CGPoint boardLocation = [self _boardPointForUIPoint:[touch locationInView:self]];
-        [_delegate locationWasTouched:boardLocation tapCount:touch.tapCount];
+		
+		if ([_referee locationIsEmpty:boardLocation])
+			[_delegate locationWasTouched:boardLocation tapCount:touch.tapCount];
     }
 }
 

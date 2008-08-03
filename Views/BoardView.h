@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "GoMarker.h"
 
+#define kGoBoardViewStatusUpdateNotification	@"BoardViewStatusUpdate"
+
 @class GridLayer, GoBoard, GoReferee, MarkerLayer;
 @protocol BoardViewDelegate;
 

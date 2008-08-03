@@ -13,6 +13,21 @@
 
 @synthesize boardView = _boardView;
 
+- (void) _boardStatusUpdate:(id)notify;
+{
+	NSString* status = nil;
+	
+	if (notify && (status = [[notify userInfo] objectForKey:@"status"])) {
+		[_statusLabel setText:status];
+		
+		[NSTimer scheduledTimerWithTimeInterval:5.0
+										 target:self
+									   selector:@selector(_boardStatusUpdate:)
+									   userInfo:[NSDictionary dictionaryWithObject:@"" forKey:@"status"]
+										repeats:NO];
+	}
+}
+
 - (void) viewDidLoad
 {
     // XXX (fark): I want the first view of the board to be of the entire board. I can't figure out how to do that.
@@ -26,6 +41,11 @@
     _boardScale = 1.0;
     _boardScrollView.contentSize = CGSizeMake(_boardView.boardSize, _boardView.boardSize);
     [_boardScrollView addSubview:_boardView];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(_boardStatusUpdate:)
+												 name:kGoBoardViewStatusUpdateNotification
+											   object:nil];
 }
 
 - (void)dealloc {

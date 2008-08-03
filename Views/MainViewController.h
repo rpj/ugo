@@ -12,6 +12,7 @@
 
 @interface MainViewController : UIViewController <UIScrollViewDelegate> {
     IBOutlet UIScrollView*          _boardScrollView;
+	IBOutlet UILabel*				_statusLabel;
 	
 	BoardView*		_boardView;
     CGFloat         _boardScale;

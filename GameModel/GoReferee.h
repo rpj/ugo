@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #define kGoBoardCacheBitWidth		2
+#define kGoBoardCacheBaseMask		0x3
 
 typedef enum {
     kGoMoveAccepted,
@@ -38,6 +39,8 @@ typedef enum {
 	
 	NSMutableData* _boardCache;
 	NSMutableArray* _moveHashes;
+	
+	NSUInteger _boardSize;
 }
 
 @property (nonatomic, retain) GoPlayer *whitePlayer;
@@ -48,6 +51,7 @@ typedef enum {
 
 + (GoReferee*) createWithBoard:(GoBoard*)board;
 
+- (BOOL) locationIsEmpty:(CGPoint)location;
 - (GoMoveResponse) attemptMoveAtLocation:(CGPoint)location;
 
 @end
