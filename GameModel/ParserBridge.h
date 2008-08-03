@@ -40,6 +40,8 @@
 // the setter *already* been copied, and thus already retained, or *needs to be copied* (and retained).
 @property (nonatomic, copy) NSString *path;
 
+// directly translated accessors form the SGF spec: each field below corresponds to a particular token
+// found in the root node of an SGF file.
 @property (nonatomic) NSUInteger boardSize;
 @property (nonatomic, copy) NSString *whiteName;
 @property (nonatomic, copy) NSString *blackName;
@@ -56,7 +58,6 @@
 // dynamic properties
 @property (nonatomic, readonly) BOOL isActive;
 @property (nonatomic, readonly) NSUInteger hash;
-
 @property (nonatomic, readonly) GoMove* nextMoveInMainTree;
 
 - (void) loadSGFFromPath:(NSString*)path;

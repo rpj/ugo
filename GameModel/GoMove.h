@@ -13,8 +13,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 @interface GoMove : NSObject {
 	BOOL _isWhite;
-	char _x;
-	char _y;
+	CGPoint _point;
+	NSString* _comment;
+	int _number;
 	
 @protected
 	struct Node* _node;
@@ -22,14 +23,20 @@
 }
 
 @property (nonatomic) BOOL isWhite;
-@property (nonatomic) char xPoint;
-@property (nonatomic) char yPoint;
+@property (nonatomic) CGPoint point;
+@property (nonatomic, copy) NSString* comment;
+@property (nonatomic) int moveNumber;
+
+@property (nonatomic) struct Node* sgfNode;
 
 @property (nonatomic, readonly) GoMove* nextMove;
 @property (nonatomic, readonly) NSArray* variations;
 @property (nonatomic, readonly) BOOL hasVariations;
 
 + (GoMove*) createFromParserNode:(struct Node*)node;
++ (GoMove*) createWithBoardPoint:(CGPoint)point isWhitesMove:(BOOL)white;
+
+- (id) initWithBoardPoint:(CGPoint)point isWhitesMove:(BOOL)white;
 - (id) initWithParserNode:(struct Node*)node;
 
 @end

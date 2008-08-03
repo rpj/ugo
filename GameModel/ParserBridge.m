@@ -572,6 +572,13 @@
 	return (_sgf.buffer ? [[NSString stringWithFormat:@"%s", _sgf.buffer] hash] : 0);
 }
 
+- (void) setNextMoveInMainTree:(GoMove*)move;
+{
+	if (move.point.x != -1 && move.point.y != -1) {
+		move.sgfNode = NewNode(_curNodeInMainTree, YES);
+	}
+}
+
 - (GoMove*) nextMoveInMainTree;
 {
 	GoMove* retMove = nil;
