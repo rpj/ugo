@@ -58,7 +58,7 @@
 // dynamic properties
 @property (nonatomic, readonly) BOOL isActive;
 @property (nonatomic, readonly) NSUInteger hash;
-@property (nonatomic, readonly) GoMove* nextMoveInMainTree;
+@property (nonatomic, assign) GoMove* nextMoveInMainTree;
 
 - (void) loadSGFFromPath:(NSString*)path;
 @end

@@ -59,7 +59,6 @@
 		info = (struct TreeInfo*)malloc(sizeof(struct TreeInfo));
 	
 	info->num = 1;		// XXX use real accessor
-	info->FF = 4;		// XXX use real accessor
 	info->GM = 1;		// this really must be 1
 	info->bwidth = self.boardSize;
 	info->bheight = self.boardSize;
@@ -69,6 +68,8 @@
 	
 	_sgf.info = _sgf.tree = info;
 	
+	// set the application creator code
+	New_PropValue(_sgf.root, TKN_AP, "uGo", "0.1 (SGFC 1.16r)", TRUE);
 	SaveSGF(&_sgf);
 }
 
@@ -575,7 +576,19 @@
 - (void) setNextMoveInMainTree:(GoMove*)move;
 {
 	if (move.point.x != -1 && move.point.y != -1) {
-		move.sgfNode = NewNode(_curNodeInMainTree, YES);
+		[self _ensureRoot];
+		
+		// find the parent by following the main node chain to it's end
+		struct Node* parent = nil;
+		for (parent = _sgf.root; parent->child; parent = parent->child);
+		
+		move.sgfNode = NewNode(parent, YES);
+		char* mvStr = (char*)[move.moveAsString cStringUsingEncoding:NSASCIIStringEncoding];
+		
+		if (mvStr && move.sgfNode) {
+			New_PropValue(move.sgfNode, (move.isWhite ? TKN_W : TKN_B), mvStr, nil, YES);
+			[self _refreshSGFFile];
+		}
 	}
 }
 

@@ -20,6 +20,7 @@
 @dynamic nextMove;
 @dynamic variations;
 @dynamic hasVariations;
+@dynamic moveAsString;
 
 + (GoMove*) createFromParserNode:(struct Node*)node;
 {
@@ -122,6 +123,16 @@
 - (BOOL) hasVariations;
 {
 	return ((_variations && [_variations count]) || (!_variations && [self.variations count]));
+}
+
+- (NSString*) moveAsString;
+{
+	NSString* ret = nil;
+	
+	if (_point.x != -1 && _point.y != -1)
+		ret = [NSString stringWithFormat:@"%c%c", ((char)_point.x + ('a'-1)), ((char)_point.y + ('a'-1))];
+	
+	return ret;
 }
 
 @end

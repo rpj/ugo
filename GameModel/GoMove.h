@@ -32,6 +32,7 @@
 @property (nonatomic, readonly) GoMove* nextMove;
 @property (nonatomic, readonly) NSArray* variations;
 @property (nonatomic, readonly) BOOL hasVariations;
+@property (nonatomic, readonly) NSString* moveAsString;
 
 + (GoMove*) createFromParserNode:(struct Node*)node;
 + (GoMove*) createWithBoardPoint:(CGPoint)point isWhitesMove:(BOOL)white;
