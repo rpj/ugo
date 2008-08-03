@@ -70,7 +70,11 @@
 	
 	// set the application creator code
 	New_PropValue(_sgf.root, TKN_AP, "uGo", "0.1 (SGFC 1.16r)", TRUE);
-	SaveSGF(&_sgf);
+	
+	if (![_path isEqualToString:[NSString stringWithCString:_sgf.name]])
+		_sgf.name = (char*)[_path cStringUsingEncoding:NSASCIIStringEncoding];
+	
+	if (_path) SaveSGF(&_sgf);
 }
 
 - (void) _loadSGFFile;
@@ -256,6 +260,15 @@
 	if ((self = [super init])) {
 		[self _clearSGFInfo];
 		_path = nil;
+	}
+	
+	return self;
+}
+
+- (id) initWithPath:(NSString*)path;
+{
+	if ((self = [self init])) {
+		self.path = path;
 	}
 	
 	return self;

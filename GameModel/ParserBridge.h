@@ -60,6 +60,7 @@
 @property (nonatomic, readonly) NSUInteger hash;
 @property (nonatomic, assign) GoMove* nextMoveInMainTree;
 
+- (id) initWithPath:(NSString*)path;
 - (void) loadSGFFromPath:(NSString*)path;
 @end
 
