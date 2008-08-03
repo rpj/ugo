@@ -22,6 +22,7 @@
     NSUInteger          _boardSize;
 }
 
-@property(nonatomic, retain) MarkerTheme *theme;
+@property (nonatomic, retain) MarkerTheme *theme;
+@property (nonatomic) NSUInteger boardSize; 
 
 @end

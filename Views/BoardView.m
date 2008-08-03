@@ -9,6 +9,8 @@
 #import "BoardView.h"
 #import "MarkerLayer.h"
 #import "GridLayer.h"
+#import "GoReferee.h"
+#import "GoBoard.h"
 
 #define kBoardStartingSize              320
 #define kGridBorderMultiplier			(0.20)
@@ -28,6 +30,7 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
 
 @synthesize gridLayer = _gridLayer;
 @synthesize markerLayer = _markerLayer;
+@synthesize referee = _referee;
 @synthesize delegate = _delegate;
 @synthesize boardSize = _boardSize;
 
@@ -67,6 +70,10 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
     
         self.gridLayer = [GridLayer layer];
         [self.layer insertSublayer:_gridLayer below:_markerLayer];
+		
+		_board = [[GoBoard alloc] init];
+		_board.boardView = self;
+		self.referee = [GoReferee createWithBoard:_board];
         
         [self _setSublayerFrames];
         
@@ -107,7 +114,14 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
     return gpoint;
 }
 
-- (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options { [_markerLayer placeMarker:type atLocation:boardLocation options:options]; }
+- (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options 
+{ 
+	if ([[options objectForKey:kGoMarkerOptionTemporaryMarker] boolValue] == NO) {
+		[_referee attemptMoveAtLocation:boardLocation];
+	}
+	
+	[_markerLayer placeMarker:type atLocation:boardLocation options:options]; 
+}
 
 - (void) removeAllMarkersAtLocation:(CGPoint)boardLocation { [_markerLayer removeAllMarkersAtLocation:boardLocation]; }
 

@@ -9,12 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "GoMarker.h"
 
-@class GridLayer, MarkerLayer;
+@class GridLayer, GoBoard, GoReferee, MarkerLayer;
 @protocol BoardViewDelegate;
 
 @interface BoardView : UIView {
 	GridLayer*          _gridLayer;
     MarkerLayer*        _markerLayer;
+	
+	GoBoard*			_board;
+	GoReferee*			_referee;
     
     id                  _delegate;
     
@@ -23,6 +26,7 @@
 
 @property (nonatomic, retain) GridLayer* gridLayer;
 @property (nonatomic, retain) MarkerLayer* markerLayer;
+@property (nonatomic, retain) GoReferee* referee;
 @property (nonatomic, assign) id<BoardViewDelegate> delegate;
 
 @property (nonatomic, assign) CGFloat boardSize;

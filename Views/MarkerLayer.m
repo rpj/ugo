@@ -23,6 +23,7 @@ static NSString * const kMarkerYPos = @"YPosition";
 @implementation MarkerLayer
 
 @synthesize theme = _theme;
+@synthesize boardSize = _boardSize;
 
 - (void) _gridSizeChanged:(NSNotification *)notif
 {
