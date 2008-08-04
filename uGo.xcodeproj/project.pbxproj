@@ -46,6 +46,7 @@
 		9475F1590E3137990053C4BE /* grad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9475F1580E3137990053C4BE /* grad.png */; };
 		948586550E3141280087D7CD /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 948586540E3141280087D7CD /* gradient.png */; };
 		94AFF1810E47610B006CC281 /* GoUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 94AFF17F0E47610B006CC281 /* GoUtil.m */; };
+		94AFF1B90E47625E006CC281 /* GoBoardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 94AFF1B80E47625E006CC281 /* GoBoardModel.m */; };
 		94B1E4940E3A893E00A4A133 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC144E0E35D34200431B28 /* util.c */; };
 		94B1E4950E3A893F00A4A133 /* load.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC144D0E35D34200431B28 /* load.c */; };
 		94B1E4960E3A893F00A4A133 /* properties.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC144F0E35D34200431B28 /* properties.c */; };
@@ -159,6 +160,8 @@
 		948586540E3141280087D7CD /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradient.png; sourceTree = "<group>"; };
 		94AFF17F0E47610B006CC281 /* GoUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoUtil.m; sourceTree = SOURCE_ROOT; };
 		94AFF1800E47610B006CC281 /* GoUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoUtil.h; sourceTree = SOURCE_ROOT; };
+		94AFF1B70E47625E006CC281 /* GoBoardModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoBoardModel.h; sourceTree = "<group>"; };
+		94AFF1B80E47625E006CC281 /* GoBoardModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoBoardModel.m; sourceTree = "<group>"; };
 		94B1E4B00E3A8A2900A4A133 /* ParserBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParserBridge.h; sourceTree = "<group>"; };
 		94B1E4B10E3A8A2900A4A133 /* ParserBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParserBridge.m; sourceTree = "<group>"; };
 		94B1E4C40E3A8D8000A4A133 /* test2.sgf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test2.sgf; sourceTree = "<group>"; };
@@ -381,6 +384,8 @@
 				43437EF50E3AF677004C60B8 /* GoReferee.m */,
 				43437F000E3AF6CB004C60B8 /* GoBoard.h */,
 				43437F010E3AF6CB004C60B8 /* GoBoard.m */,
+				94AFF1B70E47625E006CC281 /* GoBoardModel.h */,
+				94AFF1B80E47625E006CC281 /* GoBoardModel.m */,
 				43437EF80E3AF688004C60B8 /* GoPlayer.h */,
 				43437EF90E3AF688004C60B8 /* GoPlayer.m */,
 				43437EFB0E3AF69A004C60B8 /* GoLocalPlayer.h */,
@@ -556,6 +561,7 @@
 				94B1E4B20E3A8A2900A4A133 /* ParserBridge.m in Sources */,
 				94B67EAC0E44F68300A58855 /* GoMove.m in Sources */,
 				94AFF1810E47610B006CC281 /* GoUtil.m in Sources */,
+				94AFF1B90E47625E006CC281 /* GoBoardModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

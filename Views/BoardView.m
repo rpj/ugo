@@ -34,10 +34,17 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
 @synthesize delegate = _delegate;
 @synthesize boardSize = _boardSize;
 
+@dynamic gameBoardSize;
+
+- (NSUInteger) gameBoardSize;
+{
+	return _markerLayer.boardSize;
+}
+
 - (void) boardSizeDidChange:(NSNotification *)notif
 {
 	[_referee release];
-	_referee = [[GoReferee createWithBoard:_board] retain];
+	_referee = [[GoReferee alloc] initWithBoardView:self];
     [_gridLayer setNeedsDisplay];
 }
 
@@ -73,9 +80,7 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
         self.gridLayer = [GridLayer layer];
         [self.layer insertSublayer:_gridLayer below:_markerLayer];
 		
-		_board = [[GoBoard alloc] init];
-		_board.boardView = self;
-		self.referee = [[GoReferee createWithBoard:_board] retain];
+		self.referee = [[GoReferee alloc] initWithBoardView:self];
         
         [self _setSublayerFrames];
         

@@ -32,6 +32,7 @@
 @property (nonatomic, assign) id<BoardViewDelegate> delegate;
 
 @property (nonatomic, assign) CGFloat boardSize;
+@property (nonatomic, readonly) NSUInteger gameBoardSize;
 
 - (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options;
 - (void) removeAllMarkersAtLocation:(CGPoint)boardLocation;

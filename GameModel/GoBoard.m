@@ -7,7 +7,7 @@
 //
 
 #import "GoBoard.h"
-
+#import "GoBoardModel.h"
 #import "BoardView.h"
 
 #define _boardPositionToIndex(pos, boardSize) ((pos).x - 1) + (((pos).y - 1) * boardSize)
@@ -16,5 +16,22 @@
 @implementation GoBoard
 
 @synthesize boardView = _boardView;
+@synthesize model = _boardModel;
 
+- (id) initWithBoardView:(BoardView*)bView;
+{
+	if ((self = [super init]) && bView) {
+		_boardView = bView;
+		_boardModel = [[GoBoardModel alloc] initWithBoardSize:_boardView.gameBoardSize];
+	} 
+	
+	return self;
+}
+
+- (void) dealloc;
+{
+	[_boardModel release];
+	
+	[super dealloc];
+}
 @end
