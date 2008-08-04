@@ -11,6 +11,7 @@
 #import <CoreGraphics/CoreGraphics.h>
 
 #import "GoMarker.h"
+#import "GoUtil.h"
 
 @class MarkerTheme;
 

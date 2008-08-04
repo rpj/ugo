@@ -45,6 +45,7 @@
 		946A4E400E30F17100F5659E /* board1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 946A4E3F0E30F17100F5659E /* board1024.png */; };
 		9475F1590E3137990053C4BE /* grad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9475F1580E3137990053C4BE /* grad.png */; };
 		948586550E3141280087D7CD /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 948586540E3141280087D7CD /* gradient.png */; };
+		94AFF1810E47610B006CC281 /* GoUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 94AFF17F0E47610B006CC281 /* GoUtil.m */; };
 		94B1E4940E3A893E00A4A133 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC144E0E35D34200431B28 /* util.c */; };
 		94B1E4950E3A893F00A4A133 /* load.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC144D0E35D34200431B28 /* load.c */; };
 		94B1E4960E3A893F00A4A133 /* properties.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC144F0E35D34200431B28 /* properties.c */; };
@@ -156,6 +157,8 @@
 		946A4E3F0E30F17100F5659E /* board1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = board1024.png; sourceTree = "<group>"; };
 		9475F1580E3137990053C4BE /* grad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grad.png; sourceTree = "<group>"; };
 		948586540E3141280087D7CD /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradient.png; sourceTree = "<group>"; };
+		94AFF17F0E47610B006CC281 /* GoUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoUtil.m; sourceTree = SOURCE_ROOT; };
+		94AFF1800E47610B006CC281 /* GoUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoUtil.h; sourceTree = SOURCE_ROOT; };
 		94B1E4B00E3A8A2900A4A133 /* ParserBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParserBridge.h; sourceTree = "<group>"; };
 		94B1E4B10E3A8A2900A4A133 /* ParserBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParserBridge.m; sourceTree = "<group>"; };
 		94B1E4C40E3A8D8000A4A133 /* test2.sgf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test2.sgf; sourceTree = "<group>"; };
@@ -238,12 +241,12 @@
 		29B97315FDCFA39411CA2CEA /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				94AFF17F0E47610B006CC281 /* GoUtil.m */,
+				94AFF1800E47610B006CC281 /* GoUtil.h */,
 				32CA4F630368D1EE00C91783 /* uGo_Prefix.pch */,
 				1D3623240D0F684500981E51 /* uGoAppDelegate.h */,
 				1D3623250D0F684500981E51 /* uGoAppDelegate.m */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
-				431ABAED0E3CFE08009EE3DE /* GoUtil.h */,
-				431ABAEE0E3CFE08009EE3DE /* GoUtil.m */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -552,7 +555,7 @@
 				43437F020E3AF6CB004C60B8 /* GoBoard.m in Sources */,
 				94B1E4B20E3A8A2900A4A133 /* ParserBridge.m in Sources */,
 				94B67EAC0E44F68300A58855 /* GoMove.m in Sources */,
-				431ABAEF0E3CFE08009EE3DE /* GoUtil.m in Sources */,
+				94AFF1810E47610B006CC281 /* GoUtil.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

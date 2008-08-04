@@ -10,6 +10,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import <CoreGraphics/CoreGraphics.h>
 
+#import "GoUtil.h"
+
 @interface GridLayer : CALayerNonAnimating {
 
 }
