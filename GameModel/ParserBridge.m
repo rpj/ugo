@@ -92,6 +92,29 @@
 	[self _loadSGFFile];
 }
 
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response;
+{
+	NSLog(@"Response from EidoGo: %@", [response URL]);
+}
+
+- (void) _sendToEidoGo;
+{
+	if (_path && self.isActive) {
+		NSString* file = [[NSString stringWithContentsOfFile:_path] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+		NSString* body = [NSString stringWithFormat:@"type=paste&sgf=%@", file];
+		NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://eidogo.com/backend/upload.php"]];
+		
+		[req setHTTPMethod:@"POST"];
+		[req setHTTPShouldHandleCookies:NO];
+		[req setHTTPBody:[NSData dataWithBytes:[body cStringUsingEncoding:NSASCIIStringEncoding] 
+										length:[body lengthOfBytesUsingEncoding:NSASCIIStringEncoding]]];
+		
+		[[NSURLConnection connectionWithRequest:req delegate:self] start];
+	}
+}
+
+
 - (NSArray*) _searchAllNodesForValuesWithID:(token)tid;
 {
 	NSMutableArray* ret = [NSMutableArray array];
