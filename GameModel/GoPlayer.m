@@ -14,4 +14,8 @@
 
 @synthesize referee = _referee;
 
+// to be overridden by subclasses
+- (void) takeTurnWhenReady:(GoReferee*)ref;
+{
+}
 @end

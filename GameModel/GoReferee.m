@@ -18,8 +18,14 @@
 @synthesize whitePlayer = _whitePlayer;
 @synthesize blackPlayer = _blackPlayer;
 @synthesize currentPlayer = _currentPlayer;
-
 @synthesize board = _board;
+
+@dynamic hasStarted;
+
+- (BOOL) hasStarted;
+{
+	return (_currentPlayer != nil);
+}
 
 - (id) initWithBoardView:(BoardView*)bView;
 {
@@ -27,7 +33,7 @@
 		_board = [[GoBoard alloc] initWithBoardView:bView];
 		_board.boardView = bView;
 		
-		_isWhitesMove = NO;
+		_currentPlayer = nil;
 	}
 	
 	return self;
@@ -42,6 +48,23 @@
 	[super dealloc];
 }
 
+- (void) startGameWithWhitePlayer:(GoPlayer*)white andBlackPlayer:(GoPlayer*)black;
+{
+	self.blackPlayer = black;
+	self.whitePlayer = white;
+	
+	[self startGame];
+}
+
+- (void) startGame;
+{
+	if (!_whitePlayer && !_blackPlayer)
+		NSLog(@"Can't start a game with no players!");
+	
+	_blackPlayer.referee = _whitePlayer.referee = self;
+	_currentPlayer = _blackPlayer;
+}
+
 - (BOOL) locationIsEmpty:(CGPoint)location;
 {
 	return [_board.model locationIsEmpty:location];
@@ -49,20 +72,28 @@
 
 - (GoMoveResponse) attemptMoveAtLocation:(CGPoint)location
 {
-	GoMoveResponse resp = kGoMoveAccepted;
-	GoBoardCacheValue move = (_isWhitesMove ? kGoBoardCacheWhitePiece : kGoBoardCacheBlackPiece);
+	GoMoveResponse resp = kGoMoveDeniedNotYourTurn;
 	
-	// check for suicide conditions
-	if ([_board.model locationBelongsToPlayer:location] || ![_board.model libertiesAtLocation:location]) 
-		resp = kGoMoveDeniedSuicide;
-	
-	// check for Ko
-	if (resp == kGoMoveAccepted && [_board.model move:move atLocationWillViolateKo:location])
-		resp = kGoMoveDeniedKoRule;
-	
-	if (resp == kGoMoveAccepted) {
-		[_board.model addMove:move atLocation:location];
-		_isWhitesMove = (_isWhitesMove ? NO : YES);
+	if (_whitePlayer && _blackPlayer) {		
+		GoBoardCacheValue move = ([_currentPlayer isEqual:_whitePlayer] ? kGoBoardCacheWhitePiece : 
+								  ([_currentPlayer isEqual:_blackPlayer] ? kGoBoardCacheBlackPiece : kGoBoardCacheLastValue));
+		
+		if (move != kGoBoardCacheLastValue) {
+			resp = kGoMoveAccepted;
+			
+			// check for suicide conditions
+			if ([_board.model locationBelongsToPlayer:location] || ![_board.model libertiesAtLocation:location]) 
+				resp = kGoMoveDeniedSuicide;
+			
+			// check for Ko
+			if (resp == kGoMoveAccepted && [_board.model move:move atLocationWillViolateKo:location])
+				resp = kGoMoveDeniedKoRule;
+			
+			if (resp == kGoMoveAccepted) {
+				[_board.model addMove:move atLocation:location];
+				_currentPlayer = ([_currentPlayer isEqual:_whitePlayer] ? _blackPlayer : _whitePlayer);
+			}
+		}
 	}
 	
     return resp;

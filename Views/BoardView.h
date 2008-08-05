@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "GoMarker.h"
+#import "GoReferee.h"
 
 #define kGoBoardViewStatusUpdateNotification	@"BoardViewStatusUpdate"
 
-@class GridLayer, GoBoard, GoReferee, MarkerLayer;
+@class GridLayer, GoBoard, MarkerLayer;
 @protocol BoardViewDelegate;
 
 @interface BoardView : UIView {
@@ -38,6 +39,8 @@
 - (void) removeAllMarkersAtLocation:(CGPoint)boardLocation;
 - (void) removeAllMarkers;
 
+- (void) moveDeniedWithReason:(GoMoveResponse)resp atLocation:(CGPoint)boardLocation;
+- (void) confirmedLocationTouched:(CGPoint)boardLocation tapCount:(NSUInteger)tapCount;
 @end
 
 @protocol BoardViewDelegate

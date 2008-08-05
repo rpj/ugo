@@ -40,6 +40,9 @@
         [options setValue:[NSNumber numberWithBool:YES] forKey:kGoMarkerOptionTemporaryMarker];
         _tempStoneLocation = boardLocation;
     }
+	
+	NSLog(@"MarkerController::locationWasTouched: %@ %d", NSStringFromCGPoint(boardLocation), tapCount);
+	NSLog(@"Has options: %@", options);
     
     [_boardView placeMarker:_curStone atLocation:boardLocation options:options];
     

@@ -14,7 +14,7 @@
 - (UInt8*) _mutableCachePointerForLocation:(CGPoint)loc outShift:(out int*)outShift;
 - (int) _libertiesAtLocation:(CGPoint)location isControlledByPlayer:(out GoBoardCacheValue*)player;
 - (BOOL) _setValueAtLocation:(CGPoint)loc toValue:(GoBoardCacheValue)val;
-- (BOOL) _rollbackLastSetValue;
+- (void) _rollbackLastSetValue;
 @end
 
 @implementation  GoBoardModel (Private)
@@ -80,15 +80,13 @@
 	return retVal;
 }
 
-- (BOOL) _rollbackLastSetValue;
+- (void) _rollbackLastSetValue;
 {
 	if (_lastSetByte && _lastSetValue) {
 		*_lastSetByte -= _lastSetValue;
 		_lastSetByte = nil;
 		_lastSetByte = kGoBoardCacheNoPiece;
 	}
-	
-	return NO;
 }
 @end
 

@@ -9,12 +9,35 @@
 #import "GoLocalPlayer.h"
 
 #import "GoReferee.h"
+#import "GoBoard.h"
+#import "BoardView.h"
 
 @implementation GoLocalPlayer
+- (id) init;
+{
+	if ((self = [super init])) {
+		_canPlay = NO;
+	}
+	
+	return self;
+}
 
 - (void) locationWasTouched:(CGPoint)boardLocation tapCount:(NSUInteger)tapCount
 {
-    [self.referee attemptMoveAtLocation:boardLocation];
+	GoMoveResponse resp = kGoMoveAccepted;
+	
+	if (_canPlay && (resp = [_referee attemptMoveAtLocation:boardLocation]) == kGoMoveAccepted) {
+		_canPlay = NO;
+		[_referee.board.boardView confirmedLocationTouched:boardLocation tapCount:tapCount];
+	}
+	else if (resp != kGoMoveAccepted) {
+		[_referee.board.boardView moveDeniedWithReason:resp atLocation:boardLocation];
+	}
 }
 
+- (void) takeTurnWhenReady:(GoReferee*)ref;
+{
+	if (ref == _referee)
+		_canPlay = YES;
+}
 @end

@@ -12,7 +12,7 @@
 #import "GoPlayer.h"
 
 @interface GoLocalPlayer : GoPlayer <BoardViewDelegate> {
-
+	BOOL _canPlay;
 }
 
 @end

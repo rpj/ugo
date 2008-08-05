@@ -25,8 +25,6 @@ typedef enum {
     GoPlayer *_currentPlayer;
     
     GoBoard *_board;
-	
-	BOOL _isWhitesMove;
 }
 
 @property (nonatomic, retain) GoPlayer *whitePlayer;
@@ -34,8 +32,13 @@ typedef enum {
 @property (nonatomic, readonly) GoPlayer *currentPlayer;
 @property (nonatomic, retain) GoBoard *board;
 
+@property (nonatomic, readonly) BOOL hasStarted;
+
 // also not very good separation...
 - (id) initWithBoardView:(BoardView*)bView;
+
+- (void) startGameWithWhitePlayer:(GoPlayer*)white andBlackPlayer:(GoPlayer*)black;
+- (void) startGame;
 
 - (BOOL) locationIsEmpty:(CGPoint)location;
 - (GoMoveResponse) attemptMoveAtLocation:(CGPoint)location;

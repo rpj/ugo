@@ -16,4 +16,6 @@
 
 @property (nonatomic, assign) GoReferee *referee;
 
+- (void) takeTurnWhenReady:(GoReferee*)ref;
+
 @end
