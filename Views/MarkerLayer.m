@@ -140,6 +140,7 @@ static NSString * const kGoMarkerKey = @"GoMarker";
 - (void)removeAllMarkers
 {
     for (NSArray *array in _allMarkers) {
+        if ((NSNull*)array == [NSNull null]) continue;
         for (CALayer *layer in array) {
             [layer removeFromSuperlayer];
         }

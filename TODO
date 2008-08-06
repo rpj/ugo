@@ -15,3 +15,6 @@ UI Stuff
 Art Stuff
 - Go stone and board artwork. Sen:te doesn't want to share.
 - Art for settings tabs
+
+BUGS
+- SGF tree is not regenerated when the board size changes
