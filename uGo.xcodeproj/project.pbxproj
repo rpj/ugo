@@ -38,6 +38,7 @@
 		43BFB9450E340A2000846875 /* uGoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BFB9440E340A2000846875 /* uGoSettings.m */; };
 		9431826D0E3BEC7D007069AE /* ShukoOriginalMove.sgf in Resources */ = {isa = PBXBuildFile; fileRef = 9431826C0E3BEC7D007069AE /* ShukoOriginalMove.sgf */; };
 		943186980E3D00D5007069AE /* FromSensei.sgf in Resources */ = {isa = PBXBuildFile; fileRef = 943186970E3D00D5007069AE /* FromSensei.sgf */; };
+		943639030E4920AB00221457 /* GoAIPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 943639020E4920AB00221457 /* GoAIPlayer.m */; };
 		946A49390E30485900F5659E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946A49380E30485900F5659E /* QuartzCore.framework */; };
 		946A4A5E0E305D2A00F5659E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946A4A5D0E305D2A00F5659E /* CoreGraphics.framework */; };
 		946A4A910E305EB400F5659E /* BoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 946A4A900E305EB400F5659E /* BoardView.m */; };
@@ -148,6 +149,8 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9431826C0E3BEC7D007069AE /* ShukoOriginalMove.sgf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ShukoOriginalMove.sgf; sourceTree = "<group>"; };
 		943186970E3D00D5007069AE /* FromSensei.sgf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FromSensei.sgf; sourceTree = "<group>"; };
+		943639010E4920AB00221457 /* GoAIPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoAIPlayer.h; sourceTree = "<group>"; };
+		943639020E4920AB00221457 /* GoAIPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoAIPlayer.m; sourceTree = "<group>"; };
 		946A49380E30485900F5659E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		946A4A5D0E305D2A00F5659E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		946A4A8F0E305EB400F5659E /* BoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardView.h; sourceTree = "<group>"; };
@@ -391,6 +394,8 @@
 				94B1E4B10E3A8A2900A4A133 /* ParserBridge.m */,
 				94B67EAA0E44F68300A58855 /* GoMove.h */,
 				94B67EAB0E44F68300A58855 /* GoMove.m */,
+				943639010E4920AB00221457 /* GoAIPlayer.h */,
+				943639020E4920AB00221457 /* GoAIPlayer.m */,
 			);
 			path = GameModel;
 			sourceTree = "<group>";
@@ -559,6 +564,7 @@
 				94B67EAC0E44F68300A58855 /* GoMove.m in Sources */,
 				94AFF1810E47610B006CC281 /* GoUtil.m in Sources */,
 				94AFF1B90E47625E006CC281 /* GoBoardModel.m in Sources */,
+				943639030E4920AB00221457 /* GoAIPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

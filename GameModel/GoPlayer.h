@@ -12,6 +12,7 @@
 
 @interface GoPlayer : NSObject {
     GoReferee *_referee;
+	BOOL _canPlay;
 }
 
 @property (nonatomic, assign) GoReferee *referee;

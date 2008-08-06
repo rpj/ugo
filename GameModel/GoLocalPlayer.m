@@ -13,15 +13,6 @@
 #import "BoardView.h"
 
 @implementation GoLocalPlayer
-- (id) init;
-{
-	if ((self = [super init])) {
-		_canPlay = NO;
-	}
-	
-	return self;
-}
-
 - (void) locationWasTouched:(CGPoint)boardLocation tapCount:(NSUInteger)tapCount
 {
 	GoMoveResponse resp = kGoMoveAccepted;
@@ -35,9 +26,4 @@
 	}
 }
 
-- (void) takeTurnWhenReady:(GoReferee*)ref;
-{
-	if (ref == _referee)
-		_canPlay = YES;
-}
 @end

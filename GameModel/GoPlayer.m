@@ -13,9 +13,18 @@
 @implementation GoPlayer
 
 @synthesize referee = _referee;
+- (id) init;
+{
+	if ((self = [super init])) {
+		_canPlay = NO;
+	}
+	
+	return self;
+}
 
-// to be overridden by subclasses
 - (void) takeTurnWhenReady:(GoReferee*)ref;
 {
+	if (ref == _referee)
+		_canPlay = YES;
 }
 @end
