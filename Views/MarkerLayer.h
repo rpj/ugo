@@ -10,16 +10,12 @@
 #import <QuartzCore/QuartzCore.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-#import "GoMarker.h"
-#import "GoUtil.h"
-
-@class MarkerTheme;
+@class GoMarker, MarkerTheme;
 
 @interface MarkerLayer : CALayerNonAnimating {
-    NSMutableArray*     _allMarkers;
-    MarkerTheme*        _theme;
-    
-    NSUInteger          _boardSize;
+    NSMutableArray /*NSMutableArray */ *_allMarkers;
+    MarkerTheme *_theme;
+    NSUInteger _boardSize;
 }
 
 @property (nonatomic, retain) MarkerTheme *theme;

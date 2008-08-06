@@ -7,6 +7,7 @@
 //
 
 #import "GobanStonesTheme.h"
+#import "GoMarker.h"
 
 #define kNumberOfWhiteStoneImages		12
 #define kNumberOfBlackStoneImages		1
@@ -52,13 +53,20 @@
 	[super dealloc];
 }
 
-- (void) drawStone:(GoMarkerType)stoneType inContext:(CGContextRef)context;
+- (void) drawStoneForMarker:(GoMarker *)marker inContext:(CGContextRef)context;
 {
 	CGRect rect = CGContextGetClipBoundingBox(context);
 	UIGraphicsPushContext(context);
 	
-	NSString* key = (stoneType == kGoMarkerWhiteStone) ? kWhiteStoneKey : kBlackStoneKey;
-	NSUInteger lim = (stoneType == kGoMarkerWhiteStone) ? kNumberOfWhiteStoneImages : kNumberOfBlackStoneImages;
+    NSString *key = nil;
+    NSUInteger lim = 0;
+    if ([marker.color isEqual:[UIColor whiteColor]]) {
+        key = kWhiteStoneKey;
+        lim = kNumberOfWhiteStoneImages;
+    } else {
+        key = kBlackStoneKey;
+        lim = kNumberOfBlackStoneImages;
+    }
 	
 	NSArray* sImgs = [_stoneImages objectForKey:key];
 	UIImage* img = [sImgs objectAtIndex:(lim ? (random() % lim) : 0)];
@@ -67,11 +75,4 @@
 	UIGraphicsPopContext();
 }
 
-- (void) drawShape:(NSDictionary *)options inContext:(CGContextRef)context;
-{
-}
-
-- (void) drawLabel:(NSDictionary *)options inContext:(CGContextRef)context;
-{
-}
 @end

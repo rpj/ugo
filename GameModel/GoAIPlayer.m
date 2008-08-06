@@ -9,8 +9,10 @@
 #import "GoAIPlayer.h"
 #import "GoReferee.h"
 #import "GoBoard.h"
-#import "GoBoardModel.h"
-#import "BoardView.h"
+
+@interface GoAIPlayer (KnownPrivate)
+- (void) _sendMoveRequestToSever;
+@end
 
 @implementation GoAIPlayer
 
@@ -25,7 +27,7 @@
 		CGFloat xPt = xChar > 'I' ? (xChar - 'A') : (xChar - '@');	// so I guess 'I' doesn't exist on ANY go board!?!
 		
 		int yNum = [[_lastStr substringFromIndex:1] intValue];
-		CGFloat yPt = ((_referee.board.boardView.gameBoardSize + 1) - yNum);
+		CGFloat yPt = ((_referee.board.boardSize + 1) - yNum);
 		
 		ret = CGPointMake(xPt, yPt);
 		NSLog(@"moveLocation: from '%@' to %@", _lastStr, NSStringFromCGPoint(ret));
@@ -34,44 +36,66 @@
 	return ret;
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-	[_lastStr release];
-	_lastStr = nil;
+    if (_connectionData == nil) {
+        _connectionData = [[NSMutableData alloc] init];
+    }
+    [_connectionData appendData:data];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [_connection release];
+    _connection = nil;
+    [_connectionData release];
+    _connectionData = nil;
+    
+    NSLog(@"Connection failed! Error - %@ %@",
+          [error localizedDescription],
+          [[error userInfo] objectForKey:NSErrorFailingURLStringKey]);
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+{	
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    if (![_referee playerIsAllowedToPlay:self]) {
+        NSLog(@"Response received from AI server, but we're not allowed to play. Response: %@", [NSString stringWithCString:[_connectionData bytes]]);
+        return;
+    }
+    
 	[_lastStr release];
-	_lastStr = nil;
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
-	_lastStr = [[NSString stringWithCString:[data bytes] length:[data length]] retain];
+	_lastStr = [[NSString stringWithCString:[_connectionData bytes] length:[_connectionData length]] retain];
+    
+    [_connection release];
+    _connection = nil;
+    [_connectionData release];
+    _connectionData = nil;
 	
 	if ([_lastStr length] > 4) {
 		NSLog(@"AI error: \"%@\"", _lastStr);
+        // try again. this is pretty much a bad idea and is likely going to throw us into an infinite loop.
+        [self _sendMoveRequestToSever];
 	}
 	else {
 		CGPoint mLoc = self.moveLocation;
-		GoMoveResponse resp = kGoMoveDeniedNotYourTurn;
-		
-		if ((resp = [_referee attemptMoveAtLocation:mLoc]) == kGoMoveAccepted)
-			[_referee.board.boardView confirmedLocationTouched:mLoc tapCount:2];	// tapCount==2 for real move
-		else
-			[_referee.board.boardView moveDeniedWithReason:resp atLocation:mLoc];
+        GoMoveResponse resp = [_referee attemptMoveAtLocation:mLoc forPlayer:self];
+        
+        if (resp != kGoMoveAccepted) {
+            // try again. this is pretty much a bad idea and is likely going to throw us into an infinite loop.
+            [self _sendMoveRequestToSever];
+        }
 	}
 }
 
-- (void) takeTurnWhenReady:(GoReferee*)ref;
+- (void) _sendMoveRequestToSever
 {
-	[super takeTurnWhenReady:ref];
 	// grab a copy of the current game's SGF, setup and NSConnection and send it to the server
 	// then have the connection response delegate method submit the move to the referee
 	
-	NSString* sgfAsString = [_referee.board.model compressedSGFAsStringForGnuGo];
+	NSString* sgfAsString = [_referee.board compressedSGFAsStringForGnuGo];
 	// player=white is a BAD HACK; fix it!!
 	NSString* body = [NSString stringWithFormat:@"player=white&level=5&sgf=%@", sgfAsString];
 	
@@ -82,7 +106,18 @@
 									length:[body lengthOfBytesUsingEncoding:NSASCIIStringEncoding]]];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	[[NSURLConnection connectionWithRequest:req delegate:self] start];
+    
+    [_connectionData release];
+    _connectionData = nil;
+    [_connection release];
+	_connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
+    [_connection start];
+}
+
+- (void) turnWillBegin
+{
+	[super turnWillBegin];
+    [self _sendMoveRequestToSever];
 }
 
 @end

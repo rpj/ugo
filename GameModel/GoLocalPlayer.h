@@ -12,6 +12,11 @@
 #import "GoPlayer.h"
 
 @interface GoLocalPlayer : GoPlayer <BoardViewDelegate> {
+    BoardView *_boardView;
 }
+
++ (GoLocalPlayer *)player;
+
+@property (nonatomic, retain) BoardView *boardView;
 
 @end

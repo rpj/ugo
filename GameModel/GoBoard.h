@@ -2,23 +2,46 @@
 //  GoBoard.h
 //  uGo
 //
-//  Created by Jacob Farkas on 7/25/08.
-//  Copyright 2008 Apple Computer. All rights reserved.
+//  Created by Ryan Joseph on 8/3/08.
+//  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@class BoardView, GoBoardModel;
+#define kGoBoardCacheBitWidth		2
+#define kGoBoardCacheBaseMask		0x3
+
+typedef enum {
+	kGoBoardCacheNoPiece	= 0,
+	kGoBoardCacheWhitePiece,
+	kGoBoardCacheBlackPiece,
+	kGoBoardCacheLastValue = 3		// can't be more than three, board cache is two bits per piece
+} GoBoardCacheValue;
+
+@class ParserBridge;
 
 @interface GoBoard : NSObject {
-    BoardView *_boardView;
-	GoBoardModel* _boardModel;
+	NSMutableData* _boardCache;
+	NSMutableArray* _moveHashes;
+	
+	ParserBridge* _sgf;
+	
+	NSUInteger _boardSize;
+	UInt8 _lastSetValue;
+	UInt8* _lastSetByte;
 }
 
-// not good separation. this needs more thought.
-@property (nonatomic, assign) BoardView *boardView;
-@property (nonatomic, readonly) GoBoardModel* model;
+@property (nonatomic, readonly) NSUInteger boardSize;
 
-- (id) initWithBoardView:(BoardView*)bView;
+- (id) initWithBoardSize:(NSUInteger)boardSize;
 
+- (GoBoardCacheValue) valueAtLocation:(CGPoint)location;
+- (BOOL) addMove:(GoBoardCacheValue)move atLocation:(CGPoint)location;
+
+- (int) libertiesAtLocation:(CGPoint)location;
+- (GoBoardCacheValue) locationBelongsToPlayer:(CGPoint)location;
+- (BOOL) move:(GoBoardCacheValue)move atLocationWillViolateKo:(CGPoint)location;
+- (BOOL) locationIsEmpty:(CGPoint)location;
+
+- (NSString*) compressedSGFAsStringForGnuGo;
 @end

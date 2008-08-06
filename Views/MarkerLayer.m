@@ -8,16 +8,18 @@
 
 #import "MarkerLayer.h"
 #import "MarkerTheme.h"
+#import "GoMarker.h"
 
-static NSString * const kMarkerTypeKey = @"MarkerType";
-static NSString * const kMarkerOptionsKey = @"MarkerOptions";
-static NSString * const kMarkerXPos = @"XPosition";
-static NSString * const kMarkerYPos = @"YPosition";
+#define _stoneWiggle(x) ((((rand() % 21) - 10)/10.0) * (x))
+static NSString * const kMarkerXWiggleKey = @"XWiggle";
+static NSString * const kMarkerYWiggleKey = @"YWiggle";
+
+static NSString * const kGoMarkerKey = @"GoMarker";
 
 @interface MarkerLayer (KnownStuff)
 - (void)removeAllMarkers;
 - (void)_redrawAllMarkers;
-- (void) _resizeMarkerLayer:(CALayer *)markerLayer atLocation:(CGPoint)boardLocation;
+- (void)_resizeMarkerLayer:(CALayer *)markerLayer;
 @end
 
 @implementation MarkerLayer
@@ -30,7 +32,8 @@ static NSString * const kMarkerYPos = @"YPosition";
     [self removeAllMarkers];
     [_allMarkers release];
     _boardSize = [[uGoSettings sharedSettings] boardSize];
-    _allMarkers = [[NSMutableSet alloc] init];
+    _allMarkers = [[NSMutableArray alloc] initWithCapacity:(_boardSize * _boardSize)];
+    for (int ii = 0; ii < (_boardSize * _boardSize); ii++) [_allMarkers addObject:[NSNull null]];
 }
 
 - (void) _themeChanged:(NSNotification *)notif
@@ -62,32 +65,98 @@ static NSString * const kMarkerYPos = @"YPosition";
     [super dealloc];
 }
 
-- (void) removeAllMarkersAtLocation:(CGPoint)boardLocation
+#pragma mark -
+#pragma mark Layer Bookkeeping
+
+- (void) _addMarkerLayer:(CALayer *)markerLayer forGoMarker:(GoMarker *)marker
 {
-    CGFloat xpos = boardLocation.x;
-    CGFloat ypos = boardLocation.y;
-    NSMutableSet *layersToRemove = [[NSMutableSet alloc] init];
-    for (CALayer *layer in _allMarkers) {
-        CGFloat foundx = [[layer valueForKey:kMarkerXPos] floatValue];
-        CGFloat foundy = [[layer valueForKey:kMarkerYPos] floatValue];
-        if (foundx == xpos && foundy == ypos) [layersToRemove addObject:layer];
+    [markerLayer setValue:marker forKey:kGoMarkerKey];
+    
+    NSUInteger idx = boardPositionToIndex(marker.location, _boardSize);
+    NSMutableArray *markers = [_allMarkers objectAtIndex:idx];
+    if (markers == nil || (NSNull*)markers == [NSNull null]) {
+        markers = [[[NSMutableArray alloc] init] autorelease];
+        [_allMarkers replaceObjectAtIndex:idx withObject:markers];
     }
     
-    for (CALayer *layer in layersToRemove) {
-        [layer removeFromSuperlayer];
-        [_allMarkers removeObject:layer];
-    }
-    [layersToRemove release];
+    // (fark): At this point, we may want to remove any layers that match. 
+    //          However, I think it's best to leave that up to whoever is telling us to place the marker
+    [markers addObject:markerLayer];
+    [self addSublayer:markerLayer];
+    [markerLayer setNeedsDisplay];
 }
 
-#define _stoneWiggle(x) ((((rand() % 21) - 10)/10.0) * (x))
+//- (CALayer *) _getMarkerLayerMatching:(GoMarker *)marker
+//{
+//    CALayer *foundLayer = nil;
+//    NSUInteger idx = boardPositionToIndex(marker.location, _boardSize);
+//    NSMutableArray *markers = [_allMarkers objectAtIndex:idx];
+//    for (CALayer *layer in markers) {
+//        GoMarker *curMarker = [layer valueForKey:kGoMarkerKey];
+//        if ([curMarker isEqual:marker]) {
+//            foundLayer = [[layer retain] autorelease];
+//            break;
+//        }
+//    }
+//    return foundLayer;
+//}
+
+- (void) removeMarker:(GoMarker *)marker
+{
+    CALayer *foundLayer = nil;
+    NSUInteger idx = boardPositionToIndex(marker.location, _boardSize);
+    NSMutableArray *markers = [_allMarkers objectAtIndex:idx];
+    for (CALayer *layer in markers) {
+        GoMarker *curMarker = [layer valueForKey:kGoMarkerKey];
+        if ([curMarker isEqual:marker]) {
+            foundLayer = layer;
+            break;
+        }
+    }
+    [foundLayer removeFromSuperlayer];
+    [markers removeObject:foundLayer];
+}
+
+- (void) placeMarker:(GoMarker *)marker
+{
+    CALayer *markerLayer = [CALayerNonAnimating layer];
+    [self _addMarkerLayer:markerLayer forGoMarker:marker];
+    
+    BOOL wiggleStone = marker.allowWiggle;
+    
+    if (marker.isTemporary) {
+        markerLayer.opacity = 0.5;
+    }
+    
+    CGFloat lineSep = self.frame.size.width / (_boardSize - 1);
+    if (wiggleStone) {
+        [markerLayer setValue:[NSNumber numberWithDouble:_stoneWiggle(lineSep * 0.03)] forKey:kMarkerXWiggleKey];
+        [markerLayer setValue:[NSNumber numberWithDouble:_stoneWiggle(lineSep * 0.03)] forKey:kMarkerYWiggleKey];
+    }
+    
+    [self _resizeMarkerLayer:markerLayer];
+}
+
+- (void)removeAllMarkers
+{
+    for (NSArray *array in _allMarkers) {
+        for (CALayer *layer in array) {
+            [layer removeFromSuperlayer];
+        }
+    }
+    [_allMarkers removeAllObjects];
+    for (int ii = 0; ii < (_boardSize * _boardSize); ii++) [_allMarkers addObject:[NSNull null]];
+}
+
+#pragma mark - 
+#pragma mark Marker Drawing
 
 - (void) _resizeMarkerLayer:(CALayer *)markerLayer
 {
-    NSAssert1([markerLayer valueForKey:kMarkerXPos], @"Could not get a x coordinate for the layer %@", markerLayer);
-    NSAssert1([markerLayer valueForKey:kMarkerYPos], @"Could not get a y coordinate for the layer %@", markerLayer);
-    CGFloat xpos = [[markerLayer valueForKey:kMarkerXPos] floatValue];
-    CGFloat ypos = [[markerLayer valueForKey:kMarkerYPos] floatValue];
+    GoMarker *marker = [markerLayer valueForKey:kGoMarkerKey];
+    NSAssert1(marker, @"Layer does not have a marker. We don't know how to resize it. %@", markerLayer);
+    CGFloat xpos = marker.location.x;
+    CGFloat ypos = marker.location.y;
     CGPoint boardLocation = CGPointMake(xpos, ypos);
     CGFloat lineSep = self.frame.size.width / (_boardSize - 1);
     CGFloat stoneSize = lineSep * .95;
@@ -99,60 +168,20 @@ static NSString * const kMarkerYPos = @"YPosition";
     // For now, space between the stones and a small tolerance should be ok. 
     // In the future we can come up with something better.
     vpoint.x = (boardLocation.x - 1) * lineSep;
-    NSNumber *xWiggle = [markerLayer valueForKey:@"xwiggle"];
-    if (xWiggle) vpoint.x += [xWiggle doubleValue];
+    NSNumber *xWiggle = [markerLayer valueForKey:kMarkerXWiggleKey];
+    if (xWiggle && ![xWiggle isEqual:[NSNull null]]) vpoint.x += [xWiggle doubleValue];
     vpoint.y = (boardLocation.y - 1) * lineSep;
-    NSNumber *yWiggle = [markerLayer valueForKey:@"ywiggle"];
-    if (yWiggle) vpoint.y += [yWiggle doubleValue];
+    NSNumber *yWiggle = [markerLayer valueForKey:kMarkerYWiggleKey];
+    if (yWiggle && ![yWiggle isEqual:[NSNull null]]) vpoint.y += [yWiggle doubleValue];
     markerLayer.frame = CGRectMake(vpoint.x - stoneSize/2.0, vpoint.y - stoneSize/2.0, stoneSize, stoneSize);
     markerLayer.delegate = self;
 }
 
-- (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options
-{
-    CALayer *markerLayer = [CALayerNonAnimating layer];
-    BOOL wiggleStone = YES;
-    if ([options valueForKey:kGoMarkerAllowWiggle]) wiggleStone = [[options valueForKey:kGoMarkerAllowWiggle] boolValue];
-    
-    [markerLayer setValue:[NSNumber numberWithFloat:boardLocation.x] forKey:kMarkerXPos];
-    [markerLayer setValue:[NSNumber numberWithFloat:boardLocation.y] forKey:kMarkerYPos];
-    
-    [_allMarkers addObject:markerLayer];
-     
-    if ([[options objectForKey:kGoMarkerOptionTemporaryMarker] boolValue] == YES) {
-        markerLayer.opacity = 0.5;
-    }
-    
-    CGFloat lineSep = self.frame.size.width / (_boardSize - 1);
-    if (wiggleStone) {
-        [markerLayer setValue:[NSNumber numberWithDouble:_stoneWiggle(lineSep * 0.03)] forKey:@"xwiggle"];
-        [markerLayer setValue:[NSNumber numberWithDouble:_stoneWiggle(lineSep * 0.03)] forKey:@"ywiggle"];
-    }
-    
-    if (options) [markerLayer setValue:options forKey:kMarkerOptionsKey];
-    [markerLayer setValue:[NSNumber numberWithInt:type] forKey:kMarkerTypeKey];
-    
-    [self _resizeMarkerLayer:markerLayer];
-
-    [self addSublayer:markerLayer];
-    [markerLayer setNeedsDisplay];
-}
-
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context;
 {
-    GoMarkerType type = [[layer valueForKey:kMarkerTypeKey] intValue];
-    switch (type) {
-        case kGoMarkerWhiteStone:
-        case kGoMarkerBlackStone:
-            [_theme drawStone:type inContext:context];
-            break;
-        case kGoMarkerShape:
-            [_theme drawShape:[layer valueForKey:kMarkerOptionsKey] inContext:context];
-            break;
-        case kGoMarkerLabel:
-            [_theme drawLabel:[layer valueForKey:kMarkerOptionsKey] inContext:context];
-            break;
-    }    
+    GoMarker *marker = [layer valueForKey:kGoMarkerKey];
+    NSAssert(marker, @"Don't forget to bring a marker! Every layer should have a marker.");
+    [_theme drawMarker:marker inContext:context];
 }
 
 - (void)drawInContext:(CGContextRef)context
@@ -162,20 +191,15 @@ static NSString * const kMarkerYPos = @"YPosition";
 
 - (void)_redrawAllMarkers
 {
-    for (CALayer *marker in _allMarkers) {
-        if ((NSNull *)marker != [NSNull null]) {
-            [self _resizeMarkerLayer:marker];
-            [marker setNeedsDisplay];
+    for (NSArray *markers in _allMarkers) {
+        if ((NSNull *)markers == [NSNull null]) continue;
+        for (CALayer *curMarker in markers) {
+            if ((NSNull *)curMarker != [NSNull null]) {
+                [self _resizeMarkerLayer:curMarker];
+                [curMarker setNeedsDisplay];
+            }
         }
     }
-}
-
-- (void)removeAllMarkers
-{
-    for (CALayer *marker in _allMarkers) {
-        if ((NSNull *)marker != [NSNull null]) [marker removeFromSuperlayer];
-    }
-    [_allMarkers removeAllObjects];
 }
 
 @end

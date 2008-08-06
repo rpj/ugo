@@ -9,23 +9,14 @@
 #import "BoardView.h"
 #import "MarkerLayer.h"
 #import "GridLayer.h"
-#import "GoReferee.h"
 #import "GoBoard.h"
-
-#import "GoLocalPlayer.h"
-#import "GoAIPlayer.h"
 
 #define kBoardStartingSize						320
 #define kGridBorderMultiplier					(0.20)
 
-NSString * const kGoMarkerOptionTemporaryMarker = @"MarkerIsTemporary";
-NSString * const kGoMarkerOptionColor = @"MarkerColor";
-NSString * const kGoMarkerOptionLabel = @"MarkerLabel";
-NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
-
 @interface MarkerLayer (KnownPrivate)
-- (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options;
-- (void) removeAllMarkersAtLocation:(CGPoint)boardLocation;
+- (void) placeMarker:(GoMarker *)marker;
+- (void) removeMarker:(GoMarker *)marker;
 - (void) removeAllMarkers;
 @end
 
@@ -33,7 +24,6 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
 
 @synthesize gridLayer = _gridLayer;
 @synthesize markerLayer = _markerLayer;
-@synthesize referee = _referee;
 @synthesize delegate = _delegate;
 @synthesize boardSize = _boardSize;
 
@@ -46,8 +36,6 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
 
 - (void) boardSizeDidChange:(NSNotification *)notif
 {
-	[_referee release];
-	_referee = [[GoReferee alloc] initWithBoardView:self];
     [_gridLayer setNeedsDisplay];
 }
 
@@ -82,11 +70,6 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
     
         self.gridLayer = [GridLayer layer];
         [self.layer insertSublayer:_gridLayer below:_markerLayer];
-		
-		self.referee = [[GoReferee alloc] initWithBoardView:self];
-		_referee.blackPlayer = [GoLocalPlayer create];
-		_referee.whitePlayer = [GoAIPlayer create];
-		[_referee startGame];
         
         [self _setSublayerFrames];
         
@@ -106,7 +89,6 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
     
     [_markerLayer release];
     [_gridLayer release];
-	[_referee release];
     
 	[super dealloc];
 }
@@ -128,17 +110,8 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
     return gpoint;
 }
 
-- (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options 
-{ 
-	[_markerLayer placeMarker:type atLocation:boardLocation options:options];
-	
-	// if the other player is an AI, have it take it's turn right away
-	if ([_referee.currentPlayer isKindOfClass:[GoAIPlayer class]])
-		[_referee.currentPlayer takeTurnWhenReady:_referee];
-}
-
-- (void) removeAllMarkersAtLocation:(CGPoint)boardLocation { [_markerLayer removeAllMarkersAtLocation:boardLocation]; }
-
+- (void) placeMarker:(GoMarker *)marker { [_markerLayer placeMarker:marker]; }
+- (void) removeMarker:(GoMarker *)marker { [_markerLayer removeMarker:marker]; }
 - (void) removeAllMarkers { [_markerLayer removeAllMarkers]; }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -148,46 +121,8 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
         UITouch *touch = [[touches allObjects] objectAtIndex:0];
         
         CGPoint boardLocation = [self _boardPointForUIPoint:[touch locationInView:self]];
-		
-		if ([_referee locationIsEmpty:boardLocation]) {
-			if (touch.tapCount == 1) {
-				[self confirmedLocationTouched:boardLocation tapCount:touch.tapCount];
-			}
-			else if (touch.tapCount == 2) {
-				if ([_referee.currentPlayer conformsToProtocol:@protocol(BoardViewDelegate)]) {
-					[_referee.currentPlayer takeTurnWhenReady:_referee];
-
-					[(id<BoardViewDelegate>)_referee.currentPlayer locationWasTouched:boardLocation tapCount:touch.tapCount];
-				}
-			}
-		}
+        [_delegate locationWasTouched:boardLocation tapCount:touch.tapCount];
     }
 }
 
-- (void) moveDeniedWithReason:(GoMoveResponse)resp atLocation:(CGPoint)boardLocation;
-{
-	[_markerLayer removeAllMarkersAtLocation:boardLocation];
-	
-	NSString* statStr = nil;
-	
-	if (resp == kGoMoveDeniedSuicide)
-		statStr = @"Feeling suicidal?";
-	else if (resp == kGoMoveDeniedKoRule)
-		statStr = @"Ko rule violation.";
-	else if (resp == kGoMoveDeniedNotYourTurn)
-		statStr = @"Not your turn.";
-	else if (resp == kGoMovePieceExists)
-		statStr = @"Location is occupied.";
-	
-	if (statStr)
-		[[NSNotificationCenter defaultCenter] postNotificationName:kGoBoardViewStatusUpdateNotification
-															object:nil
-														  userInfo:[NSDictionary dictionaryWithObject:statStr forKey:@"status"]];
-}
-
-- (void) confirmedLocationTouched:(CGPoint)boardLocation tapCount:(NSUInteger)tapCount;
-{
-	if (_delegate)
-		[_delegate locationWasTouched:boardLocation tapCount:tapCount];
-}
 @end

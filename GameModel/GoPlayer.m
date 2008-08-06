@@ -13,23 +13,16 @@
 @implementation GoPlayer
 
 @synthesize referee = _referee;
-+ (GoPlayer*) create;
++ (GoPlayer*) player;
 {
 	return [[[self alloc] init] autorelease];
 }
 
-- (id) init;
+- (void) turnWillBegin
 {
-	if ((self = [super init])) {
-		_canPlay = NO;
-	}
-	
-	return self;
 }
 
-- (void) takeTurnWhenReady:(GoReferee*)ref;
+- (void) turnDidEnd
 {
-	if (ref == _referee)
-		_canPlay = YES;
 }
 @end

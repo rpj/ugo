@@ -7,20 +7,16 @@
 //
 
 #import "uGoAppDelegate.h"
+
 #import "RootViewController.h"
 #import "MainViewController.h"
-#import "MarkerController.h"
-#import "BoardView.h"
 
-#import "ParserBridge.h"
-#import "GoMove.h"
+#import "GoGameController.h"
 
 @implementation uGoAppDelegate
 
-
 @synthesize window;
 @synthesize rootViewController;
-
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
     // kick the settings into action
@@ -30,17 +26,18 @@
 	[window addSubview:[rootViewController view]];
 	[window makeKeyAndVisible];
     
-    _markerController = [[MarkerController alloc] init];
-    _markerController.boardView = rootViewController.mainViewController.boardView;
-    
     srand(time(NULL));
+    
+    _goGame = [[GoGameController alloc] initWithBoardView:rootViewController.mainViewController.boardView];
+    [_goGame startGame];
 }
 
-
 - (void)dealloc {
-    [_markerController release];
 	[rootViewController release];
 	[window release];
+    
+    [_goGame release];
+    
 	[super dealloc];
 }
 

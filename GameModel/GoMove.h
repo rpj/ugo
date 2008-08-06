@@ -12,8 +12,10 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 @interface GoMove : NSObject {
+    // These should be replaced with a GoMarker
 	BOOL _isWhite;
 	CGPoint _point;
+    
 	NSString* _comment;
 	int _number;
 	

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "GoMarker.h"
+@class GoMarker;
 
 @interface MarkerTheme : NSObject {
     NSString *_name;
@@ -18,8 +18,10 @@
 @property (nonatomic, readonly) NSString *name;
 @property (nonatomic, readonly) UIImage *image; // theme coverflow? brilliant!
 
-- (void) drawStone:(GoMarkerType)stoneType inContext:(CGContextRef)context;
-- (void) drawShape:(NSDictionary *)options inContext:(CGContextRef)context;
-- (void) drawLabel:(NSDictionary *)options inContext:(CGContextRef)context;
+- (void) drawMarker:(GoMarker *)marker inContext:(CGContextRef)context;
+
+- (void) drawLabelForMarker:(GoMarker *)marker inContext:(CGContextRef)context;
+- (void) drawShapeForMarker:(GoMarker *)marker inContext:(CGContextRef)context;
+- (void) drawStoneForMarker:(GoMarker *)marker inContext:(CGContextRef)context;
 
 @end

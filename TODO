@@ -2,6 +2,7 @@ Code Stuff
 - A real play model. I just wanted to be able to put stones on the board, so I put in a terrible hack
 - Architecture. Yeh, this is a big one.
 - Figure out if 'copy' or 'retain' is needed for all the properties of ParserBridge, because I'm pretty much stumped.
+- Better logging functions. All logging should be off in release versions
 
 UI Stuff
 - Get UIScrollView to show the board all the way zoomed out at the start
@@ -9,6 +10,7 @@ UI Stuff
 - Landscape mode
 - Real Go boards are actually rectangular. We should update the grid to the dimensions of a real board
 - Board theme coverflow
+- Don't pick a new stone image every time. You can see the white stone images jump around every time you zoom
 
 Art Stuff
 - Go stone and board artwork. Sen:te doesn't want to share.

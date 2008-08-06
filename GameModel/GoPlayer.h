@@ -12,13 +12,13 @@
 
 @interface GoPlayer : NSObject {
     GoReferee *_referee;
-	BOOL _canPlay;
 }
 
 @property (nonatomic, assign) GoReferee *referee;
 
-+ (GoPlayer*) create;
++ (GoPlayer*) player;
 
-- (void) takeTurnWhenReady:(GoReferee*)ref;
+- (void) turnWillBegin;
+- (void) turnDidEnd;
 
 @end

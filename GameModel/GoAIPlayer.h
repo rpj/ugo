@@ -12,6 +12,8 @@
 
 @interface GoAIPlayer : GoPlayer {
 	NSString*	_lastStr;
+    NSURLConnection *_connection;
+    NSMutableData *_connectionData;
 }
 
 @property (nonatomic, readonly) CGPoint moveLocation;

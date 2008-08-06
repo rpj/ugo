@@ -7,22 +7,47 @@
 //
 
 #import "GoLocalPlayer.h"
-
 #import "GoReferee.h"
-#import "GoBoard.h"
-#import "BoardView.h"
 
 @implementation GoLocalPlayer
-- (void) locationWasTouched:(CGPoint)boardLocation tapCount:(NSUInteger)tapCount
+
++ (GoLocalPlayer *)player
 {
-	GoMoveResponse resp = kGoMoveAccepted;
-	
-	if (_canPlay && (resp = [_referee attemptMoveAtLocation:boardLocation]) == kGoMoveAccepted) {
-		_canPlay = NO;
-		[_referee.board.boardView confirmedLocationTouched:boardLocation tapCount:tapCount];
+    return [[[GoLocalPlayer alloc] init] autorelease];
+}
+
+- (void) setBoardView:(BoardView *)boardView
+{
+    if (boardView != _boardView) {
+        [_boardView release];
+        _boardView = [boardView retain];
+        _boardView.delegate = self;
+    }
+}
+
+- (BoardView *) boardView { return _boardView; }
+
+- (void) dealloc
+{
+    [_boardView release];
+    [super dealloc];
+}
+
+- (NSString *) description { return [NSString stringWithFormat:@"Local player %p", self]; }
+
+- (void) turnWillBegin
+{
+    _boardView.delegate = self;
+}
+
+- (void) locationWasTouched:(CGPoint)boardLocation tapCount:(NSUInteger)tapCount
+{	
+	if ([_referee playerIsAllowedToPlay:self]) {
+        [_referee attemptMoveAtLocation:boardLocation forPlayer:self];
 	}
-	else if (resp != kGoMoveAccepted) {
-		[_referee.board.boardView moveDeniedWithReason:resp atLocation:boardLocation];
+	else {
+        NSLog(@"It's not your turn. This should be some kind of subtle alert in the UI");
 	}
 }
+
 @end

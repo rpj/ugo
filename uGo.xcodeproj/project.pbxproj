@@ -29,9 +29,10 @@
 		435575350E3A4E1E00F1D159 /* BoardSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 435575340E3A4E1E00F1D159 /* BoardSettingsViewController.m */; };
 		435578090E3A793000F1D159 /* AboutSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 435578080E3A793000F1D159 /* AboutSettingsViewController.m */; };
 		435578210E3A79E600F1D159 /* legal.html in Resources */ = {isa = PBXBuildFile; fileRef = 435578200E3A79E600F1D159 /* legal.html */; };
+		43AEB5AB0E4976210022E5A1 /* GoGameController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AEB5AA0E4976210022E5A1 /* GoGameController.m */; };
+		43AEB5B50E497A580022E5A1 /* GoMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AEB5B40E497A580022E5A1 /* GoMarker.m */; };
 		43B3F2700E3592A500D4B02B /* MarkerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B3F26F0E3592A500D4B02B /* MarkerLayer.m */; };
 		43BC12B70E35B9E300431B28 /* GridLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC12B60E35B9E300431B28 /* GridLayer.m */; };
-		43BC14BA0E36594500431B28 /* MarkerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC14B90E36594500431B28 /* MarkerController.m */; };
 		43BC15720E36609D00431B28 /* FlatTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC15710E36609D00431B28 /* FlatTheme.m */; };
 		43BC15C20E36647E00431B28 /* MarkerTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC15C10E36647E00431B28 /* MarkerTheme.m */; };
 		43BC16790E36F87700431B28 /* board512.png in Resources */ = {isa = PBXBuildFile; fileRef = 43BC16780E36F87700431B28 /* board512.png */; };
@@ -46,7 +47,6 @@
 		9475F1590E3137990053C4BE /* grad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9475F1580E3137990053C4BE /* grad.png */; };
 		948586550E3141280087D7CD /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 948586540E3141280087D7CD /* gradient.png */; };
 		94AFF1810E47610B006CC281 /* GoUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 94AFF17F0E47610B006CC281 /* GoUtil.m */; };
-		94AFF1B90E47625E006CC281 /* GoBoardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 94AFF1B80E47625E006CC281 /* GoBoardModel.m */; };
 		94B1E4940E3A893E00A4A133 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC144E0E35D34200431B28 /* util.c */; };
 		94B1E4950E3A893F00A4A133 /* load.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC144D0E35D34200431B28 /* load.c */; };
 		94B1E4960E3A893F00A4A133 /* properties.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC144F0E35D34200431B28 /* properties.c */; };
@@ -116,6 +116,11 @@
 		435578070E3A793000F1D159 /* AboutSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutSettingsViewController.h; sourceTree = "<group>"; };
 		435578080E3A793000F1D159 /* AboutSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutSettingsViewController.m; sourceTree = "<group>"; };
 		435578200E3A79E600F1D159 /* legal.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = legal.html; sourceTree = "<group>"; };
+		43AEB5A90E4976210022E5A1 /* GoGameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoGameController.h; sourceTree = "<group>"; };
+		43AEB5AA0E4976210022E5A1 /* GoGameController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoGameController.m; sourceTree = "<group>"; };
+		43AEB5B30E497A580022E5A1 /* GoMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoMarker.h; sourceTree = "<group>"; };
+		43AEB5B40E497A580022E5A1 /* GoMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoMarker.m; sourceTree = "<group>"; };
+		43AEB68F0E499DED0022E5A1 /* GoTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoTypes.h; sourceTree = "<group>"; };
 		43B3F26E0E3592A500D4B02B /* MarkerLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkerLayer.h; sourceTree = "<group>"; };
 		43B3F26F0E3592A500D4B02B /* MarkerLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkerLayer.m; sourceTree = "<group>"; };
 		43BC12B50E35B9E300431B28 /* GridLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridLayer.h; sourceTree = "<group>"; };
@@ -135,9 +140,6 @@
 		43BC14580E35D34200431B28 /* gameinfo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gameinfo.c; sourceTree = "<group>"; };
 		43BC145A0E35D34200431B28 /* execute.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = execute.c; sourceTree = "<group>"; };
 		43BC145B0E35D34200431B28 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		43BC14B80E36594500431B28 /* MarkerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkerController.h; sourceTree = "<group>"; };
-		43BC14B90E36594500431B28 /* MarkerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkerController.m; sourceTree = "<group>"; };
-		43BC14BC0E3659BD00431B28 /* GoMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoMarker.h; sourceTree = "<group>"; };
 		43BC15700E36609D00431B28 /* FlatTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlatTheme.h; sourceTree = "<group>"; };
 		43BC15710E36609D00431B28 /* FlatTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlatTheme.m; sourceTree = "<group>"; };
 		43BC15C00E36647E00431B28 /* MarkerTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkerTheme.h; sourceTree = "<group>"; };
@@ -160,8 +162,6 @@
 		948586540E3141280087D7CD /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradient.png; sourceTree = "<group>"; };
 		94AFF17F0E47610B006CC281 /* GoUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoUtil.m; sourceTree = SOURCE_ROOT; };
 		94AFF1800E47610B006CC281 /* GoUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoUtil.h; sourceTree = SOURCE_ROOT; };
-		94AFF1B70E47625E006CC281 /* GoBoardModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoBoardModel.h; sourceTree = "<group>"; };
-		94AFF1B80E47625E006CC281 /* GoBoardModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoBoardModel.m; sourceTree = "<group>"; };
 		94B1E4B00E3A8A2900A4A133 /* ParserBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParserBridge.h; sourceTree = "<group>"; };
 		94B1E4B10E3A8A2900A4A133 /* ParserBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParserBridge.m; sourceTree = "<group>"; };
 		94B1E4C40E3A8D8000A4A133 /* test2.sgf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test2.sgf; sourceTree = "<group>"; };
@@ -244,8 +244,9 @@
 		29B97315FDCFA39411CA2CEA /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				94AFF17F0E47610B006CC281 /* GoUtil.m */,
 				94AFF1800E47610B006CC281 /* GoUtil.h */,
+				94AFF17F0E47610B006CC281 /* GoUtil.m */,
+				43AEB68F0E499DED0022E5A1 /* GoTypes.h */,
 				32CA4F630368D1EE00C91783 /* uGo_Prefix.pch */,
 				1D3623240D0F684500981E51 /* uGoAppDelegate.h */,
 				1D3623250D0F684500981E51 /* uGoAppDelegate.m */,
@@ -310,6 +311,19 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
+		43AEB5E50E4980A60022E5A1 /* Players */ = {
+			isa = PBXGroup;
+			children = (
+				43437EF80E3AF688004C60B8 /* GoPlayer.h */,
+				43437EF90E3AF688004C60B8 /* GoPlayer.m */,
+				43437EFB0E3AF69A004C60B8 /* GoLocalPlayer.h */,
+				43437EFC0E3AF69A004C60B8 /* GoLocalPlayer.m */,
+				943639010E4920AB00221457 /* GoAIPlayer.h */,
+				943639020E4920AB00221457 /* GoAIPlayer.m */,
+			);
+			name = Players;
+			sourceTree = "<group>";
+		};
 		43BC144B0E35CFC700431B28 /* Parser */ = {
 			isa = PBXGroup;
 			children = (
@@ -355,7 +369,6 @@
 				43B3F26F0E3592A500D4B02B /* MarkerLayer.m */,
 				43BC12B50E35B9E300431B28 /* GridLayer.h */,
 				43BC12B60E35B9E300431B28 /* GridLayer.m */,
-				43BC14BC0E3659BD00431B28 /* GoMarker.h */,
 			);
 			name = Board;
 			sourceTree = "<group>";
@@ -378,24 +391,19 @@
 		43BFB9310E3409C900846875 /* GameModel */ = {
 			isa = PBXGroup;
 			children = (
-				43BC14B80E36594500431B28 /* MarkerController.h */,
-				43BC14B90E36594500431B28 /* MarkerController.m */,
+				43AEB5E50E4980A60022E5A1 /* Players */,
+				43AEB5A90E4976210022E5A1 /* GoGameController.h */,
+				43AEB5AA0E4976210022E5A1 /* GoGameController.m */,
 				43437EF40E3AF677004C60B8 /* GoReferee.h */,
 				43437EF50E3AF677004C60B8 /* GoReferee.m */,
 				43437F000E3AF6CB004C60B8 /* GoBoard.h */,
 				43437F010E3AF6CB004C60B8 /* GoBoard.m */,
-				94AFF1B70E47625E006CC281 /* GoBoardModel.h */,
-				94AFF1B80E47625E006CC281 /* GoBoardModel.m */,
-				43437EF80E3AF688004C60B8 /* GoPlayer.h */,
-				43437EF90E3AF688004C60B8 /* GoPlayer.m */,
-				43437EFB0E3AF69A004C60B8 /* GoLocalPlayer.h */,
-				43437EFC0E3AF69A004C60B8 /* GoLocalPlayer.m */,
 				94B1E4B00E3A8A2900A4A133 /* ParserBridge.h */,
 				94B1E4B10E3A8A2900A4A133 /* ParserBridge.m */,
 				94B67EAA0E44F68300A58855 /* GoMove.h */,
 				94B67EAB0E44F68300A58855 /* GoMove.m */,
-				943639010E4920AB00221457 /* GoAIPlayer.h */,
-				943639020E4920AB00221457 /* GoAIPlayer.m */,
+				43AEB5B30E497A580022E5A1 /* GoMarker.h */,
+				43AEB5B40E497A580022E5A1 /* GoMarker.m */,
 			);
 			path = GameModel;
 			sourceTree = "<group>";
@@ -539,7 +547,6 @@
 				43BFB9450E340A2000846875 /* uGoSettings.m in Sources */,
 				43B3F2700E3592A500D4B02B /* MarkerLayer.m in Sources */,
 				43BC12B70E35B9E300431B28 /* GridLayer.m in Sources */,
-				43BC14BA0E36594500431B28 /* MarkerController.m in Sources */,
 				43BC15720E36609D00431B28 /* FlatTheme.m in Sources */,
 				43BC15C20E36647E00431B28 /* MarkerTheme.m in Sources */,
 				94C4B9800E36899B00739E57 /* GobanStonesTheme.m in Sources */,
@@ -563,8 +570,9 @@
 				94B1E4B20E3A8A2900A4A133 /* ParserBridge.m in Sources */,
 				94B67EAC0E44F68300A58855 /* GoMove.m in Sources */,
 				94AFF1810E47610B006CC281 /* GoUtil.m in Sources */,
-				94AFF1B90E47625E006CC281 /* GoBoardModel.m in Sources */,
 				943639030E4920AB00221457 /* GoAIPlayer.m in Sources */,
+				43AEB5AB0E4976210022E5A1 /* GoGameController.m in Sources */,
+				43AEB5B50E497A580022E5A1 /* GoMarker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
