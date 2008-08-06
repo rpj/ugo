@@ -75,8 +75,7 @@
 	// player=white is a BAD HACK; fix it!!
 	NSString* body = [NSString stringWithFormat:@"player=white&level=5&sgf=%@", sgfAsString];
 	
-	// obviously 10.0.1.145 won't work for you... a real server hasn't been setup yet, so... yeah...
-	NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://10.0.1.145/cgi-bin/index.cgi"]];
+	NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://209.204.135.246/cgi-bin/index.cgi"]];
 	[req setHTTPMethod:@"POST"];
 	[req setHTTPShouldHandleCookies:NO];
 	[req setHTTPBody:[NSData dataWithBytes:[body cStringUsingEncoding:NSASCIIStringEncoding] 
