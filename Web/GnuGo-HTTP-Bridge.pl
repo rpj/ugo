@@ -41,7 +41,7 @@ if ($q->request_method() eq "POST") {
 			$cgiresp .= "$1";
 		}
 		else {
-			$cgiresp .= "Incorrect response: \"$resp\"";
+			$cgiresp .= "ERROR: Incorrect response; \"$resp\"\n";
 		}
 
 		unlink($tsgf);
@@ -49,12 +49,12 @@ if ($q->request_method() eq "POST") {
 		unlink($bCmds);
 	}
 	else {
-		$cgiresp = $level < 12 ? "Not enough information provided." : "Given play level was too high.";
+		$cgiresp = "ERROR" . ($level < 12 ? "Not enough information provided." : "Given play level was too high.") . "\n";;
 	}
 }
 else
 {
-	$cgiresp = "Incorrect HTTP method.";
+	$cgiresp = "ERROR: Incorrect HTTP method.\n";
 }
 
 print $q->header();

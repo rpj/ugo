@@ -13,6 +13,7 @@
 #import "GoBoard.h"
 
 #import "GoLocalPlayer.h"
+#import "GoAIPlayer.h"
 
 #define kBoardStartingSize						320
 #define kGridBorderMultiplier					(0.20)
@@ -83,8 +84,8 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
         [self.layer insertSublayer:_gridLayer below:_markerLayer];
 		
 		self.referee = [[GoReferee alloc] initWithBoardView:self];
-		_referee.whitePlayer = [[[GoLocalPlayer alloc] init] autorelease];
-		_referee.blackPlayer = [[[GoLocalPlayer alloc] init] autorelease];
+		_referee.blackPlayer = [GoLocalPlayer create];
+		_referee.whitePlayer = [GoAIPlayer create];
 		[_referee startGame];
         
         [self _setSublayerFrames];
@@ -130,6 +131,11 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
 - (void) placeMarker:(GoMarkerType)type atLocation:(CGPoint)boardLocation options:(NSDictionary *)options 
 { 
 	[_markerLayer placeMarker:type atLocation:boardLocation options:options];
+	
+	if ([_referee.currentPlayer isKindOfClass:[GoAIPlayer class]]) {
+		NSLog(@"Next player is an AI, calling takeTurnWhenReady: immediately");
+		[_referee.currentPlayer takeTurnWhenReady:_referee];
+	}
 }
 
 - (void) removeAllMarkersAtLocation:(CGPoint)boardLocation { [_markerLayer removeAllMarkersAtLocation:boardLocation]; }
@@ -149,10 +155,11 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
 				[self confirmedLocationTouched:boardLocation tapCount:touch.tapCount];
 			}
 			else if (touch.tapCount == 2) {
-				[_referee.currentPlayer takeTurnWhenReady:_referee];
-				
-				if ([_referee.currentPlayer conformsToProtocol:@protocol(BoardViewDelegate)])
+				if ([_referee.currentPlayer conformsToProtocol:@protocol(BoardViewDelegate)]) {
+					[_referee.currentPlayer takeTurnWhenReady:_referee];
+
 					[(id<BoardViewDelegate>)_referee.currentPlayer locationWasTouched:boardLocation tapCount:touch.tapCount];
+				}
 			}
 		}
     }

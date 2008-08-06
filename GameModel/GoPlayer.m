@@ -13,6 +13,11 @@
 @implementation GoPlayer
 
 @synthesize referee = _referee;
++ (GoPlayer*) create;
+{
+	return [[[self alloc] init] autorelease];
+}
+
 - (id) init;
 {
 	if ((self = [super init])) {

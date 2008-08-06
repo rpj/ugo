@@ -25,5 +25,4 @@
 		[_referee.board.boardView moveDeniedWithReason:resp atLocation:boardLocation];
 	}
 }
-
 @end

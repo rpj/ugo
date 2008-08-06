@@ -40,4 +40,6 @@ typedef enum {
 - (GoBoardCacheValue) locationBelongsToPlayer:(CGPoint)location;
 - (BOOL) move:(GoBoardCacheValue)move atLocationWillViolateKo:(CGPoint)location;
 - (BOOL) locationIsEmpty:(CGPoint)location;
+
+- (NSString*) compressedSGFAsStringForGnuGo;
 @end

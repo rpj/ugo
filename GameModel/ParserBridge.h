@@ -62,6 +62,9 @@
 
 - (id) initWithPath:(NSString*)path;
 - (void) loadSGFFromPath:(NSString*)path;
+
+- (NSString*) sgfAsString;
+- (NSString*) sgfAsEscapedString;
 @end
 
 

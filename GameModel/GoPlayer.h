@@ -17,6 +17,8 @@
 
 @property (nonatomic, assign) GoReferee *referee;
 
++ (GoPlayer*) create;
+
 - (void) takeTurnWhenReady:(GoReferee*)ref;
 
 @end

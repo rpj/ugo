@@ -69,7 +69,7 @@
 	_sgf.info = _sgf.tree = info;
 	
 	// set the application creator code
-	New_PropValue(_sgf.root, TKN_AP, "uGo", "0.1 (SGFC 1.16r)", TRUE);
+	New_PropValue(_sgf.root, TKN_AP, "uGo/SGFC", "0.1/1.16r", TRUE);
 	
 	if (![_path isEqualToString:[NSString stringWithCString:_sgf.name]])
 		_sgf.name = (char*)[_path cStringUsingEncoding:NSASCIIStringEncoding];
@@ -101,8 +101,7 @@
 - (void) _sendToEidoGo;
 {
 	if (_path && self.isActive) {
-		NSString* file = [[NSString stringWithContentsOfFile:_path] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
-		NSString* body = [NSString stringWithFormat:@"type=paste&sgf=%@", file];
+		NSString* body = [NSString stringWithFormat:@"type=paste&sgf=%@", [self sgfAsEscapedString]];
 		NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://eidogo.com/backend/upload.php"]];
 		
 		[req setHTTPMethod:@"POST"];
@@ -644,6 +643,22 @@
 /////// end getters/setters
 
 #pragma mark Loading and Saving methods
+
+- (NSString*) sgfAsEscapedString;
+{
+	return [[self sgfAsString] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+}
+
+- (NSString*) sgfAsString;
+{
+	NSString* retVal = nil;
+	
+	if (_path && self.isActive) {
+		retVal = [NSString stringWithContentsOfFile:_path];
+	}
+	
+	return retVal;
+}
 
 - (void) loadSGFFromPath:(NSString*)path;
 {

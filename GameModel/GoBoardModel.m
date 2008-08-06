@@ -7,7 +7,7 @@
 //
 
 #import "GoBoardModel.h"
-
+#import "GoMove.h"
 #import "ParserBridge.h"
 
 @interface GoBoardModel (Private)
@@ -101,8 +101,10 @@
 		_lastSetValue = kGoBoardCacheNoPiece;
 		
 		// this will need to get changed; crappy file name
-		_sgf = [[ParserBridge alloc] initWithPath:[[[NSBundle mainBundle] bundlePath] 
-												   stringByAppendingPathComponent:[NSString stringWithFormat:@"%x.sgf"]]];
+		NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject 
+						  stringByAppendingPathComponent:[NSString stringWithFormat:@"%x.sgf", time(NULL)]];
+		_sgf = [[ParserBridge alloc] initWithPath:path];
+		_sgf.boardSize = boardSize;
 		
 		// board cache is two bits per board location 
 		NSUInteger cacheSize = (NSUInteger)(ceilf(powf((float)_boardSize, 2.0) / (8.0 / kGoBoardCacheBitWidth)));
@@ -125,8 +127,10 @@
 - (BOOL) addMove:(GoBoardCacheValue)move atLocation:(CGPoint)location;
 {
 	if ([self _setValueAtLocation:location toValue:move]) {
-		// add move to the parser object here!
 		[_moveHashes addObject:[NSNumber numberWithInt:[_boardCache hash]]];
+		_sgf.nextMoveInMainTree = [GoMove createWithBoardPoint:location isWhitesMove:(move == kGoBoardCacheWhitePiece)];
+		
+		NSLog(@"addMove: %@", [_sgf sgfAsString]);
 		
 		return YES;
 	}
@@ -183,5 +187,10 @@
 - (BOOL) locationIsEmpty:(CGPoint)location;
 {
 	return [self valueAtLocation:location] == kGoBoardCacheNoPiece;
+}
+
+- (NSString*) compressedSGFAsStringForGnuGo;
+{
+	return [[_sgf sgfAsEscapedString] stringByReplacingOccurrencesOfString:@";" withString:@"%3b"];
 }
 @end
