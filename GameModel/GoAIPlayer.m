@@ -22,10 +22,10 @@
 	
 	if (_lastStr && [_lastStr length] > 1) {
 		char xChar = [_lastStr characterAtIndex:0];
-		CGFloat xPt = (xChar - 'A');
+		CGFloat xPt = xChar > 'I' ? (xChar - 'A') : (xChar - '@');	// so I guess 'I' doesn't exist on ANY go board!?!
 		
 		int yNum = [[_lastStr substringFromIndex:1] intValue];
-		CGFloat yPt = (_referee.board.boardView.gameBoardSize - yNum);
+		CGFloat yPt = ((_referee.board.boardView.gameBoardSize + 1) - yNum);
 		
 		ret = CGPointMake(xPt, yPt);
 		NSLog(@"moveLocation: from '%@' to %@", _lastStr, NSStringFromCGPoint(ret));
@@ -55,7 +55,13 @@
 		NSLog(@"AI error: \"%@\"", _lastStr);
 	}
 	else {
-		[_referee attemptMoveAtLocation:self.moveLocation];
+		CGPoint mLoc = self.moveLocation;
+		GoMoveResponse resp = kGoMoveDeniedNotYourTurn;
+		
+		if ((resp = [_referee attemptMoveAtLocation:mLoc]) == kGoMoveAccepted)
+			[_referee.board.boardView confirmedLocationTouched:mLoc tapCount:2];	// tapCount==2 for real move
+		else
+			[_referee.board.boardView moveDeniedWithReason:resp atLocation:mLoc];
 	}
 }
 
@@ -68,8 +74,8 @@
 	NSString* sgfAsString = [_referee.board.model compressedSGFAsStringForGnuGo];
 	// player=white is a BAD HACK; fix it!!
 	NSString* body = [NSString stringWithFormat:@"player=white&level=5&sgf=%@", sgfAsString];
-	NSLog(@"body for URL connection: '%@'", body);
 	
+	// obviously 10.0.1.145 won't work for you... a real server hasn't been setup yet, so... yeah...
 	NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://10.0.1.145/cgi-bin/index.cgi"]];
 	[req setHTTPMethod:@"POST"];
 	[req setHTTPShouldHandleCookies:NO];

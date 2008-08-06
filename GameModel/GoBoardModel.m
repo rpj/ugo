@@ -130,8 +130,6 @@
 		[_moveHashes addObject:[NSNumber numberWithInt:[_boardCache hash]]];
 		_sgf.nextMoveInMainTree = [GoMove createWithBoardPoint:location isWhitesMove:(move == kGoBoardCacheWhitePiece)];
 		
-		NSLog(@"addMove: %@", [_sgf sgfAsString]);
-		
 		return YES;
 	}
 	

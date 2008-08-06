@@ -132,10 +132,9 @@ NSString * const kGoMarkerAllowWiggle = @"MarkerWiggle";
 { 
 	[_markerLayer placeMarker:type atLocation:boardLocation options:options];
 	
-	if ([_referee.currentPlayer isKindOfClass:[GoAIPlayer class]]) {
-		NSLog(@"Next player is an AI, calling takeTurnWhenReady: immediately");
+	// if the other player is an AI, have it take it's turn right away
+	if ([_referee.currentPlayer isKindOfClass:[GoAIPlayer class]])
 		[_referee.currentPlayer takeTurnWhenReady:_referee];
-	}
 }
 
 - (void) removeAllMarkersAtLocation:(CGPoint)boardLocation { [_markerLayer removeAllMarkersAtLocation:boardLocation]; }
