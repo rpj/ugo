@@ -10,36 +10,33 @@
 
 #import "ParserBridge.h"
 
+@class GoMarker;
+
 ///////////////////////////////////////////////////////////////////////////////
 @interface GoMove : NSObject {
-    // These should be replaced with a GoMarker
-	BOOL _isWhite;
-	CGPoint _point;
+    GoMarker *_marker;
+    NSMutableDictionary *_properties;
     
-	NSString* _comment;
-	int _number;
+    // not sure if this is necessary
+	int _moveNumber;
 	
-@protected
-	struct Node* _node;
-	NSArray* _variations;
+    GoMove *_nextMove;
+    NSMutableArray *_variations;
 }
 
-@property (nonatomic) BOOL isWhite;
-@property (nonatomic) CGPoint point;
-@property (nonatomic, copy) NSString* comment;
+@property (nonatomic, retain) GoMarker *marker;
 @property (nonatomic) int moveNumber;
 
-@property (nonatomic) struct Node* sgfNode;
+@property (nonatomic, retain) GoMove *nextMove;
+@property (nonatomic, readonly) NSMutableArray /* GoMove * */ *variations;
 
-@property (nonatomic, readonly) GoMove* nextMove;
-@property (nonatomic, readonly) NSArray* variations;
-@property (nonatomic, readonly) BOOL hasVariations;
-@property (nonatomic, readonly) NSString* moveAsString;
+// Get and set specific properties with KVC
+@property (nonatomic, readonly) NSDictionary *properties;
 
-+ (GoMove*) createFromParserNode:(struct Node*)node;
-+ (GoMove*) createWithBoardPoint:(CGPoint)point isWhitesMove:(BOOL)white;
++ (GoMove*) moveFromParserNode:(struct Node*)node;
 
-- (id) initWithBoardPoint:(CGPoint)point isWhitesMove:(BOOL)white;
-- (id) initWithParserNode:(struct Node*)node;
+- (NSString*) moveAsString;
+- (struct Node *) parserNodeRepresentation;
+
 
 @end

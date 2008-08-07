@@ -11,55 +11,22 @@
 ///////////////////////////////////////////////////////////////////////////////
 @implementation GoMove
 
-@synthesize isWhite = _isWhite;
-@synthesize point = _point;
-@synthesize comment = _comment;
-@synthesize moveNumber = _number;
-@synthesize sgfNode = _node;
+@synthesize marker = _marker;
+@synthesize moveNumber = _moveNumber;
+@synthesize nextMove = _nextMove;
+@synthesize variations = _variations;
+@synthesize properties = _properties;
 
-@dynamic nextMove;
-@dynamic variations;
-@dynamic hasVariations;
-@dynamic moveAsString;
-
-+ (GoMove*) createFromParserNode:(struct Node*)node;
++ (GoMove*) moveFromParserNode:(struct Node*)node;
 {
 	return [[[GoMove alloc] initWithParserNode:node] autorelease];
 }
 
-+ (GoMove*) createWithBoardPoint:(CGPoint)point isWhitesMove:(BOOL)white;
-{
-	return [[[GoMove alloc] initWithBoardPoint:point isWhitesMove:white] autorelease];
-}
-
-- (id) init;
-{
-	if (self = [super init]) {
-		_point = CGPointMake(-1, -1);
-		_node = nil;
-		_variations = nil;
-		_comment = nil;
-		_number = -1;
-		_isWhite = YES;
-	}
-	
-	return self;
-}
-
-- (id) initWithBoardPoint:(CGPoint)point isWhitesMove:(BOOL)white;
-{
-	if (self = [self init]) {
-		_point = point;
-		_isWhite = white;
-	}
-	
-	return self;
-}
-
 - (id) initWithParserNode:(struct Node*)node;
 {
-	if (self = [self init]) {
-		_node = node;
+	if ((self = [super init])) {
+        _properties = [[NSMutableDictionary alloc] init];
+        _variations = [[NSMutableArray alloc] init];
 		
 		void* prop = [ParserBridge _findFirstValueWithID:TKN_W startingWithProperty:node->prop];
 		_isWhite = (prop != nil);
@@ -88,51 +55,207 @@
 
 - (void) dealloc;
 {
-	[_variations release];
-	[_comment release];
+	[_marker release];
+	[_properties release];
+    [_nextMove release];
+    [_variations release];
 	
 	[super dealloc];
 }
 
-- (NSString*) description;
-{
-	return [NSString stringWithFormat: @"[0x%x] %s to (%@)%@", _node, _isWhite ? "White" : "Black", NSStringFromCGPoint(_point),
-			(_comment ? [NSString stringWithFormat:@" (C: \"%@\")", _comment] : @"")];
-}
-
-- (GoMove*) nextMove; 
-{
-	return (_node && _node->child ? [GoMove createFromParserNode:_node->child] : nil);
-}
-
-- (NSArray*) variations; 
-{
-	if (!_variations) {
-		struct Node* walk = _node;
-		NSMutableArray* retArr = [NSMutableArray array];
-		
-		while (walk && (walk = walk->sibling))
-			[retArr addObject:[GoMove createFromParserNode:walk]];
-		
-		_variations = (NSArray*)[retArr retain];
-	}
-	
-	return _variations;
-}
-
-- (BOOL) hasVariations;
-{
-	return ((_variations && [_variations count]) || (!_variations && [self.variations count]));
-}
+//- (NSString*) description;
+//{
+//	return [NSString stringWithFormat: @"[0x%x] %s to (%@)%@", _node, _isWhite ? "White" : "Black", NSStringFromCGPoint(_point),
+//			(_comment ? [NSString stringWithFormat:@" (C: \"%@\")", _comment] : @"")];
+//}
 
 - (NSString*) moveAsString;
 {
 	NSString* ret = nil;
-	
-	if (_point.x != -1 && _point.y != -1)
-		ret = [NSString stringWithFormat:@"%c%c", ((char)_point.x + ('a'-1)), ((char)_point.y + ('a'-1))];
+	CGPoint loc = _marker.location;
+    
+    // won't this end up returning 'I' as a value?
+	if (loc.x != -1 && loc.y != -1)
+		ret = [NSString stringWithFormat:@"%c%c", ((char)loc.x + ('a'-1)), ((char)loc.y + ('a'-1))];
 	
 	return ret;
+}
+
+- (id)valueForUndefinedKey:(NSString *)key
+{
+    return [_properties objectForKey:key];
+}
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key
+{
+    [_properties setObject:value forKey:key];
+}
+
+#pragma mark -
+#pragma mark Name Mapping Goop
+static NSDictionary *sSGFCodesToPropertyNames = nil;
++ (NSDictionary*) sgfCodesToPropertyNames
+{
+    if (sSGFCodesToPropertyNames == nil) {
+        sSGFCodesToPropertyNames = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                    @"AddBlack", @"AB",
+                                    @"AddEmpty", @"AE",
+                                    @"Annotation", @"AN",
+                                    @"Application", @"AP",
+                                    @"Arrow", @"AR",
+                                    @"WhoAddsStones", @"AS",
+                                    @"AddWhite", @"AW",
+                                    @"Black", @"B",
+                                    @"BlackTimeLeft", @"BL",
+                                    @"BadMove", @"BM",
+                                    @"BlackRank", @"BR",
+                                    @"BlackTeam", @"BT",
+                                    @"Comment", @"C",
+                                    @"Charset", @"CA",
+                                    @"Copyright", @"CP",
+                                    @"Circle", @"CR",
+                                    @"DimPoints", @"DD",
+                                    @"EvenPosition", @"DM",
+                                    @"Doubtful", @"DO",
+                                    @"Date", @"DT",
+                                    @"Event", @"EV",
+                                    @"Fileformat", @"FF",
+                                    @"Figure", @"FG",
+                                    @"GoodForBlack", @"GB",
+                                    @"GameComment", @"GC", 
+                                    @"Game", @"GM",        
+                                    @"GameName", @"GN",     
+                                    @"GoodForWhite", @"GW", 
+                                    @"Handicap", @"HA", 
+                                    @"Hotspot", @"HO", 
+                                    @"InitialPosition", @"IP",
+                                    @"Interesting", @"IT", 
+                                    @"InvertYAxis", @"IY", 
+                                    @"Komi", @"KM",  
+                                    @"Ko", @"KO",    
+                                    @"Label", @"LB", 
+                                    @"Line", @"LN",     
+                                    @"Mark", @"MA", 
+                                    @"SetMoveNumber", @"MN",
+                                    @"Nodename", @"N",  
+                                    @"OtStonesBlack", @"OB", 
+                                    @"Opening", @"ON", 
+                                    @"Overtime", @"OT",      
+                                    @"OtStonesWhite", @"OW", 
+                                    @"PlayerBlack", @"PB", 
+                                    @"Place", @"PC", 
+                                    @"PlayerToPlay", @"PL", 
+                                    @"PrintMoveMode", @"PM",
+                                    @"PlayerWhite", @"PW",
+                                    @"Result", @"RE",
+                                    @"Round", @"RO",
+                                    @"Rules", @"RU",
+                                    @"Markup", @"SE",
+                                    @"Selected", @"SL",
+                                    @"Source", @"SO",
+                                    @"Square", @"SQ",
+                                    @"Style", @"ST",
+                                    @"SetupType", @"SU",
+                                    @"Size", @"SZ",
+                                    @"TerritoryBlack", @"TB",
+                                    @"Tesuji", @"TE",
+                                    @"Timelimit", @"TM",
+                                    @"Triangle", @"TR",
+                                    @"TerritoryWhite", @"TW",
+                                    @"UnclearPosition", @"UC",
+                                    @"User", @"US",
+                                    @"Value", @"V",
+                                    @"View", @"VW",
+                                    @"White", @"W",
+                                    @"WhiteTimeLeft", @"WL",
+                                    @"WhiteRank", @"WR",
+                                    @"WhiteTeam", @"WT",
+                                    nil];
+    }
+    return sSGFCodesToPropertyNames;
+    
+}
+
+static NSDictionary *sPropertyNamesToSGFCodes = nil;
++ (NSDictionary*) propertyNamesToSGFCodes
+{
+    if (sPropertyNamesToSGFCodes == nil) {
+        sPropertyNamesToSGFCodes = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                    @"AB", @"AddBlack",
+                                    @"AE", @"AddEmpty",
+                                    @"AN", @"Annotation",
+                                    @"AP", @"Application",
+                                    @"AR", @"Arrow",
+                                    @"AS", @"WhoAddsStones",
+                                    @"AW", @"AddWhite",
+                                    @"B", @"Black",
+                                    @"BL", @"BlackTimeLeft",
+                                    @"BM", @"BadMove",
+                                    @"BR", @"BlackRank",
+                                    @"BT", @"BlackTeam",
+                                    @"C", @"Comment",
+                                    @"CA", @"Charset",
+                                    @"CP", @"Copyright",
+                                    @"CR", @"Circle",
+                                    @"DD", @"DimPoints",
+                                    @"DM", @"EvenPosition",
+                                    @"DO", @"Doubtful",
+                                    @"DT", @"Date",
+                                    @"EV", @"Event",
+                                    @"FF", @"Fileformat",
+                                    @"FG", @"Figure",
+                                    @"GB", @"GoodForBlack",
+                                    @"GC", @"GameComment",
+                                    @"GM", @"Game",     
+                                    @"GN", @"GameName", 
+                                    @"GW", @"GoodForWhite",
+                                    @"HA", @"Handicap", 
+                                    @"HO", @"Hotspot",  
+                                    @"IP", @"InitialPosition",
+                                    @"IT", @"Interesting",
+                                    @"IY", @"InvertYAxis",
+                                    @"KM", @"Komi",     
+                                    @"KO", @"Ko",       
+                                    @"LB", @"Label",    
+                                    @"LN", @"Line",     
+                                    @"MA", @"Mark",     
+                                    @"MN", @"SetMoveNumber",
+                                    @"N", @"Nodename",  
+                                    @"OB", @"OtStonesBlack",
+                                    @"ON", @"Opening",  
+                                    @"OT", @"Overtime", 
+                                    @"OW", @"OtStonesWhite",
+                                    @"PB", @"PlayerBlack",
+                                    @"PC", @"Place",     
+                                    @"PL", @"PlayerToPlay",
+                                    @"PM", @"PrintMoveMode",
+                                    @"PW", @"PlayerWhite",
+                                    @"RE", @"Result",
+                                    @"RO", @"Round",
+                                    @"RU", @"Rules",
+                                    @"SE", @"Markup",
+                                    @"SL", @"Selected",
+                                    @"SO", @"Source",
+                                    @"SQ", @"Square",
+                                    @"ST", @"Style",
+                                    @"SU", @"SetupType",
+                                    @"SZ", @"Size",
+                                    @"TB", @"TerritoryBlack",
+                                    @"TE", @"Tesuji",
+                                    @"TM", @"Timelimit",
+                                    @"TR", @"Triangle",
+                                    @"TW", @"TerritoryWhite",
+                                    @"UC", @"UnclearPosition",
+                                    @"US", @"User",
+                                    @"V", @"Value",
+                                    @"VW", @"View",
+                                    @"W", @"White",
+                                    @"WL", @"WhiteTimeLeft",
+                                    @"WR", @"WhiteRank",
+                                    @"WT", @"WhiteTeam",
+                                    nil];
+    }
+    return sPropertyNamesToSGFCodes;
 }
 
 @end

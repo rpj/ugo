@@ -37,6 +37,7 @@
 		43BC15C20E36647E00431B28 /* MarkerTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BC15C10E36647E00431B28 /* MarkerTheme.m */; };
 		43BC16790E36F87700431B28 /* board512.png in Resources */ = {isa = PBXBuildFile; fileRef = 43BC16780E36F87700431B28 /* board512.png */; };
 		43BFB9450E340A2000846875 /* uGoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BFB9440E340A2000846875 /* uGoSettings.m */; };
+		43F115050E4B715000A912DA /* GoMoveProps.m in Sources */ = {isa = PBXBuildFile; fileRef = 43F115040E4B715000A912DA /* GoMoveProps.m */; };
 		9431826D0E3BEC7D007069AE /* ShukoOriginalMove.sgf in Resources */ = {isa = PBXBuildFile; fileRef = 9431826C0E3BEC7D007069AE /* ShukoOriginalMove.sgf */; };
 		943186980E3D00D5007069AE /* FromSensei.sgf in Resources */ = {isa = PBXBuildFile; fileRef = 943186970E3D00D5007069AE /* FromSensei.sgf */; };
 		943639030E4920AB00221457 /* GoAIPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 943639020E4920AB00221457 /* GoAIPlayer.m */; };
@@ -148,6 +149,8 @@
 		43BFB8D30E3403F600846875 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		43BFB9430E340A2000846875 /* uGoSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uGoSettings.h; sourceTree = "<group>"; };
 		43BFB9440E340A2000846875 /* uGoSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = uGoSettings.m; sourceTree = "<group>"; };
+		43F115030E4B715000A912DA /* GoMoveProps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoMoveProps.h; sourceTree = "<group>"; };
+		43F115040E4B715000A912DA /* GoMoveProps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoMoveProps.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9431826C0E3BEC7D007069AE /* ShukoOriginalMove.sgf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ShukoOriginalMove.sgf; sourceTree = "<group>"; };
 		943186970E3D00D5007069AE /* FromSensei.sgf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FromSensei.sgf; sourceTree = "<group>"; };
@@ -402,6 +405,8 @@
 				94B1E4B10E3A8A2900A4A133 /* ParserBridge.m */,
 				94B67EAA0E44F68300A58855 /* GoMove.h */,
 				94B67EAB0E44F68300A58855 /* GoMove.m */,
+				43F115030E4B715000A912DA /* GoMoveProps.h */,
+				43F115040E4B715000A912DA /* GoMoveProps.m */,
 				43AEB5B30E497A580022E5A1 /* GoMarker.h */,
 				43AEB5B40E497A580022E5A1 /* GoMarker.m */,
 			);
@@ -573,6 +578,7 @@
 				943639030E4920AB00221457 /* GoAIPlayer.m in Sources */,
 				43AEB5AB0E4976210022E5A1 /* GoGameController.m in Sources */,
 				43AEB5B50E497A580022E5A1 /* GoMarker.m in Sources */,
+				43F115050E4B715000A912DA /* GoMoveProps.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
