@@ -18,6 +18,9 @@
 
 @dynamic moveLocation;
 
+// when we support different GNUGo difficulty levels we should include that in the name
+- (NSString *) name { return @"GNUGo"; }
+
 - (CGPoint) moveLocation;
 {
 	CGPoint ret = CGPointMake(-1, -1);

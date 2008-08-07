@@ -18,6 +18,8 @@
 
 + (GoPlayer*) player;
 
+- (NSString *) name;
+
 - (void) turnWillBegin;
 - (void) turnDidEnd;
 

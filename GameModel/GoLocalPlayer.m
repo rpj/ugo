@@ -11,10 +11,13 @@
 
 @implementation GoLocalPlayer
 
+// I think I'm doing this wrong. Why is this necessary?
 + (GoLocalPlayer *)player
 {
     return [[[GoLocalPlayer alloc] init] autorelease];
 }
+
+- (NSString *) name { return @"You"; }
 
 - (void) setBoardView:(BoardView *)boardView
 {

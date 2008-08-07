@@ -18,11 +18,9 @@
 	return [[[self alloc] init] autorelease];
 }
 
-- (void) turnWillBegin
-{
-}
+- (NSString *) name { return @"Default Player"; }
 
-- (void) turnDidEnd
-{
-}
+- (void) turnWillBegin { }
+
+- (void) turnDidEnd { }
 @end
