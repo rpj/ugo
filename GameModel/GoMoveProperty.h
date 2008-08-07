@@ -1,5 +1,5 @@
 //
-//  GoMoveProps.h
+//  GoMoveProperty.h
 //  uGo
 //
 //  Created by Jacob Farkas on 8/7/08.
@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+// http://www.red-bean.com/sgf/proplist.html
 extern NSString const * kGoPropAddBlack;
 extern NSString const * kGoPropAddEmpty;
 extern NSString const * kGoPropAnnotation;
@@ -81,9 +82,13 @@ extern NSString const * kGoPropWhiteTimeLeft;
 extern NSString const * kGoPropWhiteRank;
 extern NSString const * kGoPropWhiteTeam;
 
-
-@interface GoMoveProps : NSObject {
+@interface GoMoveProperty : NSObject {
+    NSMutableArray *_values;
 }
+
+@property (nonatomic, retain) NSMutableArray /* GoMovePropVal * */ *values;
+
 + (NSDictionary*) sgfCodesToPropertyNames;
 + (NSDictionary*) propertyNamesToSGFCodes;
+
 @end

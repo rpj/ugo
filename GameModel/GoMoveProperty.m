@@ -1,12 +1,12 @@
 //
-//  GoMoveProps.m
+//  GoMoveProperty.m
 //  uGo
 //
 //  Created by Jacob Farkas on 8/7/08.
 //  Copyright 2008 Apple Computer. All rights reserved.
 //
 
-#import "GoMoveProps.h"
+#import "GoMoveProperty.h"
 
 NSString const * kGoPropAddBlack = @"AddBlack";
 NSString const * kGoPropAddEmpty = @"AddEmpty";
@@ -81,7 +81,24 @@ NSString const * kGoPropWhiteTimeLeft = @"WhiteTimeLeft";
 NSString const * kGoPropWhiteRank = @"WhiteRank";
 NSString const * kGoPropWhiteTeam = @"WhiteTeam";
 
-@implementation GoMoveProps
+@implementation GoMoveProperty
+
+@synthesize values = _values;
+
+- (id) init
+{
+    if ((self = [super init])) {
+        _values = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
+- (void) dealloc
+{
+    [_values release];
+    [super dealloc];
+}
+
 static NSDictionary *sSGFCodesToPropertyNames = nil;
 + (NSDictionary*) sgfCodesToPropertyNames
 {

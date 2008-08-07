@@ -16,16 +16,12 @@
 @interface GoMove : NSObject {
     GoMarker *_marker;
     NSMutableDictionary *_properties;
-    
-    // not sure if this is necessary
-	int _moveNumber;
 	
     GoMove *_nextMove;
     NSMutableArray *_variations;
 }
 
 @property (nonatomic, retain) GoMarker *marker;
-@property (nonatomic) int moveNumber;
 
 @property (nonatomic, retain) GoMove *nextMove;
 @property (nonatomic, readonly) NSMutableArray /* GoMove * */ *variations;
