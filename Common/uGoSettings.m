@@ -12,7 +12,8 @@
 #import <objc/runtime.h>
 
 NSString * const kBoardSizeChangedNotification = @"BoardSizeChanged";
-NSString * const kMarkerThemeChangedNotification = @"MarkerThemeChanged";
+NSString * const kMarkerThemeChangedNotification = @"MarkerThemeChanged"; 
+NSString * const kGameModeChangedNotification = @"GameModeChanged";
 
 static uGoSettings *_sSettings;
 
@@ -30,6 +31,8 @@ static uGoSettings *_sSettings;
 @implementation uGoSettings
 
 @synthesize allThemes = _allThemes;
+
+@dynamic gameMode;
 
 + (uGoSettings *)sharedSettings
 {
@@ -65,6 +68,9 @@ static uGoSettings *_sSettings;
     if ((self = [super init])) {
         _boardSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"BoardSize"];
         if (_boardSize == 0) _boardSize = 19;
+		
+		_gameMode = [[NSUserDefaults standardUserDefaults] integerForKey:@"GameMode"];
+		if (_gameMode == 0) _gameMode = kGoGameModeLocal; // XXX: change
         
         [self _loadThemeClasses];
         
@@ -106,6 +112,18 @@ static uGoSettings *_sSettings;
     }
     [[NSUserDefaults standardUserDefaults] setValue:[_markerTheme getClassName] forKey:@"ThemeName"];
     [[NSNotificationCenter defaultCenter] postNotificationName:kMarkerThemeChangedNotification object:nil];
+}
+
+- (GoGameMode) gameMode;
+{
+	return _gameMode;
+}
+
+- (void) setGameMode:(GoGameMode)mode;
+{
+	_gameMode = mode;
+	[[NSUserDefaults standardUserDefaults] setInteger:_gameMode forKey:@"GameMode"];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kGameModeChangedNotification object:nil];
 }
 
 @end

@@ -23,20 +23,7 @@
 
 - (CGPoint) moveLocation;
 {
-	CGPoint ret = CGPointMake(-1, -1);
-	
-	if (_lastStr && [_lastStr length] > 1) {
-		char xChar = [_lastStr characterAtIndex:0];
-		CGFloat xPt = xChar > 'I' ? (xChar - 'A') : (xChar - '@');	// so I guess 'I' doesn't exist on ANY go board!?!
-		
-		int yNum = [[_lastStr substringFromIndex:1] intValue];
-		CGFloat yPt = ((_referee.board.boardSize + 1) - yNum);
-		
-		ret = CGPointMake(xPt, yPt);
-		NSLog(@"moveLocation: from '%@' to %@", _lastStr, NSStringFromCGPoint(ret));
-	}
-	
-	return ret;
+	return [self boardLocationFromSGFPosition:_lastStr];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data

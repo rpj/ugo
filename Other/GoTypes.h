@@ -21,6 +21,16 @@ typedef enum {
     kGoGameStateFinished
 } GoGameState;
 
+
+typedef enum {
+	kGoGameModeLocal,
+	kGoGameModeAI,
+	kGoGameModeInternet,
+	kGoGameModeBonjour,
+	kGoGameModePlayback,
+	kGoGameModeLastMode
+} GoGameMode;
+
 // (fark) this may not be the best way to separate the marker types. I'm open to suggestions
 typedef enum {
     kGoMarkerStone = 1,

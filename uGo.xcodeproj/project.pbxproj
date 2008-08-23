@@ -45,6 +45,8 @@
 		946A4A910E305EB400F5659E /* BoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 946A4A900E305EB400F5659E /* BoardView.m */; };
 		946A4E400E30F17100F5659E /* board1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 946A4E3F0E30F17100F5659E /* board1024.png */; };
 		9475F1590E3137990053C4BE /* grad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9475F1580E3137990053C4BE /* grad.png */; };
+		9475F2510E5FB1F100734014 /* MainViewControlBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9475F2500E5FB1F100734014 /* MainViewControlBar.xib */; };
+		9475F2580E5FB22E00734014 /* MainViewControlBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9475F2570E5FB22E00734014 /* MainViewControlBarController.m */; };
 		948586550E3141280087D7CD /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 948586540E3141280087D7CD /* gradient.png */; };
 		94AFF1810E47610B006CC281 /* GoUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 94AFF17F0E47610B006CC281 /* GoUtil.m */; };
 		94B1E4940E3A893E00A4A133 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 43BC144E0E35D34200431B28 /* util.c */; };
@@ -159,6 +161,9 @@
 		946A4A900E305EB400F5659E /* BoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoardView.m; sourceTree = "<group>"; };
 		946A4E3F0E30F17100F5659E /* board1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = board1024.png; sourceTree = "<group>"; };
 		9475F1580E3137990053C4BE /* grad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grad.png; sourceTree = "<group>"; };
+		9475F2500E5FB1F100734014 /* MainViewControlBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainViewControlBar.xib; sourceTree = "<group>"; };
+		9475F2560E5FB22E00734014 /* MainViewControlBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewControlBarController.h; sourceTree = "<group>"; };
+		9475F2570E5FB22E00734014 /* MainViewControlBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewControlBarController.m; sourceTree = "<group>"; };
 		948586540E3141280087D7CD /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradient.png; sourceTree = "<group>"; };
 		94AFF17F0E47610B006CC281 /* GoUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoUtil.m; sourceTree = SOURCE_ROOT; };
 		94AFF1800E47610B006CC281 /* GoUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoUtil.h; sourceTree = SOURCE_ROOT; };
@@ -221,6 +226,8 @@
 				289233AB0DB2D0DB0083E9F9 /* RootViewController.m */,
 				289233A80DB2D0DB0083E9F9 /* MainViewController.h */,
 				289233A90DB2D0DB0083E9F9 /* MainViewController.m */,
+				9475F2560E5FB22E00734014 /* MainViewControlBarController.h */,
+				9475F2570E5FB22E00734014 /* MainViewControlBarController.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -267,6 +274,7 @@
 				943186970E3D00D5007069AE /* FromSensei.sgf */,
 				280E754A0DD40C5E005A515E /* FlipsideView.xib */,
 				280E754B0DD40C5E005A515E /* MainView.xib */,
+				9475F2500E5FB1F100734014 /* MainViewControlBar.xib */,
 				280E754C0DD40C5E005A515E /* MainWindow.xib */,
 				4355750C0E3A498600F1D159 /* GameSettings.xib */,
 				4355750E0E3A499100F1D159 /* BoardSettings.xib */,
@@ -528,6 +536,7 @@
 				94B67DE40E441D6700A58855 /* SmallTest.sgf in Resources */,
 				94B67E360E442A3300A58855 /* SmallTest2.sgf in Resources */,
 				94B67E450E442C6500A58855 /* SmallTest3.sgf in Resources */,
+				9475F2510E5FB1F100734014 /* MainViewControlBar.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -573,6 +582,7 @@
 				943639030E4920AB00221457 /* GoAIPlayer.m in Sources */,
 				43AEB5AB0E4976210022E5A1 /* GoGameController.m in Sources */,
 				43AEB5B50E497A580022E5A1 /* GoMarker.m in Sources */,
+				9475F2580E5FB22E00734014 /* MainViewControlBarController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

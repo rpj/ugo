@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class BoardView;
+@class BoardView, MainViewControlBarController;
 
 @interface MainViewController : UIViewController <UIScrollViewDelegate> {
-    IBOutlet UIScrollView*          _boardScrollView;
-	IBOutlet UILabel*				_statusLabel;
+    IBOutlet UIScrollView*					_boardScrollView;
+	IBOutlet UILabel*						_statusLabel;
+	IBOutlet MainViewControlBarController*	_barController;		
 	
 	BoardView*		_boardView;
     CGFloat         _boardScale;

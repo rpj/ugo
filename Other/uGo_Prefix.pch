@@ -8,5 +8,6 @@
 
 #import "uGoSettings.h"
 #import "GoUtil.h"
+#import "GoTypes.h"
 
 #endif

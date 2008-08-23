@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 
-@interface GameSettingsViewController : UIViewController {
-
+@interface GameSettingsViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate> {
+	IBOutlet UIPickerView *_picker;
 }
 
 @end

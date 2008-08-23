@@ -7,6 +7,7 @@
 //
 
 #import "MainViewController.h"
+#import "MainViewControlBarController.h"
 #import "BoardView.h"
 
 @implementation MainViewController
@@ -28,8 +29,24 @@
 	}
 }
 
+- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
+{
+	if ((self = [super initWithNibName:nibName bundle:nibBundle])) {
+		_barController = [[MainViewControlBarController alloc] initWithNibName:@"MainViewControlBar" bundle:nil];
+	}
+	
+	return self;
+}
+
 - (void) viewDidLoad
 {
+	if (_barController) {
+		[self.view addSubview:_barController.view];
+		_barController.view.frame = CGRectMake(0, 470 - _barController.view.frame.size.height,
+											   _barController.view.frame.size.width, _barController.view.frame.size.height);
+		[_barController.view setNeedsDisplay];
+	}
+	
     // XXX (fark): I want the first view of the board to be of the entire board. I can't figure out how to do that.
     _boardScrollView.minimumZoomScale = 1.0;
     _boardScrollView.maximumZoomScale = 3.0;
