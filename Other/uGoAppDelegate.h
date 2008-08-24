@@ -8,13 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class RootViewController, GoGameController;
+@class RootViewController;
 
 @interface uGoAppDelegate : NSObject <UIApplicationDelegate> {
 	IBOutlet UIWindow *window;
 	IBOutlet RootViewController *rootViewController;
-    
-    GoGameController *_goGame;
 }
 
 @property (nonatomic, retain) UIWindow *window;

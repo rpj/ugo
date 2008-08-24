@@ -95,47 +95,68 @@
 - (GoMoveResponse) attemptMoveAtLocation:(CGPoint)location forPlayer:(GoPlayer *)player
 {
 	GoMoveResponse resp = kGoMoveDeniedNotYourTurn;
-    if (![_currentPlayer isEqual:player]) {
+	
+    if (![_currentPlayer isEqual:player])
         return kGoMoveDeniedNotYourTurn;
-    }
+	
+	if (location.x == -1 && location.y == -1) 
+		return kGoMoveDeniedInvalidLocation;
     
-    NSAssert2(_whitePlayer && _blackPlayer, @"A move was attempted, but either the white player (%@) or the black player (%@) is nil", _whitePlayer, _blackPlayer);
+    NSAssert2(_whitePlayer && _blackPlayer, 
+			  @"A move was attempted, but either the white player (%@) or the black player (%@) is nil", 
+			  _whitePlayer, _blackPlayer);
     
     GoMarker *marker = [GoMarker markerOfType:kGoMarkerStone atLocation:location];
     
-    if ([_currentPlayer isEqual:_whitePlayer]) {
+    if (_currentPlayer.isWhitePlayer/*[_currentPlayer isEqual:_whitePlayer]*/) {
         [marker setColor:[UIColor whiteColor]];
     } else {
         [marker setColor:[UIColor blackColor]];
     }
     
-    GoBoardCacheValue move = ([_currentPlayer isEqual:_whitePlayer] ? kGoBoardCacheWhitePiece : 
-                              ([_currentPlayer isEqual:_blackPlayer] ? kGoBoardCacheBlackPiece : kGoBoardCacheLastValue));
-    
-    if (move != kGoBoardCacheLastValue) {
-        resp = kGoMoveAccepted;
-        
-        // check for suicide conditions
-        if ([_board locationBelongsToPlayer:location] || ![_board libertiesAtLocation:location]) 
-            resp = kGoMoveDeniedSuicide;
-        
-        // check for Ko
-        if (resp == kGoMoveAccepted && [_board move:move atLocationWillViolateKo:location])
-            resp = kGoMoveDeniedKoRule;
-        
-        if (resp == kGoMoveAccepted) {
-            [_board addMove:move atLocation:location];
-            [_gameDelegate markerWasPlaced:marker];
-            if ([_gameDelegate respondsToSelector:@selector(playerWillEndTurn:)]) [_gameDelegate playerWillEndTurn:_currentPlayer];
-            [_currentPlayer turnDidEnd];
-            _currentPlayer = ([_currentPlayer isEqual:_whitePlayer] ? _blackPlayer : _whitePlayer);
-            if ([_gameDelegate respondsToSelector:@selector(playerWillBeginTurn:)]) [_gameDelegate playerWillBeginTurn:_currentPlayer];
-            [_currentPlayer turnWillBegin];
-        }
-    }
-                 
-    if (resp != kGoMoveAccepted) {
-        if ([_gameDelegate respondsToSelector:@selector(player:didAttemptIllegalPlacement:withError:)]) [_gameDelegate player:_currentPlayer didAttemptIllegalPlacement:marker withError:resp];
+	// skip all the GoBoard validation if the game mode is set to SGF playback, as we specifically *want* to allow
+	// any and all moves, illegal or not, that can be respresented in SGF
+	if ([uGoSettings sharedSettings].gameMode == kGoGameModePlayback) {
+		resp = kGoMoveAccepted;
+	}
+	else {
+		GoBoardCacheValue move = ([_currentPlayer isEqual:_whitePlayer] ? kGoBoardCacheWhitePiece : 
+								  ([_currentPlayer isEqual:_blackPlayer] ? kGoBoardCacheBlackPiece : kGoBoardCacheLastValue));
+		
+		if (move != kGoBoardCacheLastValue) {
+			resp = kGoMoveAccepted;
+			
+			// check for suicide conditions
+			if ([_board locationBelongsToPlayer:location] || ![_board libertiesAtLocation:location]) 
+				resp = kGoMoveDeniedSuicide;
+			
+			// check for Ko
+			if (resp == kGoMoveAccepted && [_board move:move atLocationWillViolateKo:location])
+				resp = kGoMoveDeniedKoRule;
+			
+			// if all validation rules pass, add the move to the GoBoard cache
+			if (resp == kGoMoveAccepted)
+				[_board addMove:move atLocation:location];
+		}
+	}
+	
+	if (resp == kGoMoveAccepted) {
+		[_gameDelegate markerWasPlaced:marker];
+		
+		if ([_gameDelegate respondsToSelector:@selector(playerWillEndTurn:)]) 
+			[_gameDelegate playerWillEndTurn:_currentPlayer];
+		
+		[_currentPlayer turnDidEnd];
+		_currentPlayer = ([_currentPlayer isEqual:_whitePlayer] ? _blackPlayer : _whitePlayer);
+		
+		if ([_gameDelegate respondsToSelector:@selector(playerWillBeginTurn:)]) 
+			[_gameDelegate playerWillBeginTurn:_currentPlayer];
+		
+		[_currentPlayer turnWillBegin];
+	}
+	else {
+        if ([_gameDelegate respondsToSelector:@selector(player:didAttemptIllegalPlacement:withError:)]) 
+			[_gameDelegate player:_currentPlayer didAttemptIllegalPlacement:marker withError:resp];
     }
 	
     return resp;

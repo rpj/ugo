@@ -287,10 +287,21 @@
 	return self;
 }
 
+// this init is either misnamed or confusing; ie: I wrote it, and even I thought it would load
+// the SGF file given by 'path' upon init, when in fact it doesn't... probably need to fix that.
 - (id) initWithPath:(NSString*)path;
 {
 	if ((self = [self init])) {
 		self.path = path;
+	}
+	
+	return self;
+}
+
+- (id) initWithPathAndLoad:(NSString*)path;
+{
+	if ((self = [self init])) {
+		[self loadSGFFromPath:path];
 	}
 	
 	return self;
@@ -635,7 +646,7 @@
 	if (!_curNodeInMainTree && _sgf.root)
 		_curNodeInMainTree = _sgf.root;
 	
-	if ((_curNodeInMainTree = _curNodeInMainTree->child))
+	if (_curNodeInMainTree && (_curNodeInMainTree = _curNodeInMainTree->child))
 		retMove = [GoMove createFromParserNode:_curNodeInMainTree];
 	
 	return retMove;

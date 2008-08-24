@@ -130,7 +130,9 @@
 	NSString* ret = nil;
 	
 	if (_point.x != -1 && _point.y != -1)
-		ret = [NSString stringWithFormat:@"%c%c", ((char)_point.x + ('a'-1)), ((char)_point.y + ('a'-1))];
+		ret = [NSString stringWithFormat:@"%c%c", 
+			   ((char)_point.x + ('a' + 1) + (_point.x > 8 ? 1 : 0)),
+			   ((char)_point.y + ('a' + 1) + (_point.y > 8 ? 1 : 0))];
 	
 	return ret;
 }

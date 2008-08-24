@@ -27,10 +27,9 @@
     if ((self = [super init])) { 
         _boardView = boardView;
         _referee = [[GoReferee alloc] init];
-        GoLocalPlayer *blackPlayer = [GoLocalPlayer player];
-        blackPlayer.boardView = boardView;
-        _referee.blackPlayer = blackPlayer;
-        _referee.whitePlayer = [GoAIPlayer player];
+		
+        _referee.blackPlayer = nil;
+        _referee.whitePlayer = nil;
         _referee.gameDelegate = self;
     }
     return self;

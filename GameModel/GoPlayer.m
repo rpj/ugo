@@ -15,6 +15,8 @@
 @implementation GoPlayer
 
 @synthesize referee = _referee;
+@synthesize isWhitePlayer = _isWhite;
+
 + (GoPlayer*) player;
 {
 	return [[[self alloc] init] autorelease];
@@ -33,11 +35,13 @@
 	CGPoint ret = CGPointMake(-1, -1);
 	
 	if (sgfPosition && [sgfPosition length] > 1) {
-		char xChar = [sgfPosition characterAtIndex:0];
-		CGFloat xPt = xChar > 'I' ? (xChar - 'A') : (xChar - '@');	// so I guess 'I' doesn't exist on ANY go board!?!
+		sgfPosition = [sgfPosition lowercaseString];
 		
-		int yNum = [[sgfPosition substringFromIndex:1] intValue];
-		CGFloat yPt = ((_referee.board.boardSize + 1) - yNum);
+		char xChar = [sgfPosition characterAtIndex:0];
+		CGFloat xPt = (xChar > 'i') ? (xChar - 'b') : (xChar - 'a');
+		
+		char yChar = [sgfPosition characterAtIndex:1];
+		CGFloat yPt = (yChar > 'i') ? (yChar - 'b') : (yChar - 'a');
 		
 		ret = CGPointMake(xPt, yPt);
 	}

@@ -12,6 +12,7 @@ typedef enum {
     kGoMoveDeniedNotYourTurn,
     kGoMoveDeniedSuicide,
     kGoMoveDeniedKoRule,
+	kGoMoveDeniedInvalidLocation,
     kGoMovePieceExists
 } GoMoveResponse;
 

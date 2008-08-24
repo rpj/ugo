@@ -80,6 +80,7 @@
 		94C4B9BF0E368BC300739E57 /* WhiteStone130-9.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9B10E368BC300739E57 /* WhiteStone130-9.png */; };
 		94C4B9C30E368D4600739E57 /* BlackStone130-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4B9C20E368D4600739E57 /* BlackStone130-0.png */; };
 		94C4D4D00E2AE164007A76B5 /* goboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 94C4D4CF0E2AE164007A76B5 /* goboard.png */; };
+		94CCD0780E60E863009E41BF /* GoSGFPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 94CCD0770E60E863009E41BF /* GoSGFPlayer.m */; };
 		94FD82B70E31827A000611DC /* goicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 94FD82B60E31827A000611DC /* goicon.png */; };
 /* End PBXBuildFile section */
 
@@ -191,6 +192,8 @@
 		94C4B9B10E368BC300739E57 /* WhiteStone130-9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteStone130-9.png"; sourceTree = "<group>"; };
 		94C4B9C20E368D4600739E57 /* BlackStone130-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BlackStone130-0.png"; sourceTree = "<group>"; };
 		94C4D4CF0E2AE164007A76B5 /* goboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goboard.png; sourceTree = "<group>"; };
+		94CCD0760E60E863009E41BF /* GoSGFPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoSGFPlayer.h; sourceTree = "<group>"; };
+		94CCD0770E60E863009E41BF /* GoSGFPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoSGFPlayer.m; sourceTree = "<group>"; };
 		94FD82B60E31827A000611DC /* goicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goicon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -238,8 +241,8 @@
 				43437F080E3AF822004C60B8 /* Common */,
 				289233A00DB2D0730083E9F9 /* Views */,
 				43BFB9310E3409C900846875 /* GameModel */,
-				43BC144B0E35CFC700431B28 /* Parser */,
 				29B97315FDCFA39411CA2CEA /* Other */,
+				43BC144B0E35CFC700431B28 /* Parser */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
@@ -328,6 +331,8 @@
 				43437EFC0E3AF69A004C60B8 /* GoLocalPlayer.m */,
 				943639010E4920AB00221457 /* GoAIPlayer.h */,
 				943639020E4920AB00221457 /* GoAIPlayer.m */,
+				94CCD0760E60E863009E41BF /* GoSGFPlayer.h */,
+				94CCD0770E60E863009E41BF /* GoSGFPlayer.m */,
 			);
 			name = Players;
 			sourceTree = "<group>";
@@ -583,6 +588,7 @@
 				43AEB5AB0E4976210022E5A1 /* GoGameController.m in Sources */,
 				43AEB5B50E497A580022E5A1 /* GoMarker.m in Sources */,
 				9475F2580E5FB22E00734014 /* MainViewControlBarController.m in Sources */,
+				94CCD0780E60E863009E41BF /* GoSGFPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

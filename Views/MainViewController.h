@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class BoardView, MainViewControlBarController;
+@class BoardView, MainViewControlBarController, GoGameController;
 
 @interface MainViewController : UIViewController <UIScrollViewDelegate> {
     IBOutlet UIScrollView*					_boardScrollView;
@@ -17,8 +17,11 @@
 	
 	BoardView*		_boardView;
     CGFloat         _boardScale;
+    
+    GoGameController *_goGame;
 }
 
 @property(readonly) BoardView *boardView;
+@property(readonly) GoGameController *gameController;
 
 @end

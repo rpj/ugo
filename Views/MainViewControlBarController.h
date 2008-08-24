@@ -8,10 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+@class GoGameController, GoSGFPlayer;
+
 @interface MainViewControlBarController : UIViewController {
 	IBOutlet UIImageView *_bgImage;
 	IBOutlet UILabel *_headerLabel;
 	IBOutlet UIView *_container;
+	
+	GoGameController *_game;
+	
+	GoSGFPlayer *_sgfPlayer;
 }
+
+@property (nonatomic, assign) GoGameController* gameController;
 
 @end

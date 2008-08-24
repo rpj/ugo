@@ -7,10 +7,16 @@
 //
 
 #import "MainViewControlBarController.h"
+#import "GoGameController.h"
 #import "uGoSettings.h"
 #import "GoTypes.h"
 
+#import "GoReferee.h"
+#import "GoSGFPlayer.h"
+
 @implementation MainViewControlBarController
+
+@synthesize gameController = _game;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -26,7 +32,88 @@
 
 - (void) _fwdButtonPressed:(id)sender;
 {
-	NSLog(@"_fwdButtonPressed");
+	// yeah, I'm thinking it's getting to be about time for a better architecture...
+	static BOOL __gameStarted = NO;
+	UIControl *prevButton = nil;
+	
+	for (UIView* view in _container.subviews) {
+		if ([view isKindOfClass:[UIButton class]]) {
+			NSString* title = [(UIButton*)view titleForState:UIControlStateNormal];
+			
+			if ([title isEqualToString:@"Previous"]) {
+				prevButton = (UIControl*)view;
+			}
+			
+			if ([title isEqualToString:@"Start Playback"]) {
+				[_game.referee startGame];
+				[(UIButton*)view setTitle:@"Next" forState:UIControlStateNormal];
+				__gameStarted = YES;
+				break;
+			}
+		}
+	}
+	
+	if (__gameStarted) {
+		[_sgfPlayer makeNextMove];
+		
+		if (prevButton)
+			prevButton.enabled = YES;
+	}
+}
+
+- (void) _drawSGFPlaybackUI;
+{
+	UIButton* tBut = nil;
+	UILabel* tLabel = nil;
+	CGRect frame = _container.frame;
+	
+#define BORDER_ADD	10
+#define BUTTON_HEIGHT 40
+#define BUTTON_ALPHA 0.75
+	
+	frame.origin.x += BORDER_ADD;
+	frame.origin.y += BORDER_ADD;
+	frame.size.width = (frame.size.width - (BORDER_ADD * 3)) / 2;
+	frame.size.height = BUTTON_HEIGHT;
+	
+	tBut = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	[_container addSubview:tBut];
+	[tBut setTitle:@"Previous" forState:UIControlStateNormal];
+	[tBut setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+	[tBut setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
+	tBut.frame = frame;
+	tBut.backgroundColor = [UIColor clearColor];
+	tBut.enabled = NO;
+	tBut.alpha = BUTTON_ALPHA;
+	[tBut addTarget:self action:@selector(_backButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+	
+	tBut = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	[_container addSubview:tBut];
+	frame.origin.x += frame.size.width + BORDER_ADD;
+	tBut.frame = frame;
+	tBut.alpha = BUTTON_ALPHA;
+	tBut.backgroundColor = [UIColor clearColor];
+	[tBut setTitle:@"Start Playback" forState:UIControlStateNormal];
+	[tBut setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+	[tBut setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
+	[tBut addTarget:self action:@selector(_fwdButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+	
+	frame = _headerLabel.frame;
+	frame.origin.y -= frame.size.height;
+	tLabel = [[UILabel alloc] initWithFrame:frame];
+	[_container addSubview:tLabel];
+	
+	NSArray* sgfs = [NSBundle pathsForResourcesOfType:@"sgf" inDirectory:[[NSBundle mainBundle] bundlePath]];
+	NSString* sgfPath = [sgfs objectAtIndex:(random() % [sgfs count])];
+	tLabel.text = [NSString stringWithFormat:@"Loaded: %@", [sgfPath lastPathComponent]];
+	
+	_sgfPlayer = [[GoSGFPlayer playerWithSGFPath:sgfPath] retain];
+	_game.referee.whitePlayer = _game.referee.blackPlayer = _sgfPlayer;
+	
+	tLabel.font = [UIFont systemFontOfSize:12.0];
+	tLabel.textColor = [UIColor whiteColor];
+	tLabel.backgroundColor = [UIColor clearColor];
+	tLabel.frame = frame;
 }
 
 - (void) _gameModeChanged:(NSNotification*)notify;
@@ -35,55 +122,15 @@
 		[sview removeFromSuperview];
 	}
 	
-	UIButton* tBut = nil;
-	UILabel* tLabel = nil;
-	CGRect frame = _container.frame;
-	
-	
+	if (_sgfPlayer) {
+		[_sgfPlayer release];
+		_sgfPlayer = nil;
+	}
+
 	switch ([uGoSettings sharedSettings].gameMode) {
 		case kGoGameModePlayback:
 			_headerLabel.text = @"SGF Playback Mode";
-			
-#define BORDER_ADD	10
-#define BUTTON_HEIGHT 40
-#define BUTTON_ALPHA 0.75
-			
-			frame.origin.x += BORDER_ADD;
-			frame.origin.y += BORDER_ADD;
-			frame.size.width = (frame.size.width - (BORDER_ADD * 3)) / 2;
-			frame.size.height = BUTTON_HEIGHT;
-			
-			tBut = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-			[_container addSubview:tBut];
-			[tBut setTitle:@"Previous" forState:UIControlStateNormal];
-			[tBut setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-			[tBut setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
-			tBut.frame = frame;
-			tBut.backgroundColor = [UIColor clearColor];
-			tBut.enabled = NO;
-			tBut.alpha = BUTTON_ALPHA;
-			[tBut addTarget:self action:@selector(_backButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-			
-			tBut = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-			[_container addSubview:tBut];
-			frame.origin.x += frame.size.width + BORDER_ADD;
-			tBut.frame = frame;
-			tBut.alpha = BUTTON_ALPHA;
-			tBut.backgroundColor = [UIColor clearColor];
-			[tBut setTitle:@"Next" forState:UIControlStateNormal];
-			[tBut setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-			[tBut setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
-			[tBut addTarget:self action:@selector(_fwdButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-			
-			frame = _headerLabel.frame;
-			frame.origin.y -= frame.size.height;
-			tLabel = [[UILabel alloc] initWithFrame:frame];
-			[_container addSubview:tLabel];
-			tLabel.text = @"No SGF file loaded.";
-			tLabel.font = [UIFont systemFontOfSize:12.0];
-			tLabel.textColor = [UIColor whiteColor];
-			tLabel.backgroundColor = [UIColor clearColor];
-			tLabel.frame = frame;
+			[self _drawSGFPlaybackUI];
 			break;
 			
 		case kGoGameModeLocal:
@@ -91,7 +138,15 @@
 			break;
 			
 		case kGoGameModeAI:
-			_headerLabel.text = @"GnuGO AI Mode";
+			_headerLabel.text = @"GnuGo AI Mode";
+			break;
+			
+		case kGoGameModeBonjour:
+			_headerLabel.text = @"Bonjour Network Mode";
+			break;
+			
+		case kGoGameModeInternet:
+			_headerLabel.text = @"Internet Mode";
 			break;
 			
 		default:
@@ -102,8 +157,13 @@
 
 - (void) viewDidLoad;
 {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_gameModeChanged:) name:kGameModeChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self 
+											 selector:@selector(_gameModeChanged:) 
+												 name:kGameModeChangedNotification 
+											   object:nil];
+	
 	_headerLabel.font = [UIFont boldSystemFontOfSize:14.0];
+	_sgfPlayer = nil;
 	[self _gameModeChanged:nil];
 }
 

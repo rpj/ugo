@@ -12,9 +12,11 @@
 
 @interface GoPlayer : NSObject {
     GoReferee *_referee;
+	BOOL _isWhite;
 }
 
 @property (nonatomic, assign) GoReferee *referee;
+@property (nonatomic, assign) BOOL isWhitePlayer;
 
 + (GoPlayer*) player;
 
@@ -25,8 +27,7 @@
 
 @end
 
-// stuff that all player classes may find in handy, but also stuff that needs a referee reference to run correctly,
-// so I figured it best to put it here
+// stuff that all player classes may find in handy
 @interface GoPlayer (Utility)
 - (CGPoint) boardLocationFromSGFPosition:(NSString*)sgfPosition;
 @end

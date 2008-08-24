@@ -10,6 +10,11 @@
 #import "uGoSettings.h"
 
 @implementation GameSettingsViewController
+- (void)viewDidLoad;
+{
+	NSLog(@"game mode %d", [uGoSettings sharedSettings].gameMode);
+	[_picker selectRow:[uGoSettings sharedSettings].gameMode inComponent:0 animated:NO];
+}
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView { return 1; }
 
@@ -36,8 +41,7 @@
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-	if (row < kGoGameModeLastMode)
-		[uGoSettings sharedSettings].gameMode = row;
+	if (row < kGoGameModeLastMode) [uGoSettings sharedSettings].gameMode = row;
 }
 
 @end

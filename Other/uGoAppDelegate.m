@@ -27,16 +27,11 @@
 	[window makeKeyAndVisible];
     
     srand(time(NULL));
-    
-    _goGame = [[GoGameController alloc] initWithBoardView:rootViewController.mainViewController.boardView];
-    [_goGame startGame];
 }
 
 - (void)dealloc {
 	[rootViewController release];
 	[window release];
-    
-    [_goGame release];
     
 	[super dealloc];
 }

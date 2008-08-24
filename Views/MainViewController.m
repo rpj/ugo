@@ -9,10 +9,12 @@
 #import "MainViewController.h"
 #import "MainViewControlBarController.h"
 #import "BoardView.h"
+#import "GoGameController.h"
 
 @implementation MainViewController
 
 @synthesize boardView = _boardView;
+@synthesize gameController = _goGame;
 
 - (void) _boardStatusUpdate:(id)notify;
 {
@@ -40,13 +42,6 @@
 
 - (void) viewDidLoad
 {
-	if (_barController) {
-		[self.view addSubview:_barController.view];
-		_barController.view.frame = CGRectMake(0, 470 - _barController.view.frame.size.height,
-											   _barController.view.frame.size.width, _barController.view.frame.size.height);
-		[_barController.view setNeedsDisplay];
-	}
-	
     // XXX (fark): I want the first view of the board to be of the entire board. I can't figure out how to do that.
     _boardScrollView.minimumZoomScale = 1.0;
     _boardScrollView.maximumZoomScale = 3.0;
@@ -59,6 +54,16 @@
     _boardScrollView.contentSize = CGSizeMake(_boardView.boardSize, _boardView.boardSize);
     [_boardScrollView addSubview:_boardView];
 	
+	if (_barController) {
+		_goGame = [[GoGameController alloc] initWithBoardView:_boardView];
+		_barController.gameController = _goGame;
+		
+		[self.view addSubview:_barController.view];
+		_barController.view.frame = CGRectMake(0, 470 - _barController.view.frame.size.height,
+											   _barController.view.frame.size.width, _barController.view.frame.size.height);
+		[_barController.view setNeedsDisplay];
+	}
+	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(_boardStatusUpdate:)
 												 name:kGoBoardViewStatusUpdateNotification
@@ -67,6 +72,7 @@
 
 - (void)dealloc {
     [_boardView release];
+	[_goGame release];
 	[super dealloc];
 }
 

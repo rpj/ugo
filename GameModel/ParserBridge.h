@@ -61,6 +61,8 @@
 @property (nonatomic, assign) GoMove* nextMoveInMainTree;
 
 - (id) initWithPath:(NSString*)path;
+- (id) initWithPathAndLoad:(NSString*)path;
+
 - (void) loadSGFFromPath:(NSString*)path;
 
 - (NSString*) sgfAsString;
