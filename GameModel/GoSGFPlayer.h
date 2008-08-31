@@ -17,6 +17,7 @@
 	GoMove *_curMove;
 	
 	BOOL _canMove;
+	BOOL _initialized;
 }
 
 + (GoSGFPlayer*) playerWithSGFPath:(NSString*)path;

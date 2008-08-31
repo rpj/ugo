@@ -61,41 +61,61 @@
 	}
 }
 
+- (void) _startLocalGame;
+{
+	//_game.referee.whitePlayer = [GoLocalPlayer player];
+	// shit, we need the board view here for local players...
+}
+
+#define BORDER_ADD	10
+#define BUTTON_HEIGHT 40
+#define BUTTON_ALPHA 0.75
+
+- (UIButton*) _createButtonWithTitle:(NSString*)title andFrame:(CGRect)frame;
+{
+	UIButton* tBut = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	
+	[tBut setTitle:title forState:UIControlStateNormal];
+	[tBut setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+	[tBut setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
+	tBut.frame = frame;
+	tBut.backgroundColor = [UIColor clearColor];
+	tBut.alpha = BUTTON_ALPHA;
+	
+	return tBut;
+}
+
+- (void) _drawGameSetupUI;
+{
+	CGRect frame = _container.frame;
+	frame.origin.x += BORDER_ADD;
+	frame.origin.y += BORDER_ADD;
+	frame.size.width = (frame.size.width - (BORDER_ADD * 2));
+	frame.size.height = BUTTON_HEIGHT;
+
+	UIButton* start = [self _createButtonWithTitle:@"Start Game" andFrame:frame];
+	[_container addSubview:start];
+}
+
 - (void) _drawSGFPlaybackUI;
 {
 	UIButton* tBut = nil;
 	UILabel* tLabel = nil;
 	CGRect frame = _container.frame;
 	
-#define BORDER_ADD	10
-#define BUTTON_HEIGHT 40
-#define BUTTON_ALPHA 0.75
-	
 	frame.origin.x += BORDER_ADD;
 	frame.origin.y += BORDER_ADD;
 	frame.size.width = (frame.size.width - (BORDER_ADD * 3)) / 2;
 	frame.size.height = BUTTON_HEIGHT;
 	
-	tBut = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	tBut = [self _createButtonWithTitle:@"Previous" andFrame:frame];	//[UIButton buttonWithType:UIButtonTypeRoundedRect];
 	[_container addSubview:tBut];
-	[tBut setTitle:@"Previous" forState:UIControlStateNormal];
-	[tBut setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-	[tBut setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
-	tBut.frame = frame;
-	tBut.backgroundColor = [UIColor clearColor];
 	tBut.enabled = NO;
-	tBut.alpha = BUTTON_ALPHA;
 	[tBut addTarget:self action:@selector(_backButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	
-	tBut = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	[_container addSubview:tBut];
 	frame.origin.x += frame.size.width + BORDER_ADD;
-	tBut.frame = frame;
-	tBut.alpha = BUTTON_ALPHA;
-	tBut.backgroundColor = [UIColor clearColor];
-	[tBut setTitle:@"Start Playback" forState:UIControlStateNormal];
-	[tBut setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-	[tBut setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
+	tBut = [self _createButtonWithTitle:@"Start Playback" andFrame:frame];	//[UIButton buttonWithType:UIButtonTypeRoundedRect];
+	[_container addSubview:tBut];
 	[tBut addTarget:self action:@selector(_fwdButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	
 	frame = _headerLabel.frame;
@@ -134,6 +154,7 @@
 			break;
 			
 		case kGoGameModeLocal:
+			[self _drawGameSetupUI];
 			_headerLabel.text = @"Local Two-Player Mode";
 			break;
 			
