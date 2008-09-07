@@ -1,0 +1,146 @@
+#!/usr/bin/perl
+
+use CGI qw/:all/;
+use Amazon::S3;
+my $q = new CGI;
+my $s3 = undef;
+
+sub initS3 {
+	my $uf, $sf;
+
+	if (-e ($uf = "./user.awskey") && -e ($sf = "./secret.awskey")) {
+		$uf = `cat $uf`;
+		$sf = `cat $sf`;
+		chomp($uf);
+		chomp($sf);
+
+		$s3 = Amazon::S3->new({aws_access_key_id => $uf, aws_secret_access_key => $sf, retry => 2});
+	}
+}
+
+
+sub user($$$) {
+	return;
+
+	# testing code below... caveat emptor
+	my ($user, $pass, $phid) = @_;
+
+	my $bucket = $s3->add_bucket({bucket=>"ugoUsers"});
+	my $str = "$bucket\n";
+	use Data::Dumper;
+	
+	my $added = undef;
+	foreach my $uKey (@{%{$bucket->list()}->{'keys'}}) {
+		my $cmpKey = $uKey->{'key'};
+
+		$str .= "\n($cmpKey vs. $phid)\n";
+		if ($cmpKey eq $phid) {
+			$str .= "EXISTING USER";
+			$added = 1;
+		}
+		else {
+			$bucket->add_key($phid, "u:$user|p:$pass|l:" . time(), { content_type => 'text/plain' });
+			$str .= "USER ADDED";
+			$added = 1;
+		}
+		
+		# mark as "logged in"
+		last, if ($added);
+	}
+
+	$bucket->add_key($phid, "u:$user|p:$pass|l:" . time(), { content_type => 'text/plain' }), if (!$added);
+
+	$str . "\n\n-----\n\n";
+	$str .= Data::Dumper::Dumper(%{$s3->list_bucket({bucket=>"ugoUsers"})});
+
+	#foreach (@{%{$bucket->list()}->{'keys'}}) { $bucket->delete_key($_->{key}); }
+	#$bucket->delete_bucket();
+
+	return $str;
+}
+
+sub main() {
+	my $cgiresp = "";
+	my $tmpdir = '/tmp';
+	my $status = '200 OK';
+
+	if ($q->request_method() eq "POST") {
+		my $pathToGnuGo = '/usr/local/bin/gnugo';
+
+		my $wCmds = "$tmpdir/.whiteCmds.gtp";
+		my $bCmds = "$tmpdir/.blackCmds.gtp";
+
+		my $inFileData = $q->param('sgf');
+		my $moveFor = $q->param('player');
+		my $level = $q->param('level') || 5;
+
+		if ($inFileData && $moveFor && $level < 12) {
+			my $tsgf = "$tmpdir/uGo-GnuGO-Bridge.temporary.".time().".sgf";
+			open (TSGF, "+>$tsgf") or die "Unable to write SGF file '$tsgf': $!\n\n";
+			print TSGF $inFileData;
+			close TSGF;
+
+			if (!(-e $wCmds)) {
+				open (WC, "+>$wCmds");
+				print WC "genmove white\r\n";
+				close (WC);
+			}
+
+			if (!(-e $bCmds)) {
+				open (BC, "+>$bCmds");
+				print BC "genmove black\r\n";
+				close (BC);
+			}
+
+			my $cmd = "$pathToGnuGo --mode gtp -l \"$tsgf\" --level $level --gtp-input \"" . ($moveFor eq "white" ? $wCmds : $bCmds) . "\"";
+			my $resp = `$cmd`;
+
+			if ($resp =~ /^=\s+(\w\d+)/) {
+				$cgiresp .= "$1";
+			}
+			else {
+				$cgiresp .= "ERROR: Incorrect response (\"$resp\") from: '$cmd'\n";
+				$status = "442 GnuGO Error";
+			}
+
+			unlink($tsgf);
+			unlink($wCmds);
+			unlink($bCmds);
+		}
+		else {
+			$cgiresp = "ERROR: " . ($level < 12 ? "Not enough information provided." : "Given play level was too high.") . "\n";;
+			$status = "442 As-Yet-Undefined";
+		}
+	}
+	else
+	{
+		my @dirs = split(/\//, $q->path_info());
+		my $firstDir = $dirs[1];
+
+		if (defined($s3)) {
+			if ($firstDir eq 'player') {
+				my ($name, $pass, $phid) = @dirs[2..$#dirs];
+
+				if ($name && $pass && $phid) {
+					$cgiresp .= user($name, $pass, $phid);
+				}
+			}
+			else {
+				$status = "400 Bad Request";
+			}
+		}
+		else {
+			$cgiresp = "Unable to initialize Amazon S3; contact administrator.";
+			$status = "443 Storage Unavailable";
+		}
+	}
+
+	print $q->header('text/plain', $status);
+	print $status;
+	print "\n\n";
+	print $cgiresp;
+}
+
+#####
+initS3();
+main();
